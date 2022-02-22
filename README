@@ -1,3 +1,13 @@
-This repository contains processed data files and code needed to recreate the analyses in 
-San Roman, A.K. et al (2021) Quantitative analysis of gene expression on the inactive human X chromosome
+# README
+This repository contains code necessary to recreate analyses in: 
 
+San Roman, A.K. et al (2022) Quantitative analysis of gene expression on the inactive human X chromosome
+
+Each folder contains code and processed data that may be used to recreate one or more figures and tables:  
+Saturation_analysis: Fig. S1
+Model_fitting: Fig. S2
+Linear_regressions_genes: Fig. 2, 3, S3, Tables S2, S4, S5
+Linear_regressions_transcripts: Fig. S5, Table S3
+Microarray_comparison: Fig. S4
+Allele_specific_expression: Fig. 4, Table S6, Note S1
+Gene_constraint: Fig. 5, Tables 2, S7, S8
