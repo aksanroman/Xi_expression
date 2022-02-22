@@ -1,0 +1,6 @@
+These files can be used to generate plots in Figure S1.
+
+First run the file LCL_run_saturation_analysis.sh.
+This file is used to select specific numbers of sample subsets to iterate through these two scripts: LCL_NPY_SaturationAnalysis.R and LCL_NPX_PAR_SaturationAnalysis.R. 
+
+Next, run LCL_Plot_SaturationAnalysis.R using the output from the first step to generate plots.
