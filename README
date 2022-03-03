@@ -5,7 +5,7 @@ San Roman, A.K. et al (2022) Quantitative analysis of gene expression on the ina
 Each folder contains code and processed data that may be used to recreate one or more figures and tables:  
 Saturation_analysis: Fig. S1
 Model_fitting: Fig. S2
-Linear_regressions_genes: Fig. 2, 3, S3, Tables S2, S4, S5
+Linear_regressions: Fig. 2, 3, S3, Tables S2, S4, S5
 Linear_regressions_transcripts: Fig. S5, Table S3
 Microarray_comparison: Fig. S4
 Allele_specific_expression: Fig. 4, Table S6, Note S1
