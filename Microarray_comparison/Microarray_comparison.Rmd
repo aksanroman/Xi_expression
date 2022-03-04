@@ -1,0 +1,255 @@
+---
+title: "Sex chromosome aneuploidy microarray comparison"
+output: html_notebook
+---
+
+#Setup
+```{r}
+myPath <-  #ADD PATH TO GITHUB FOLDER HERE!
+suppressPackageStartupMessages(library(dplyr))
+library(stringr)
+library(broom)
+library(ggplot2)
+library(ggrepel)
+library(deming)
+
+geneAnno <- read.delim(paste0(myPath,"Annotations/geneAnno_proteinCoding_all_20210503.txt"), stringsAsFactors = FALSE)
+
+#"Gene" is ensembl v104 for all figures and output!
+colnames(geneAnno)[1] <- "Gene"
+geneAnno_x <- geneAnno[geneAnno$chr == "chrX",]
+PAR1_genes <- geneAnno_x[geneAnno_x$start < 2691188,]$Gene
+PAR2_genes <- c("SPRY3","VAMP7","IL9R","WASH6P")
+PAR_genes_all <- c(PAR1_genes,PAR2_genes)
+
+#Read in LCL regression results
+lcl_res <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/lcl_regression_results_npx_par.txt"), stringsAsFactors = FALSE)
+colnames(lcl_res)[20] <- "Gene"
+```
+
+
+#Functions
+```{r}
+associateWrite <- function(myOrderedFile){
+  myOrderedFile_df <- as.data.frame(myOrderedFile)
+  myOrderedFile_anno <- cbind(myOrderedFile_df, geneAnno[match(rownames(myOrderedFile_df), geneAnno$Gene),])
+}
+```
+
+#Pre-process microarray data
+```{r}
+#Bring in processed microarray data for X and Y chromosomes
+SCA_xy <- read.delim(file=paste0(myPath,"Microarray_comparison/Microarray_data_sexChr_Raznahan2018.txt"), stringsAsFactors = FALSE)
+SCA_xy <- SCA_xy[! duplicated(SCA_xy$Symbol),] #749 genes
+rownames(SCA_xy) <- SCA_xy$Symbol
+
+#Get expression data from table
+log2_expn <- SCA_xy[,62:129]
+
+SCA_PAR <- SCA_xy[rownames(SCA_xy) %in% PAR_genes_all,] #7 genes
+expn_PAR <- 2 ^ SCA_PAR[,62:129]
+median_par_expn <- apply(X = expn_PAR, MARGIN = 1, FUN = median)
+
+
+SCA_xy_noPAR <- SCA_xy[! rownames(SCA_xy) %in% PAR_genes_all,]
+SCA_Xchr <- SCA_xy_noPAR[SCA_xy_noPAR$Chromosome == "X",] #680 genes
+SCA_Ychr <- SCA_xy_noPAR[SCA_xy_noPAR$Chromosome == "Y",] #62 genes
+log2_expn_x <- SCA_Xchr[,62:129]
+expn_x <- 2 ^ SCA_Xchr[,62:129]
+median_x_expn <- apply(X = expn_x, MARGIN = 1, FUN = median)
+
+log2_expn_y <- SCA_Ychr[,62:129]
+expn_y <- 2 ^ SCA_Ychr[,62:129]
+```
+
+#Determine signal threshold for expressed genes
+```{r}
+#Set up the metadata table
+karyotypes <- sub("\\_.*", "", colnames(log2_expn))
+karyotypes[karyotypes == "XO"] <- "X"
+samp_metadata <- data.frame("sampleID" = colnames(log2_expn), "karyotype" = karyotypes, 
+                            "x_count" = str_count(karyotypes, "X"),"y_count" = str_count(karyotypes,"Y"))
+samp_metadata_male <- samp_metadata[samp_metadata$y_count > 0,]
+
+#Get Y chromosome gene expression in XY samples
+expn_y_xy <- expn_y[,colnames(expn_y) %in% samp_metadata_male[as.character(samp_metadata_male$karyotype) == "XY","sampleID"]]
+log2_expn_y_xy <- log2_expn_y[,colnames(log2_expn_y) %in% samp_metadata_male[as.character(samp_metadata_male$karyotype) == "XY","sampleID"]]
+median_y <- data.frame("Gene" = rownames(expn_y_xy),"Median_expression" = apply(expn_y_xy, 1, median))
+median_y_sorted <- median_y[order(median_y$Median_expression,decreasing=TRUE),]
+print(median_y_sorted)
+
+#Note, some of the Y chromosome annotations on this list are incorrect (ie CD24 is on Chr 6; it also includes pseudogenes.)
+#We will use genes we know are not expressed in these cell types from previous studies to determine a good signal threshold. 
+#We know PRKY is expressed in LCLs, while the genes below it are not: PRKY has a signal level of 111.179, so we will use 111 as our signal cutoff.
+
+pdf(file="y_gene_expn.pdf", height=2, width=7)
+ggplot(data = median_y, mapping = aes(x = Gene, y=Median_expression)) + 
+  geom_bar(stat = "identity") + 
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks.x = element_blank(),
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.text.x = element_text(angle = 45,hjust = 1),
+      axis.title.x = element_blank(),
+      axis.line.x = element_blank()
+      ) +
+  labs(y="Median expression in XY samples") +
+  geom_hline(yintercept =111, lty=2, col="red")
+dev.off()
+```
+
+#Use signal threshold to identify expressed X chromosome genes
+```{r}
+# Get expressed genes
+median_par_expressed <- median_par_expn[median_par_expn >= 111] 
+par_expression_matrix <- expn_PAR[rownames(expn_PAR) %in% names(median_par_expressed),]
+
+median_x_100 <- median_x_expn[median_x_expn >= 111] 
+x_expression_matrix <- expn_x[rownames(expn_x) %in% names(median_x_100),]
+
+#join with PAR genes
+x_expression_matrix <- rbind(x_expression_matrix, par_expression_matrix) #278 genes
+
+#Convert microarray data and metadata to format that can be used for the linear regression analysis
+my_metadata_par_npx <- samp_metadata
+my_metadata_par_npx$x_count <- my_metadata_par_npx$x_count - 1
+mod_par_npx <- model.matrix(~x_count + y_count, data=my_metadata_par_npx)
+normCounts_expXgenes <- x_expression_matrix
+
+
+#Do linear regression analysis on microarray data
+Microarray_par_npx <- data.frame(intercept=numeric(),intErr = numeric(),xbeta=numeric(), xpval = numeric(), xErr = numeric(),ybeta=numeric(), ypval=numeric(),yErr=numeric(), adj_rsq=numeric(), pval=numeric())
+
+for(gene in rownames(normCounts_expXgenes)){
+  options(scipen = 0, digits = 5) 
+    #pull out data
+    myGeneData <- normCounts_expXgenes[gene,]
+    all_Data <- cbind(my_metadata_par_npx, t(myGeneData))
+    colnames(all_Data)[5] <- c("gene_expression")
+    #do a linear regression
+    myFormula <- formula(gene_expression ~ x_count + y_count)
+    mylm <- lm(myFormula, data=all_Data)
+    #pull out beta, p-value and add to table
+    intercept <- summary(mylm)$coefficients["(Intercept)",1]
+    interr <- summary(mylm)$coefficients["(Intercept)",2]
+    xbeta <- summary(mylm)$coefficients["x_count",1]
+    xpval <- summary(mylm)$coefficients["x_count",4]
+    xerr <- summary(mylm)$coefficients["x_count",2]
+    ybeta <- summary(mylm)$coefficients["y_count",1]
+    ypval <- summary(mylm)$coefficients["y_count",4]
+    yerr <- summary(mylm)$coefficients["y_count",2]
+    adj_rsq <- glance(mylm)$adj.r.squared
+    pval <- glance(mylm)$p.value
+  
+  Microarray_par_npx[gene,] <- c(intercept,interr,xbeta, xpval, xerr,ybeta, ypval, yerr, adj_rsq,pval)
+  
+}
+
+#correct for multiple hypothesis testing and set signficance threshold to padj < 0.05
+bh_adj <- p.adjust(Microarray_par_npx$xpval, method="BH")
+bh_adj_y <- p.adjust(Microarray_par_npx$ypval, method="BH")
+bh_adj_reg <- p.adjust(Microarray_par_npx$pval, method="BH")
+deltaEx <- Microarray_par_npx$xbeta/Microarray_par_npx$intercept
+deltaEx_err <- sqrt(
+  ((Microarray_par_npx$xbeta ^ 2)/(Microarray_par_npx$intercept ^ 2)) * 
+  (
+    ((Microarray_par_npx$xErr ^ 2)/(Microarray_par_npx$xbeta ^ 2)) + 
+      ((Microarray_par_npx$intErr ^ 2)/(Microarray_par_npx$intercept ^ 2))
+    )
+  )
+att_coeff <- 1 - deltaEx
+deltaEy <- Microarray_par_npx$ybeta/Microarray_par_npx$intercept
+deltaEy_err <- sqrt(
+  ((Microarray_par_npx$ybeta ^ 2)/(Microarray_par_npx$intercept ^ 2)) * 
+  (
+    ((Microarray_par_npx$yErr ^ 2)/(Microarray_par_npx$ybeta ^ 2)) + 
+      ((Microarray_par_npx$intErr ^ 2)/(Microarray_par_npx$intercept ^ 2))
+    )
+  )
+
+
+Microarray_npx_par_deltaEx_y <- data.frame(row.names= rownames(Microarray_par_npx),
+                          "gene"= rownames(Microarray_par_npx),
+                          "intercept" = Microarray_par_npx$intercept,
+                          "intercept_err" = Microarray_par_npx$intErr,
+                          "x_coeff" = Microarray_par_npx$xbeta,
+                          "x_coeff_err" = Microarray_par_npx$xErr,
+                          "x_pval" = Microarray_par_npx$xpval,
+                          "x_adj_pval" = bh_adj,
+                          "y_coeff" = Microarray_par_npx$ybeta,
+                          "y_coeff_err" = Microarray_par_npx$yErr,
+                          "y_pval" = Microarray_par_npx$ypval,
+                          "y_adj_pval" = bh_adj_y,
+                          "adj.r.sq" = Microarray_par_npx$adj_rsq,
+                          "reg_pval" = Microarray_par_npx$pval,
+                          "reg_adj_pval" = bh_adj_reg,
+                          "deltaEx" = deltaEx,
+                          "deltaEx_err" = deltaEx_err,
+                          "attenuation_coeff" = att_coeff,
+                          "deltaEy" = deltaEy,
+                          "deltaEy_err" = deltaEy_err
+                          )
+
+#adjust for XIST:
+XIST_int <- Microarray_par_npx["XIST","xbeta"] + Microarray_par_npx["XIST","intercept"]
+deltaEx_XIST <- Microarray_par_npx["XIST","xbeta"]/XIST_int
+att_coeff_XIST <- 1-deltaEx_XIST
+deltaEy_XIST <- Microarray_par_npx["XIST","ybeta"]/XIST_int
+
+deltaEx_err_XIST <- sqrt(
+  ((Microarray_par_npx["XIST","xbeta"] ^ 2)/(XIST_int ^ 2)) * 
+  (
+    ((Microarray_par_npx["XIST","xErr"] ^ 2)/(Microarray_par_npx["XIST","xbeta"] ^ 2)) + 
+      (((Microarray_par_npx["XIST","intErr"] ^ 2) + (Microarray_par_npx["XIST","xErr"] ^ 2))/(XIST_int ^ 2))
+    )
+  )
+
+deltaEy_err_XIST <- sqrt(
+  ((Microarray_par_npx["XIST","ybeta"] ^ 2)/(XIST_int ^ 2)) * 
+  (
+    ((Microarray_par_npx["XIST","yErr"] ^ 2)/(Microarray_par_npx["XIST","ybeta"] ^ 2)) + 
+      (((Microarray_par_npx["XIST","intErr"] ^2) + (Microarray_par_npx["XIST","yErr"] ^ 2 ))/(XIST_int ^ 2))
+    )
+  )
+
+
+Microarray_npx_par_deltaEx_y["XIST",c("deltaEx","deltaEx_err","attenuation_coeff","deltaEy","deltaEy_err")] <- c(        "deltaEx" = deltaEx_XIST, "deltaEx_err" = deltaEx_err_XIST,"attenuation_coeff" = att_coeff_XIST,"deltaEy" = deltaEy_XIST,"deltaEy_err" = deltaEy_err_XIST)
+
+Microarray_npx_par_deltaEx_y_anno <- na.omit(associateWrite(Microarray_npx_par_deltaEx_y))
+# write.table(x = Microarray_npx_par_deltaEx_y_anno, file = "Microarray_npx_par_regression_v2.txt", quote = FALSE, sep = "\t", row.names = FALSE)
+```
+
+#Compare RNA-seq and microarray linear regression results
+```{r}
+#merge
+rnaSeq_microarray_data <- merge(x=lcl_res,y=Microarray_npx_par_deltaEx_y_anno, by="Gene")
+
+my.deming <- deming(formula = deltaEx.y~deltaEx.x, data= rnaSeq_microarray_data)
+
+my.cor <- cor.test(x = rnaSeq_microarray_data$deltaEx.x, y=rnaSeq_microarray_data$deltaEx.y, method="pearson")
+
+pdf(file="RNAseq_vs_microarray_deltaEx.pdf", width=2, height=2)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_abline(slope=my.deming$coefficients[2], intercept = my.deming$coefficients[1], size=0.25) +
+  geom_point(data=rnaSeq_microarray_data, aes(x = deltaEx.x, y = deltaEx.y), stroke=0, col="#00000060") +
+  geom_text_repel(data=rnaSeq_microarray_data[rnaSeq_microarray_data$deltaEx.x > 0.2,], aes(x=deltaEx.x, y=deltaEx.y, label=Gene), stroke=0, col="black", size=1, min.segment.length = 0.1) +
+  geom_text(aes(x=1.25, y=-0.25, label=paste0("P = ",formatC(x=my.cor$p.value,digits=3),"\nr =",formatC(x=my.cor$estimate,digits=2))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+ xlim(-0.25,1.25) +
+     ylim(-0.25,1.25) +
+  labs(x="deltaEx RNA-seq", y="deltaEx microarray")
+dev.off()
+
+```
+
