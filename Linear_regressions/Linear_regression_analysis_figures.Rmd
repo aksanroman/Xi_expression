@@ -1,0 +1,827 @@
+---
+title: "Analysis and figures for linear regressions for Chr X, Y, and 21"
+output: html_notebook
+---
+
+#Setup
+```{r}
+myPath <- #ADD PATH TO GITHUB FOLDER
+library("ggplot2")
+library("ggrepel")
+library("reshape2")
+library("deming")
+
+data_summary <- function(x){
+  m <- median(x, na.rm=TRUE)
+  ymin <- quantile(x, na.rm=TRUE)[2]
+  ymax <- quantile(x, na.rm=TRUE)[4]
+  test <- c("y"=m,"ymin"=ymin,"ymax"=ymax)
+  names(test) <- c("y","ymin","ymax")
+  return(test)
+}
+```
+
+# Bring in annotations
+```{r}
+geneAnno <- read.delim(file=paste0(myPath,"Annotations/geneAnno_proteinCoding_all_20210503.txt"), stringsAsFactors = FALSE)
+
+#"Gene" is ensembl v104 for all figures and output!
+colnames(geneAnno)[1] <- "Gene"
+geneAnno_x <- geneAnno[geneAnno$chr == "chrX",]
+Y_genes_all <-as.character(geneAnno[grep("chrY", geneAnno$chr), ]$Gene)
+PAR1_genes <- geneAnno_x[geneAnno_x$start < 2691188,]$Gene
+PAR2_genes <- c("SPRY3","VAMP7","IL9R","WASH6P")
+PAR_genes_all <- c(PAR1_genes,PAR2_genes)
+
+# NPX-NPY pair annotations
+XY_pair_anno <- read.delim(file=paste0(myPath,"Annotations/human_XY_pair_annotations.txt"), stringsAsFactors = FALSE)
+
+#Colors for figures
+myOrange <- "#d95f0290"
+myOrange_100 <- "#d95f02"
+myOrange_80 <- "#d95f0280"
+myPurple <- "#7570B390"
+myGreen_95 <- "#1B9E7795"
+chr21Col <- "#DA70D690"
+```
+
+# Make tables for lcl and fibroblast linear regression results
+```{r}
+lcl_res <- read.delim(file="LCLs/lcl_regression_results_npx_par.txt", header = TRUE, stringsAsFactors = FALSE)
+colnames(lcl_res)[colnames(lcl_res) %in% "gene"] <- "gene_name.84"
+colnames(lcl_res)[colnames(lcl_res) %in% "gene_name.104"] <- "Gene"
+lcl_res <- merge(x=lcl_res, y=XY_pair_anno[,c("Gene","Human_NPY")], by="Gene", all.x=TRUE)
+
+fib_res <- read.delim(file="Fibroblasts/fib_regression_results_npx_par.txt", header = TRUE, stringsAsFactors = FALSE)
+colnames(fib_res)[colnames(fib_res) %in% "gene"] <- "gene_name.84"
+colnames(fib_res)[colnames(fib_res) %in% "gene_name.104"] <- "Gene"
+fib_res <- merge(x=fib_res, y=XY_pair_anno[,c("Gene","Human_NPY")], by="Gene", all.x=TRUE)
+
+lcl_fib_res_anno <- merge(x=lcl_res, y=fib_res, by="Gene", all=TRUE)
+row.names(lcl_fib_res_anno) <- lcl_fib_res_anno$Gene
+
+# write.table(x=lcl_fib_res_anno, file="table_s2_npx_par_response.txt", quote=FALSE, sep="\t", col.names = TRUE, row.names=FALSE)
+
+lcl_res_NPY <- read.delim(file="LCLs/lcl_regression_results_npy.txt", header = TRUE, stringsAsFactors = FALSE)
+colnames(lcl_res_NPY)[colnames(lcl_res_NPY) %in% "gene"] <- "gene_name.84"
+colnames(lcl_res_NPY)[colnames(lcl_res_NPY) %in% "gene_name.104"] <- "Gene"
+
+fib_res_NPY <- read.delim(file="Fibroblasts/fib_regression_results_npy.txt", header = TRUE,  stringsAsFactors = FALSE)
+colnames(fib_res_NPY)[colnames(fib_res_NPY) %in% "gene"] <- "gene_name.84"
+colnames(fib_res_NPY)[colnames(fib_res_NPY) %in% "gene_name.104"] <- "Gene"
+
+lcl_fib_NPY_res <- merge(x=lcl_res_NPY, y=fib_res_NPY, by="Gene", all=TRUE)
+row.names(lcl_fib_NPY_res) <- lcl_fib_NPY_res$Gene
+
+# write.table(x=lcl_fib_NPY_res, file="table_s4_npy_response.txt", quote=FALSE, sep="\t", col.names = TRUE, row.names=FALSE)
+
+chr21_res <- read.delim(file="Chr21/LCL_regression_results_chr21.txt", header = TRUE, stringsAsFactors = FALSE)
+colnames(chr21_res)[colnames(chr21_res) %in% "gene"] <- "gene_name.84"
+colnames(chr21_res)[colnames(chr21_res) %in% "gene_name.104"] <- "Gene"
+
+# write.table(x=chr21_res, file="table_s5_chr21_response.txt", quote=FALSE, sep="\t", col.names = TRUE, row.names=FALSE)
+```
+
+
+# Bring in lcl and fib linear regression results and quantify significant genes
+```{r}
+lcl_res$start <- lcl_res$start / 1000000
+lcl_res_NPX <- lcl_res[lcl_res$region %in% "NPX",]
+lcl_res_PAR1 <- lcl_res[lcl_res$region %in% c("PAR1"),]
+lcl_res_PAR2 <- lcl_res[lcl_res$region %in% c("PAR2"),]
+lcl_res_sig <- lcl_res[lcl_res$x_adj_pval < 0.05,]
+lcl_res_NPX_sig <- lcl_res_NPX[lcl_res_NPX$x_adj_pval < 0.05,]
+min(lcl_res_NPX_sig$deltaEx)
+max(lcl_res_NPX_sig$deltaEx)
+
+#number of NPX genes that are not significant
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval>=0.05,])[1]
+
+#Percent of NPX genes that are not significant
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval>=0.05,])[1]/dim(lcl_res_NPX)[1]
+
+#Number of NPX genes that are significantly upregulated
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval<0.05 & lcl_res_NPX$deltaEx>0,])[1]
+
+#Percent of NPX genes that are significantly upregulated
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval<0.05 & lcl_res_NPX$deltaEx>0,])[1]/dim(lcl_res_NPX)[1]
+
+#Number of NPX genes that are significantly downregulated
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval<0.05 & lcl_res_NPX$deltaEx<0,])[1]
+
+#Percent of NPX genes that are significantly downregulated
+dim(lcl_res_NPX[lcl_res_NPX$x_adj_pval<0.05 & lcl_res_NPX$deltaEx<0,])[1]/dim(lcl_res_NPX)[1]
+
+lcl_res_NPY$start <- lcl_res_NPY$start / 1000000
+
+lcl_res_NPY_PAR <- rbind(lcl_res_NPY, lcl_res_PAR1[,colnames(lcl_res_NPY)], lcl_res_PAR2[,colnames(lcl_res_NPY)])
+
+
+#remove BEX1 from fib data [extermely variable outlier]
+fib_res <- fib_res[! fib_res$Gene %in% c("BEX1"),]
+
+fib_res$start <- fib_res$start / 1000000
+
+fib_res_NPX <- fib_res[fib_res$region %in% c("NPX"),]
+fib_res_PAR1 <- fib_res[fib_res$region %in% c("PAR1"),]
+fib_res_PAR2 <- fib_res[fib_res$region %in% c("PAR2"),]
+fib_res_sig <- fib_res[fib_res$x_adj_pval < 0.05,]
+fib_res_NPX_sig <- fib_res_NPX[fib_res_NPX$x_adj_pval < 0.05,]
+min(fib_res_NPX_sig$deltaEx)
+max(fib_res_NPX_sig$deltaEx)
+
+#number of NPX genes that are not significant
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval>=0.05,])[1]
+
+#Percent of NPX genes that are not significant
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval>=0.05,])[1]/dim(fib_res_NPX)[1]
+
+#number of NPX genes that are significantly upregulated
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval<0.05 & fib_res_NPX$deltaEx>0,])[1]
+
+#percent of NPX genes that are significantly upregulated
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval<0.05 & fib_res_NPX$deltaEx>0,])[1]/dim(fib_res_NPX)[1]
+
+#number of NPX genes that are significantly downregulated
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval<0.05 & fib_res_NPX$deltaEx<0,])[1]
+
+#percent of NPX genes that are significantly downregulated
+dim(fib_res_NPX[fib_res_NPX$x_adj_pval<0.05 & fib_res_NPX$deltaEx<0,])[1]/dim(fib_res_NPX)[1]
+
+fib_res_NPY <- read.delim("Fibroblasts/fib_regression_results_npy.txt", header = TRUE,  stringsAsFactors = FALSE)
+colnames(fib_res_NPY)[colnames(fib_res_NPY) %in% "gene"] <- "gene_name.84"
+colnames(fib_res_NPY)[colnames(fib_res_NPY) %in% "gene_name.104"] <- "Gene"
+fib_res_NPY$start <- fib_res_NPY$start / 1000000
+
+fib_res_NPY_PAR <- rbind(fib_res_NPY, fib_res_PAR1[,colnames(fib_res_NPY)], fib_res_PAR2[,colnames(fib_res_NPY)])
+
+#Union numbers
+NPX_union <- union(lcl_res_NPX$Gene, fib_res_NPX$Gene)
+NPY_union <- union(lcl_res_NPY$Gene, fib_res_NPY$Gene)
+PAR1_union <- union(lcl_res_PAR1$Gene, fib_res_PAR1$Gene)
+PAR2_union <- union(lcl_res_PAR2$Gene, fib_res_PAR2$Gene)
+
+#Overlap of LCL and fib genes
+Overlap_NPX_sigup <- intersect(lcl_res_NPX[lcl_res_NPX$x_adj_pval < 0.05 & lcl_res_NPX$deltaEx > 0,"Gene"], fib_res_NPX[fib_res_NPX$x_adj_pval < 0.05 & fib_res_NPX$deltaEx > 0,"Gene"])
+Overlap_NPX_sigdown <- intersect(lcl_res_NPX[lcl_res_NPX$x_adj_pval < 0.05 & lcl_res_NPX$deltaEx < 0,"Gene"], fib_res_NPX[fib_res_NPX$x_adj_pval < 0.05 & fib_res_NPX$deltaEx < 0,"Gene"])
+
+#Quantify chr21 results
+chr21_res_sig <- chr21_res[chr21_res$chr21_adj_pval < 0.05,]
+chr21_res_notsig <- chr21_res[chr21_res$chr21_adj_pval >= 0.05,]
+
+#number of Chr 21 genes that are not significant
+dim(chr21_res[chr21_res$chr21_adj_pval>=0.05,])[1]
+
+#percent of Chr 21 genes that are not significant
+dim(chr21_res[chr21_res$chr21_adj_pval>=0.05,])[1]/dim(chr21_res)[1]
+
+#number of Chr 21 genes that are significantly upregulated
+dim(chr21_res[chr21_res$chr21_adj_pval<0.05 & chr21_res$deltaEchr21>0,])[1]
+
+#percent of Chr 21 genes that are significantly upregulated
+dim(chr21_res[chr21_res$chr21_adj_pval<0.05 & chr21_res$deltaEchr21>0,])[1]/dim(chr21_res)[1]
+
+#number of Chr 21 genes that are significantly downregulated
+dim(chr21_res[chr21_res$chr21_adj_pval<0.05 & chr21_res$deltaEchr21<0,])[1]
+
+#percent of Chr 21 genes that are significantly downregulated
+dim(chr21_res[chr21_res$chr21_adj_pval<0.05 & chr21_res$deltaEchr21<0,])[1]/dim(chr21_res)[1]
+
+```
+
+#Figures 2 and 3
+##Individual plots for NPX and PAR genes
+```{r}
+#bring in the normalized count files
+lcl_normCounts <- read.delim(file="LCLs/lcl_normCounts_expXgenes.txt", check.names = FALSE)
+fib_normCounts <- read.delim(file="Fibroblasts/fib_normCounts_expXgenes.txt", check.names = FALSE)
+
+#bring in metadata
+metadata <- read.delim(file="metadata.txt", stringsAsFactors = FALSE, header=TRUE)
+metadata$x_count <- metadata$x_count - 1
+rownames(metadata) <- metadata$sample
+lcl_metadata <- metadata[metadata$karyotype %in% c("X","XX","XXX","XXXX","XXXXY","XXXY","XXY","XXYY","XY","XYY","XYYYY") & metadata$cell_type == "LCL" & metadata$Technical_replicate == "N",][colnames(lcl_normCounts),]
+fib_metadata <- metadata[metadata$karyotype %in% c("X","XX","XXX","XXXX","XXXXY","XXXY","XXY","XXYY","XY","XYY","XYYYY") & metadata$cell_type == "Fib" & metadata$Technical_replicate == "N",][colnames(fib_normCounts),]
+
+#make plots per gene:
+ggGenePlot_regLine_xcount <- function(Gene, normCounts, metadata, resTable, normBy, prefix, adjustLabel,region,myWidth=1.525, myHeight=1.75){
+  ## Uncomment to troubleshoot
+  # Gene <- "XIST"
+  # normCounts <- lcl_normCounts
+  # metadata <- lcl_metadata
+  # resTable <- lcl_res
+  # prefix<-"LCL"
+  # adjustLabel <-"bottomRight"
+  # normBy <- 1000
+  # region<-"NPX"
+  
+  #pull out intercept
+  myInt <- resTable[resTable$Gene == Gene,"intercept"] / normBy
+  mySlope <- resTable[resTable$Gene == Gene,"x_coeff"] / normBy
+  myDelta <- formatC(x = resTable[resTable$Gene == Gene,"deltaEx"], digits = 3)
+  myP <- formatC(x=resTable[resTable$Gene == Gene,"x_adj_pval"], digits=2, format = "e")
+  Gene_data <- t(normCounts[Gene,])/normBy
+  colnames(Gene_data) <- "expn"
+  
+  #merge Gene data with metadata
+  plot_data <- data.frame(metadata,Gene_data)
+  plot_data$x_count <- plot_data$x_count
+  if(adjustLabel == "bottomLeft"){
+    yloc <- 0
+    xloc <- -0.3
+    myV <- 0
+    myH <- 0
+  } 
+  if(adjustLabel == "bottomRight"){
+    yloc <- 0
+    xloc <- 3.3
+    myV <- 0
+    myH <- 1
+  }
+  if(adjustLabel == "topLeft"){
+    yloc <- max(plot_data$expn)
+    xloc <- -0.3
+    myV <- 1
+    myH <- 0
+  }
+  if(adjustLabel == "topRight"){
+    yloc <- max(plot_data$expn)
+    xloc <- 3.3
+    myV <- 1
+    myH <- 1
+  }
+  pdf(file=paste0(prefix,"_",Gene,"_linearPlot.pdf"), width=myWidth, height=myHeight)
+  p <- ggplot(data=plot_data, mapping = aes(x=x_count, y=expn)) +
+    geom_jitter(color="#00000080", position=position_jitter(0.2), size=1.5, stroke=0) +
+    geom_abline(slope = mySlope, intercept = myInt, color=myOrange, lty=2) +
+    annotate(
+      geom = "text", 
+      x = xloc, 
+      y = yloc,
+      label = paste0('dEX=', myDelta, '\nFDR=', myP),
+      hjust = myH, 
+      vjust = myV,
+      size=2
+      ) +
+    labs( 
+      x= "Number of Xi",
+      y= paste0("Normalized read\ncounts (x",normBy,")"),
+      title = paste0("*",Gene,"*"," (",region,")")
+      ) +
+    theme_classic(base_size = 8) +
+    theme(
+      plot.title = ggtext::element_markdown(hjust = 0.5),
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      # aspect.ratio=1
+      ) +
+    ylim(-0.01,max(plot_data$expn)+0.05) + xlim(-0.3,3.3)
+  print(p)
+  dev.off()
+}
+
+
+#Plot LCL genes of interest 
+gene <- "PRPS2"
+ggGenePlot_regLine_xcount(Gene = gene, normCounts = lcl_normCounts, metadata = lcl_metadata, resTable = lcl_res, prefix="LCL", adjustLabel = "bottomLeft", normBy = 1000, region="NPX")
+# ggGenePlot_regLine_xcount(Gene = gene, normCounts = fib_normCounts, metadata = fib_metadata, resTable = fib_res, prefix="Fib", "bottomLeft", normBy = 1000, region="NPX")
+
+gene <- "F8"
+ggGenePlot_regLine_xcount(Gene = gene, normCounts = lcl_normCounts, metadata = lcl_metadata, resTable = lcl_res, prefix="LCL", adjustLabel = "topRight", normBy = 1000, region="NPX")
+# ggGenePlot_regLine_xcount(Gene = gene, normCounts = fib_normCounts, metadata = fib_metadata, resTable = fib_res, prefix="Fib", "topRight", normBy = 1000, region="NPX")
+
+gene <- "XIST"
+ggGenePlot_regLine_xcount(Gene = gene, normCounts = lcl_normCounts, metadata = lcl_metadata, resTable = lcl_res, prefix="LCL", adjustLabel = "bottomRight", normBy = 1000, region="NPX")
+# ggGenePlot_regLine_xcount(Gene = gene, normCounts = fib_normCounts, metadata = fib_metadata, resTable = fib_res, prefix="Fib", "bottomRight", normBy = 1000, region="NPX")
+
+gene <- "KDM5C"
+ggGenePlot_regLine_xcount(Gene = gene, normCounts = lcl_normCounts, metadata = lcl_metadata, resTable = lcl_res, prefix="LCL", adjustLabel = "bottomRight", normBy = 1000, region="NPX")
+# ggGenePlot_regLine_xcount(Gene = gene, normCounts = fib_normCounts, metadata = fib_metadata, resTable = fib_res, prefix="Fib", "bottomRight", normBy = 1000, region="NPX")
+```
+
+##Individual plots for NPY genes
+```{r}
+lcl_normCounts_y <- read.delim(file="LCLs/lcl_normCounts_expYgenes.txt", check.names = FALSE)
+fib_normCounts_y <- read.delim(file="Fibroblasts/fib_normCounts_expYgenes.txt", check.names = FALSE)
+
+lcl_metadata_y <- lcl_metadata[colnames(lcl_normCounts_y),]
+fib_metadata_y <- fib_metadata[colnames(fib_normCounts_y),]
+
+ggGenePlot_regLine_ycount <- function(Gene, normCounts, metadata, resTable, normBy, prefix, adjustLabel,region,myWidth=1.75,myHeight=1.75){
+
+  #pull out intercept
+  myInt <- (resTable[resTable$Gene == Gene,"intercept"] / normBy) - resTable[resTable$Gene == Gene,"y_coeff"] / normBy
+  mySlope <- resTable[resTable$Gene == Gene,"y_coeff"] / normBy
+  myDelta <- formatC(x = resTable[resTable$Gene == Gene,"deltaEy"], digits = 3)
+  myP <- formatC(x=resTable[resTable$Gene == Gene,"y_adj_pval"], digits=2, format = "e")
+  Gene_data <- t(normCounts[Gene,])/normBy
+  colnames(Gene_data) <- "expn"
+  
+  #merge Gene data with metadata
+  plot_data <- data.frame(metadata,Gene_data)
+  if(adjustLabel == "bottomLeft"){
+    yloc <- 0
+    xloc <- 0.7
+    myV <- 0
+    myH <- 0
+  } 
+  if(adjustLabel == "bottomRight"){
+    yloc <- 0
+    xloc <- 4.3
+    myV <- 0
+    myH <- 1
+  }
+  if(adjustLabel == "topLeft"){
+    yloc <- max(plot_data$expn)
+    xloc <- 0.7
+    myV <- 1
+    myH <- 0
+  }
+  if(adjustLabel == "topRight"){
+    yloc <- max(plot_data$expn)
+    xloc <- 4.3
+    myV <- 1
+    myH <- 1
+  }
+  pdf(file=paste0(prefix,"_",Gene,"_linearPlot.pdf"), width=myWidth, height=myHeight)
+  p <- ggplot(data=plot_data, mapping = aes(x=y_count, y=expn)) +
+    geom_jitter(color="#00000080", position=position_jitter(0.2), size=1, stroke=0) +
+    geom_abline(slope = mySlope, intercept = myInt, color=myPurple, lty=2) +
+    annotate(
+      geom = "text", 
+      x = xloc, 
+      y = yloc,
+      label = paste0('dEY=', myDelta, '\nFDR=', myP),
+      hjust = myH, 
+      vjust = myV,
+      size=2
+      ) +
+    labs( 
+      x= "Number of Chr Y",
+      y= paste0("Normalized read\ncounts (x",normBy,")"),
+      title = paste0("*",Gene,"*"," (",region,")")
+      ) +
+    theme_classic(base_size = 8) +
+    theme(
+      plot.title = ggtext::element_markdown(hjust = 0.5),
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      aspect.ratio=1
+      ) +
+    ylim(-0.01,max(plot_data$expn)+0.05) + xlim(0.7,4.3)
+  print(p)
+  dev.off()
+}
+
+gene <- "KDM5D"
+ggGenePlot_regLine_ycount(Gene = gene, normCounts = lcl_normCounts_y, metadata = lcl_metadata_y, resTable = lcl_res_NPY, prefix="LCL", adjustLabel = "bottomRight", normBy = 1000, region="NPY")
+# ggGenePlot_regLine_ycount(Gene = gene, normCounts = fib_normCounts_y, metadata = fib_metadata_y, resTable = fib_res_NPY, prefix="Fib", "bottomRight", normBy = 1000, region="NPY")
+```
+
+##Individual plots for Chr21 genes
+```{r}
+chr21_normCounts <- read.delim(file="Chr21/lcl_normCounts_chr21_genes.txt", check.names = FALSE)
+
+chr21_metadata <- metadata[metadata$karyotype %in% c("XX","XY","XX_t21","XY_t21") & metadata$cell_type == "LCL" & metadata$Technical_replicate == "N",][colnames(chr21_normCounts),]
+chr21_metadata$Chr21_count <- chr21_metadata$Chr21_count - 2
+
+#make plots per gene:
+ggGenePlot_regLine_21count <- function(Gene, normCounts, metadata, resTable, normBy, prefix, adjustLabel,region){
+
+  #pull out intercept
+  myInt <- (resTable[resTable$Gene == Gene,"intercept"] / normBy) *2
+  mySlope <- resTable[resTable$Gene == Gene,"chr21_coeff"] / normBy
+  myDelta <- formatC(x = resTable[resTable$Gene == Gene,"deltaEchr21"], digits = 3)
+  myP <- formatC(x=resTable[resTable$Gene == Gene,"chr21_adj_pval"], digits=2, format = "e")
+  Gene_data <- t(normCounts[Gene,])/normBy
+  colnames(Gene_data) <- "expn"
+  
+  #merge Gene data with metadata
+  plot_data <- data.frame(metadata,Gene_data)
+  # plot_data$Chr21_count <- plot_data$Chr21_count + 2
+  if(adjustLabel == "bottomLeft"){
+    yloc <- 0
+    xloc <- -0.3
+    myV <- 0
+    myH <- 0
+  } 
+  if(adjustLabel == "bottomRight"){
+    yloc <- 0
+    xloc <- 1.3
+    myV <- 0
+    myH <- 1
+  }
+  if(adjustLabel == "topLeft"){
+    yloc <- max(plot_data$expn)
+    xloc <- -0.3
+    myV <- 1
+    myH <- 0
+  }
+  if(adjustLabel == "topRight"){
+    yloc <- max(plot_data$expn)
+    xloc <- 1.3
+    myV <- 1
+    myH <- 1
+  }
+  pdf(file=paste0(prefix,"_",Gene,"_linearPlot.pdf"), width=1.75, height=1.75)
+  p <- ggplot(data=plot_data, mapping = aes(x=Chr21_count, y=expn)) +
+    geom_jitter(color="#00000080", position=position_jitter(0.2), size=1, stroke=0) +
+    geom_abline(slope = mySlope, intercept = myInt, color=chr21Col, lty=2) +
+    annotate(
+      geom = "text", 
+      x = xloc, 
+      y = yloc,
+      label = paste0('dE21=', myDelta, '\nFDR=', myP),
+      hjust = myH, 
+      vjust = myV,
+      size=2
+      ) +
+    labs( 
+      x= "Number of Chr 21",
+      y= paste0("Normalized read\ncounts (x",normBy,")"),
+      title = paste0("*",Gene,"*"," (",region,")")
+      ) +
+    theme_classic(base_size = 8) +
+    theme(
+      plot.title = ggtext::element_markdown(hjust = 0.5),
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      aspect.ratio=1
+      ) +
+    ylim(-0.01,max(plot_data$expn)+0.05) + xlim(-0.3,1.3)
+  print(p)
+  dev.off()
+}
+
+
+#Plot genes of interest 
+gene <- "CCT8"
+ggGenePlot_regLine_21count(Gene = gene, normCounts = chr21_normCounts, metadata = chr21_metadata, resTable = chr21_res, prefix="LCL_tri21", adjustLabel = "bottomLeft", normBy = 1000, region="Chr 21")
+```
+
+##X Chr volcano plots
+```{r}
+#IMake volcano plots using deltaEx as the X-axis instead of "fold-change", as is typical.
+
+#color code the points by whether they are 
+#1. NPX-NPY
+#2. NPX, no Y
+#3. PAR
+
+myGenes <- c("PRPS2","XIST","F8")
+
+#Start with LCLs
+lcl_res_edit <- lcl_res
+lcl_res_edit$label <- "NPX_noY"
+lcl_res_edit$label <- as.character(lcl_res_edit$label)
+lcl_res_edit[lcl_res_edit$region %in% c("PAR1","PAR2"), "label"] <- "PAR"
+lcl_res_edit[lcl_res_edit$Human_NPY == TRUE, "label"] <- "NPX_NPY"
+lcl_res_edit$label <- factor(x = lcl_res_edit$label, levels = c("PAR","NPX_noY","NPX_NPY"))
+
+pdf(file="volcano_lcl_Xchrom.pdf", width=5.25, height=2.5)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_vline(xintercept=1, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=(-log10(0.05)), size=0.25, lty=2, col="#00000040") +
+  geom_point(data=lcl_res_edit[lcl_res_edit$label == "NPX_noY",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0, col=myOrange_80) +
+  geom_point(data=lcl_res_edit[lcl_res_edit$label == "NPX_NPY",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0.75, pch=21, col="black", fill=myOrange_80) +
+  geom_point(data=lcl_res_edit[lcl_res_edit$label == "PAR",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0, col=myGreen_95) +
+  geom_text_repel(data = lcl_res_edit[lcl_res_edit$Gene %in% myGenes,], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myOrange_80, 
+                  size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = lcl_res_edit[abs(lcl_res_edit$deltaEx) >= 0.2 & lcl_res_edit$x_adj_pval < 0.05 & ! lcl_res_edit$Gene %in% myGenes & lcl_res_edit$label == "NPX_noY",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myOrange_80, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+    geom_text_repel(data = lcl_res_edit[abs(lcl_res_edit$deltaEx) >= 0.2 & lcl_res_edit$x_adj_pval < 0.05 & ! lcl_res_edit$Gene %in% myGenes & lcl_res_edit$label == "NPX_NPY",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col="black", size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = lcl_res_edit[abs(lcl_res_edit$deltaEx) >= 0.2 & lcl_res_edit$x_adj_pval < 0.05 & ! lcl_res_edit$Gene %in% myGenes & lcl_res_edit$label == "PAR",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myGreen_95, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+  labs(
+    y="-log10(FDR)",
+    title = "LCLs"
+  ) + 
+  xlim(-0.39,1.48) + 
+  ylim (-0.1,60)
+dev.off()
+
+#Next, fibroblasts
+fib_res_edit <- fib_res
+fib_res_edit$label <- "NPX_noY"
+fib_res_edit$label <- as.character(fib_res_edit$label)
+fib_res_edit[fib_res_edit$region %in% c("PAR1","PAR2"), "label"] <- "PAR"
+fib_res_edit[fib_res_edit$Human_NPY == TRUE, "label"] <- "NPX_NPY"
+fib_res_edit$label <- factor(x = fib_res_edit$label, levels = c("PAR","NPX_noY","NPX_NPY"))
+
+pdf(file="volcano_fib_Xchrom.pdf", width=5.25, height=2.5)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_vline(xintercept=1, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=(-log10(0.05)), size=0.25, lty=2, col="#00000040") +
+  geom_point(data=fib_res_edit[fib_res_edit$label == "NPX_noY",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0, col=myOrange_80) +
+  geom_point(data=fib_res_edit[fib_res_edit$label == "NPX_NPY",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0.75, pch=21, col="black", fill=myOrange_80) +
+  geom_point(data=fib_res_edit[fib_res_edit$label == "PAR",], aes(x = deltaEx, y = -log10(x_adj_pval)),stroke=0, col=myGreen_95) +
+  geom_text_repel(data = fib_res_edit[fib_res_edit$Gene %in% myGenes,], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myOrange_80, 
+                  size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = fib_res_edit[abs(fib_res_edit$deltaEx) >= 0.2 & fib_res_edit$x_adj_pval < 0.05 & ! fib_res_edit$Gene %in% myGenes & fib_res_edit$label == "NPX_noY",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myOrange_80, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+    geom_text_repel(data = fib_res_edit[abs(fib_res_edit$deltaEx) >= 0.2 & fib_res_edit$x_adj_pval < 0.05 & ! fib_res_edit$Gene %in% myGenes & fib_res_edit$label == "NPX_NPY",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col="black", size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = fib_res_edit[abs(fib_res_edit$deltaEx) >= 0.2 & fib_res_edit$x_adj_pval < 0.05 & ! fib_res_edit$Gene %in% myGenes & fib_res_edit$label == "PAR",], mapping = aes(x=deltaEx, y=-log10(x_adj_pval),label=Gene),col=myGreen_95, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+  labs(
+    y="-log10(FDR)",
+    title = "fibs"
+  ) + 
+  xlim(-0.39,1.48) + 
+  ylim (-0.1,40)
+dev.off()
+```
+
+##Y Chr volcano plots
+```{r}
+##DO THE Y genes
+myGenes_y <- c("KDM5D")
+
+pdf(file="volcano_lcl_Ychrom.pdf", width=2.25, height=1.75)
+ggplot() +
+    geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+    geom_vline(xintercept=1, size=0.25, lty=2, col="#00000040") +
+      geom_hline(yintercept=(-log10(0.05)), size=0.25, lty=2, col="#00000040") +
+    geom_point(data=lcl_res_NPY_PAR[lcl_res_NPY_PAR$Gene %in% Y_genes_all,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col=myPurple) +
+  geom_point(data=lcl_res_NPY_PAR[lcl_res_NPY_PAR$Gene %in% PAR_genes_all,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col=myGreen_95) +
+  geom_point(data=lcl_res_NPY_PAR[lcl_res_NPY_PAR$Gene %in% myGenes_y,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col="black") +
+  geom_text_repel(data = lcl_res_NPY_PAR[lcl_res_NPY_PAR$Gene %in% myGenes_y,], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col="black", size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = lcl_res_NPY_PAR[(! lcl_res_NPY_PAR$Gene %in% myGenes_y) & (lcl_res_NPY_PAR$Gene %in% PAR_genes_all) & (lcl_res_NPY_PAR$y_adj_pval < 0.05),], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col=myGreen_95, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = lcl_res_NPY_PAR[(! lcl_res_NPY_PAR$Gene %in% myGenes_y) & lcl_res_NPY_PAR$Gene %in% Y_genes_all,], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col=myPurple, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+  labs(
+    y="-log10(FDR)",
+    title = "LCLs"
+  ) + xlim(-0.1,2) + ylim(0,30)
+dev.off()
+
+#Fibroblasts
+  
+pdf(file="volcano_fib_Ychrom.pdf", width=2.25, height=1.75)
+#try plotting from fibs
+ggplot() +
+    geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+    geom_vline(xintercept=1, size=0.25, lty=2, col="#00000040") +
+      geom_hline(yintercept=(-log10(0.05)), size=0.25, lty=2, col="#00000040") +
+    geom_point(data=fib_res_NPY_PAR[fib_res_NPY_PAR$Gene %in% Y_genes_all,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col=myPurple) +
+  geom_point(data=fib_res_NPY_PAR[fib_res_NPY_PAR$Gene %in% PAR_genes_all,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col=myGreen_95) +
+  geom_point(data=fib_res_NPY_PAR[fib_res_NPY_PAR$Gene %in% myGenes_y,], aes(x = deltaEy, y = -log10(y_adj_pval)),stroke=0, col="black") +
+  geom_text_repel(data = fib_res_NPY_PAR[fib_res_NPY_PAR$Gene %in% myGenes_y,], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col="black", size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = fib_res_NPY_PAR[(! fib_res_NPY_PAR$Gene %in% myGenes_y) & (fib_res_NPY_PAR$Gene %in% PAR_genes_all) & (fib_res_NPY_PAR$y_adj_pval < 0.05),], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col=myGreen_95, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  geom_text_repel(data = fib_res_NPY_PAR[(! fib_res_NPY_PAR$Gene %in% myGenes_y) & fib_res_NPY_PAR$Gene %in% Y_genes_all,], mapping = aes(x=deltaEy, y=-log10(y_adj_pval),label=Gene),col=myPurple, size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.1 ) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+  labs(
+    y="-log10(FDR)",
+    title = "fibs"
+  ) + xlim(-0.1,2)
+dev.off()
+```
+##Chr 21 volcano plot
+```{r}
+myGenes <- c("CCT8")
+
+pdf(file="volcano_lcl_chr21.pdf", width=1.5, height=1.75)
+#try plotting from chr21s
+ggplot(chr21_res, aes(x = deltaEchr21, y = -log10(chr21_adj_pval))) +
+  geom_point(col = chr21Col,stroke=0) +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") + 
+    geom_vline(xintercept=1, size=0.25, lty=2, col="#00000040") + 
+      geom_hline(yintercept=(-log10(0.05)), size=0.25, lty=2, col="#00000040") + 
+  geom_text_repel(data = chr21_res[chr21_res$Gene %in% myGenes,], mapping = aes(x=deltaEchr21, y=-log10(chr21_adj_pval), label=Gene),col="black",  size=1.75, segment.size = 0.25, min.segment.length = 0, show.legend = FALSE,force = 0.5
+  ) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) +
+  labs(
+    y="-log10(FDR)",
+    title = "LCLs"
+  ) + xlim(-0.6,3.5) + ylim(0,8)
+dev.off()
+```
+
+##All deltaE violin plots
+```{r}
+mylist_fib_lcl <- list("L_NPX_noy_x" = data.frame("deltaEx" = lcl_res_NPX[lcl_res_NPX$Human_NPY == FALSE,"deltaEx"]), "F_NPX_noy_x" = data.frame("deltaEx" = fib_res_NPX[fib_res_NPX$Human_NPY == FALSE,"deltaEx"]),
+                       "L_NPX_NPY_x" = data.frame("deltaEx" = lcl_res_NPX[lcl_res_NPX$Human_NPY == TRUE,"deltaEx"]), "F_NPX_NPY_x" = data.frame("deltaEx" = fib_res_NPX[fib_res_NPX$Human_NPY == TRUE,"deltaEx"]),
+                       "L_NPY_y"=data.frame("deltaEy" = lcl_res_NPY$deltaEy),"F_NPY_y"=data.frame("deltaEy" = fib_res_NPY$deltaEy),"L_PAR1_x"= data.frame("deltaEx"=lcl_res_PAR1$deltaEx), "F_PAR1_x"= data.frame("deltaEx"=fib_res_PAR1$deltaEx), "L_PAR1_y"=data.frame("deltaEy"=lcl_res_PAR1$deltaEy), "F_PAR1_y"=data.frame("deltaEy"=fib_res_PAR1$deltaEy), "Chr21_x" = chr21_res$deltaEchr21)
+
+myList_fib_lcl_melt <- melt(mylist_fib_lcl)
+myList_fib_lcl_melt$L1 <- factor(x=myList_fib_lcl_melt$L1, levels = c("L_NPX_noy_x","F_NPX_noy_x","L_NPX_NPY_x","F_NPX_NPY_x","L_PAR1_x","F_PAR1_x","L_PAR1_y","F_PAR1_y","L_NPY_y","F_NPY_y","Chr21_x"))
+
+pdf(file="allCat_vioplots_lcl_fib.pdf", height=1.75, width=3.3)
+ggplot(data=myList_fib_lcl_melt, mapping = aes(x=L1, y=value, fill=L1)) + 
+ geom_hline(yintercept = 0, size=0.25, lty=2, col="#00000040") + 
+   geom_hline(yintercept = 1, size=0.25, lty=2, col="#00000040") + 
+  # geom_jitter(width=0.2,stroke=0, color="#00000080") +
+   geom_violin(col="#00000000",scale = "width",) +
+   stat_summary(fun.data=data_summary, size=0.25) +
+    scale_fill_manual(values = c(myOrange,myOrange,myOrange,myOrange,myGreen_95,myGreen_95,myGreen_95,myGreen_95, myPurple,myPurple,chr21Col)) +
+ylim(-0.5,3) +
+theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.text.x = element_text(hjust = 0.5),
+      legend.position = "none",
+      ) +
+  labs(
+    title="LCLs and Fibs",
+    y="deltaE"
+  ) 
+dev.off()
+
+wilcox.test(x=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "L_NPX_noy_x","value"], y=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "L_NPX_NPY_x","value"])
+wilcox.test(x=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "F_NPX_noy_x","value"], y=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "F_NPX_NPY_x","value"])
+
+t.test(x=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "L_PAR1_x","value"], y=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "L_PAR1_y","value"], paired = TRUE)
+t.test(x=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "F_PAR1_x","value"], y=myList_fib_lcl_melt[myList_fib_lcl_melt$L1 == "F_PAR1_y","value"], paired = TRUE)
+```
+
+##Comparing LCL vs Fib deltaEx
+```{r}
+myGenes <- c("PRPS2","KDM5C","XIST","F8")
+
+#lcl_fib overlap genes
+lcl_fib_overlap <- intersect(lcl_res_edit$Gene, fib_res_edit$Gene)
+lcl_res_overlap <- lcl_res[lcl_res$Gene %in% lcl_fib_overlap,c("deltaEx","Gene")]
+fib_res_overlap <- fib_res[fib_res$Gene %in% lcl_fib_overlap,c("deltaEx","Gene")]
+lcl_fib_merge <- merge(x=lcl_res_overlap, y=fib_res_overlap, by="Gene")
+colnames(lcl_fib_merge) <- c("Gene","LCL_deltaEx","Fib_deltaEx")
+lcl_fib_merge <- merge(x=lcl_fib_merge, y=XY_pair_anno[,c("Gene","Human_NPY")], all.x = TRUE, by="Gene")
+
+
+#use deming regression, which models error in both X and Y 
+my.deming <- deming(formula = lcl_fib_merge$Fib_deltaEx ~ lcl_fib_merge$LCL_deltaEx)
+deming.coeff <- my.deming$coefficients[2]
+deming.int <- my.deming$coefficients[1]
+
+#deming doesn't calculate correlation, use pearson
+pearson <- cor.test(x = lcl_fib_merge$LCL_deltaEx, y=lcl_fib_merge$Fib_deltaEx, method = "pearson")
+
+#plot all X genes (NPX )
+pdf(file="LCL_fib_deltaEx_corrPlot_NPX.pdf", height=1.75, width=1.75)
+ggplot() +
+  geom_vline(xintercept = 0, lty=3, size=0.25, color="#00000040") +
+  geom_hline(yintercept = 0, lty=3, size=0.25,color="#00000040") +
+  geom_point(data=lcl_fib_merge[!lcl_fib_merge$Gene %in% PAR_genes_all & lcl_fib_merge$Human_NPY == FALSE,], aes(x = LCL_deltaEx, y = Fib_deltaEx),stroke=0, col=myOrange_80, size=1.5) +
+    geom_point(data=lcl_fib_merge[!lcl_fib_merge$Gene %in% PAR_genes_all & lcl_fib_merge$Human_NPY == TRUE,], aes(x = LCL_deltaEx, y = Fib_deltaEx),pch=21,stroke=0.75, col="black", fill=myOrange_80, size=1.5) +
+  geom_point(data=lcl_fib_merge[lcl_fib_merge$Gene %in% PAR_genes_all,], aes(x = LCL_deltaEx, y = Fib_deltaEx),stroke=0, col=myGreen_95, size=1.5) +
+  geom_abline(slope = deming.coeff, intercept = deming.int, color="black", lty=2, size=0.25) +
+geom_text_repel( data = lcl_fib_merge[lcl_fib_merge$Gene %in% myGenes,], aes(x=LCL_deltaEx, y=Fib_deltaEx, label=lcl_fib_merge[lcl_fib_merge$Gene %in% myGenes,"Gene"]), size=1.75, segment.size = 0.25, min.segment.length = 0.1, force=0.5, col=myOrange_80) +
+  xlim(-0.5,1.5) +
+  ylim(-0.5,1.5) +
+  annotate(
+      geom = "text", 
+      x = -0.5, 
+      y = 1.5,
+      label = paste0("r=",formatC(x = pearson$estimate, digits = 2),"\nP=",formatC(x=pearson$p.value, digits = 2, format = "e") ),
+      hjust = 0, 
+      vjust = 1,
+      size=2
+      ) +
+  labs(title="deltaEx")+
+theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25)) 
+dev.off()
+```
+
+# Figure S3, linear regression analysis in males or females only
+```{r}
+#read in regression results
+lcl_male_res <- read.delim(file="LCLs/Single_sex_regressions/lcl_regression_results_npx_par_MALE.txt")
+lcl_female_res <- read.delim(file="LCLs/Single_sex_regressions/lcl_regression_results_npx_par_FEMALE.txt")
+
+fib_male_res <- read.delim(file="Fibroblasts/Single_sex_regressions/fib_regression_results_npx_par_MALE.txt")
+fib_female_res <- read.delim(file="Fibroblasts/Single_sex_regressions/fib_regression_results_npx_par_FEMALE.txt")
+
+#plot LCL all samples vs female only (45,X; 46,XX; 47,XXX; 48,XXXX) regression
+#merge
+lcl_all_res_F_res <- merge(x=lcl_res,y=lcl_female_res, by.x="Gene",by.y="gene_name.104",all=TRUE)
+#remove outlier: MAP7D2
+lcl_all_res_F_res <- lcl_all_res_F_res[!lcl_all_res_F_res$Gene == "MAP7D2",]
+my.deming <- deming(formula = deltaEx.y~deltaEx.x, data= lcl_all_res_F_res)
+my.cor <- cor.test(x = lcl_all_res_F_res$deltaEx.y, y=lcl_all_res_F_res$deltaEx.x, method="pearson")
+pdf(file="lcl_x_res_all_vs_F_only.pdf", width=2, height=2)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_abline(slope=my.deming$coefficients[2], intercept = my.deming$coefficients[1], size=0.25) +
+  geom_point(data=lcl_all_res_F_res, aes(x = deltaEx.x, y = deltaEx.y), stroke=0, col="#00000060") +
+  geom_text(aes(x=1.5, y=-0.5, label=paste0("P = ",formatC(x=my.cor$p.value,digits=3),"\nr =",formatC(x=my.cor$estimate,digits=2))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) + xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+  labs(x="deltaEx all samples", y="deltaEx female samples")
+dev.off()
+
+
+#plot LCL all samples vs male only (46,XY; 47,XXY; 48,XXXY, 49,XXXXY)
+lcl_all_res_M_res <- merge(x=lcl_res,y=lcl_male_res, by.x="Gene",by.y="gene_name.104",all=TRUE)
+#remove outlier: MAP7D2
+# lcl_all_res_M_res <- lcl_all_res_F_res[!lcl_all_res_F_res$Gene == "MAP7D2",]
+my.deming <- deming(formula = deltaEx.y~deltaEx.x, data= lcl_all_res_M_res)
+my.cor <- cor.test(x = lcl_all_res_M_res$deltaEx.y, y=lcl_all_res_M_res$deltaEx.x, method="pearson")
+pdf(file="lcl_x_res_all_vs_M_only.pdf", width=2, height=2)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_abline(slope=my.deming$coefficients[2], intercept = my.deming$coefficients[1], size=0.25) +
+  geom_point(data=lcl_all_res_M_res, aes(x = deltaEx.x, y = deltaEx.y), stroke=0, col="#00000060") +
+  geom_text(aes(x=1.5, y=-0.5, label=paste0("P = ",formatC(x=my.cor$p.value,digits=3),"\nr =",formatC(x=my.cor$estimate,digits=2))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) + xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+  labs(x="deltaEx all samples", y="deltaEx male samples")
+dev.off()
+
+#plot fib all X vs female only
+#merge
+fib_all_res_F_res <- merge(x=fib_res,y=fib_female_res, by.x="Gene",by.y="gene_name.104",all=TRUE)
+fib_all_res_F_res <- fib_all_res_F_res[!fib_all_res_F_res$Gene %in% c("IL13RA2","BEX1"),]
+my.deming <- deming(formula = deltaEx.y~deltaEx.x, data= fib_all_res_F_res)
+my.cor <- cor.test(x = fib_all_res_F_res$deltaEx.y, y=fib_all_res_F_res$deltaEx.x, method="pearson")
+pdf(file="fib_x_res_all_vs_F_only.pdf", width=2, height=2)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_abline(slope=my.deming$coefficients[2], intercept = my.deming$coefficients[1], size=0.25) +
+  geom_point(data=fib_all_res_F_res, aes(x = deltaEx.x, y = deltaEx.y), stroke=0, col="#00000060") +
+geom_text(aes(x=1.5, y=-0.5, label=paste0("P = ",formatC(x=my.cor$p.value,digits=3),"\nr =",formatC(x=my.cor$estimate,digits=2))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) + 
+xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+  labs(x="deltaEx all samples", y="deltaEx female samples")
+dev.off()
+
+
+#plot fib all X vs male only
+fib_all_res_M_res <- merge(x=fib_res,y=fib_male_res, by.x="Gene",by.y="gene_name.104",all=TRUE)
+#remove outliers
+fib_all_res_M_res <- fib_all_res_M_res[!fib_all_res_M_res$Gene %in% c("BEX1","FHL1"),]
+my.deming <- deming(formula = deltaEx.y~deltaEx.x, data= fib_all_res_M_res)
+my.cor <- cor.test(x = fib_all_res_M_res$deltaEx.y, y=fib_all_res_M_res$deltaEx.x, method="pearson")
+pdf(file="fib_x_res_all_vs_M_only.pdf", width=2, height=2)
+ggplot() +
+  geom_vline(xintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_hline(yintercept=0, size=0.25, lty=2, col="#00000040") +
+  geom_abline(slope=my.deming$coefficients[2], intercept = my.deming$coefficients[1], size=0.25) +
+  geom_point(data=fib_all_res_M_res, aes(x = deltaEx.x, y = deltaEx.y), stroke=0, col="#00000060") +
+geom_text(aes(x=1.5, y=-0.5, label=paste0("P = ",formatC(x=my.cor$p.value,digits=3),"\nr =",formatC(x=my.cor$estimate,digits=2))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position = "none"
+      ) + 
+  xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+  labs(x="deltaEx all samples", y="deltaEx male samples")
+dev.off()
+```
