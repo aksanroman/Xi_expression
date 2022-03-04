@@ -35,7 +35,7 @@ data.lcl.y <- data.lcl.y[meta.lcl.y$sample]
 # note: geneAnno and gene sets loaded through asr_funcs_lite.R
 
 #bring in Balaton consensus XCI annotations
-balaton_XCI_anno <- read.delim(file=paste0(myPath,"Linear_regressions/Balaton_annotations.txt"), stringsAsFactors = FALSE)
+balaton_XCI_anno <- read.delim(file=paste0(myPath,"Annotations/Balaton_annotations.txt"), stringsAsFactors = FALSE)
 ```
 
 #NPX gene Modeling function
