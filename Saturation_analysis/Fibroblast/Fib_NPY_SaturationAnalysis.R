@@ -13,7 +13,7 @@ myPath <- #PATH TO GITHUB FILES
 suppressPackageStartupMessages(library("limma"))
 
 #read in the metadata table
-metadata <-read.delim(paste0(myPath,"/Linear_regressions/metadata_20211006.txt"), stringsAsFactors = FALSE)
+metadata <-read.delim(paste0(myPath,"/Linear_regressions/metadata.txt"), stringsAsFactors = FALSE)
 rownames(metadata) <- metadata$sample
 #subtract 1 from X count to model number of additional X chromosomes
 metadata$x_count <- metadata$x_count - 1

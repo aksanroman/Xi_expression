@@ -16,7 +16,7 @@ PAR2_genes <- c("VAMP7","WASH6P","IL9R","SPRY3")
 XY_pairs <- c("PRKX","NLGN4X","TBL1X","AMELX","TMSB4X","TXLNG","EIF1AX","ZFX","USP9X","DDX3X","KDM6A","TSPYL2","KDM5C","RPS4X","RBMX","SOX3","HSFX1")
 
 #read in the metadata table
-metadata <-read.delim(paste0(myPath,"/Linear_regressions/metadata_20211006.txt"), stringsAsFactors = FALSE)
+metadata <-read.delim(paste0(myPath,"/Linear_regressions/metadata.txt"), stringsAsFactors = FALSE)
 rownames(metadata) <- metadata$sample
 #subtract 1 from X count to model number of additional X chromosomes
 metadata$x_count <- metadata$x_count - 1
