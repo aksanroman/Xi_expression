@@ -5,7 +5,7 @@ output: html_notebook
 
 ## Setup
 ```{r}
-myPath <- "/lab/solexa_page/adrianna/U01_RNAseq/2021_August_Analysis/Paper1_Github/" #ADD PATH TO GITHUB FOLDER
+myPath <-  #ADD PATH TO GITHUB FOLDER
 suppressPackageStartupMessages(library("limma"))
 suppressPackageStartupMessages(library("rlist"))
 suppressPackageStartupMessages(library("broom"))
