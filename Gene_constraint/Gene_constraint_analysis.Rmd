@@ -8,11 +8,7 @@ output: html_notebook
 myPath <- #ADD PATH TO GITHUB FOLDER
 library("ggplot2")
 library("ggrepel")
-# library("ggtext")
-# library("vioplot")
-# library("reshape2")
-# library("deming")
-# 
+
 data_summary <- function(x){
   m <- median(x, na.rm=TRUE)
   ymin <- quantile(x, na.rm=TRUE)[2]
@@ -44,12 +40,7 @@ XY_pair_anno <- read.delim(file=paste0(myPath,"Annotations/human_XY_pair_annotat
 
 #Colors for figures
 myOrange <- "#d95f0290"
-# myOrange_100 <- "#d95f02"
-# myOrange_80 <- "#d95f0280"
-# myPurple <- "#7570B390"
-# myGreen_95 <- "#1B9E7795"
 myGreen <- "#1B9E7790"
-# chr21Col <- "#DA70D690"
 ```
 
 #Autosomal and PAR genes: Bring in constraint metrics and calculate percentile rankings
@@ -59,18 +50,13 @@ constraint_metrics_auto_par <- constraint_metrics[! constraint_metrics$Gene %in%
 constraint_metrics_auto_only <- constraint_metrics[! constraint_metrics$Gene %in% PAR_genes_all,]
 constraint_metrics_par_only <- constraint_metrics[ constraint_metrics$Gene %in% PAR1_genes,]
 
-# test <- c(10,20,40,80,15,38,20,80,90,4)
-
 get_rank_pct <- function(x,constrained = "highest"){
-  # x<- auto_par_fullAnno_rank
   if(constrained == "highest"){
       myRank <- rank(x=x, na.last = "keep", ties.method = "average")
-      # print(myRank)
       rank_pct <- 100*( myRank / sum(! is.na(x)) )
 
   } else if(constrained == "lowest"){
     myRank <- rank(x=-x, na.last = "keep", ties.method = "average")
-      # print(myRank)
       rank_pct <- 100*( myRank / sum(! is.na(x)) )
   }
   return(rank_pct)
@@ -178,6 +164,7 @@ NPX_fullAnno_final <- merge(x=NPX_fullAnno_4, y=constraint_metrics, by.x = "Gene
 #For LOEUF, need to set anything with <10 observations as "NA"
 NPX_fullAnno_ranks <- NPX_fullAnno_final
 NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$exp_lof) & (NPX_fullAnno_ranks$exp_lof < 10), "LOEUF"] <- NA
+
 #for the following, lower values = more constrained
 NPX_fullAnno_ranks$LOEUF_rank <- get_rank_pct(NPX_fullAnno_ranks$LOEUF, constrained = "lowest")
 NPX_fullAnno_ranks$RVIS_rank <- get_rank_pct(NPX_fullAnno_ranks$RVIS, constrained = "lowest")
