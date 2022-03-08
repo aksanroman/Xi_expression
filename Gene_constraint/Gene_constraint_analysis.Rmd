@@ -1,0 +1,274 @@
+---
+title: "Gene constraint analysis"
+output: html_notebook
+---
+
+#Setup
+```{r}
+myPath <- #ADD PATH TO GITHUB FOLDER
+library("ggplot2")
+library("ggrepel")
+# library("ggtext")
+# library("vioplot")
+# library("reshape2")
+# library("deming")
+# 
+data_summary <- function(x){
+  m <- median(x, na.rm=TRUE)
+  ymin <- quantile(x, na.rm=TRUE)[2]
+  ymax <- quantile(x, na.rm=TRUE)[4]
+  test <- c("y"=m,"ymin"=ymin,"ymax"=ymax)
+  names(test) <- c("y","ymin","ymax")
+  return(test)
+}
+```
+
+# Bring in annotations
+```{r}
+geneAnno <- read.delim(file=paste0(myPath,"Annotations/geneAnno_proteinCoding_all_20210503.txt"), stringsAsFactors = FALSE)
+colnames(geneAnno)[9] <- "Gene"
+geneAnno_x <- geneAnno[geneAnno$chr == "chrX",]
+geneAnno_y <- geneAnno[geneAnno$chr == "chrY",]
+X_genes_all <-as.character(geneAnno_x$Gene)
+Y_genes_all <-as.character(geneAnno_y$Gene)
+sexChrom_genes <- c(X_genes_all,Y_genes_all)
+PAR1_genes <- geneAnno_x[geneAnno_x$start < 2691188,]$Gene
+PAR2_genes <- c("SPRY3","VAMP7","IL9R","WASH6P")
+PAR_genes_all <- c(PAR1_genes,PAR2_genes)
+NPX_genes <- X_genes_all[! X_genes_all %in% PAR_genes_all]
+NPY_genes <- Y_genes_all[! Y_genes_all %in% PAR_genes_all]
+autosome_genes <- geneAnno[! geneAnno$chr %in% c("chrX","chrY"),"Gene"]
+
+# NPX-NPY pair annotations
+XY_pair_anno <- read.delim(file=paste0(myPath,"Annotations/human_XY_pair_annotations.txt"), stringsAsFactors = FALSE)
+
+#Colors for figures
+myOrange <- "#d95f0290"
+# myOrange_100 <- "#d95f02"
+# myOrange_80 <- "#d95f0280"
+# myPurple <- "#7570B390"
+# myGreen_95 <- "#1B9E7795"
+myGreen <- "#1B9E7790"
+# chr21Col <- "#DA70D690"
+```
+
+#Autosomal and PAR genes: Bring in constraint metrics and calculate percentile rankings
+```{r}
+constraint_metrics <- read.delim(file=paste0(myPath,"Gene_constraint/gene_constraint_metrics.txt"), stringsAsFactors = FALSE)
+constraint_metrics_auto_par <- constraint_metrics[! constraint_metrics$Gene %in% c(NPX_genes,NPY_genes),]
+constraint_metrics_auto_only <- constraint_metrics[! constraint_metrics$Gene %in% PAR_genes_all,]
+constraint_metrics_par_only <- constraint_metrics[ constraint_metrics$Gene %in% PAR1_genes,]
+
+# test <- c(10,20,40,80,15,38,20,80,90,4)
+
+get_rank_pct <- function(x,constrained = "highest"){
+  # x<- auto_par_fullAnno_rank
+  if(constrained == "highest"){
+      myRank <- rank(x=x, na.last = "keep", ties.method = "average")
+      # print(myRank)
+      rank_pct <- 100*( myRank / sum(! is.na(x)) )
+
+  } else if(constrained == "lowest"){
+    myRank <- rank(x=-x, na.last = "keep", ties.method = "average")
+      # print(myRank)
+      rank_pct <- 100*( myRank / sum(! is.na(x)) )
+  }
+  return(rank_pct)
+}
+
+#For LOEUF, need to set anything with <10 observations as "NA"
+constraint_metrics_auto_par_ranks <- constraint_metrics_auto_par
+constraint_metrics_auto_par_ranks[! is.na(constraint_metrics_auto_par_ranks$exp_lof) & (constraint_metrics_auto_par_ranks$exp_lof < 10), "LOEUF"] <- NA
+
+#for the following, lower values = more constrained
+constraint_metrics_auto_par_ranks$LOEUF_rank <- get_rank_pct(constraint_metrics_auto_par_ranks$LOEUF, constrained = "lowest")
+constraint_metrics_auto_par_ranks$RVIS_rank <- get_rank_pct(constraint_metrics_auto_par_ranks$RVIS, constrained = "lowest")
+
+#for the following, higher values = more constrained
+constraint_metrics_auto_par_ranks$pHI_rank <- get_rank_pct(constraint_metrics_auto_par_ranks$Huang_pHI, constrained = "highest")
+constraint_metrics_auto_par_ranks$Pct_rank <- get_rank_pct(constraint_metrics_auto_par_ranks$Gene_Avg_PCT, constrained = "highest")
+
+myFun <- function(x){
+  result <- mean(x = x, na.rm=TRUE)
+  return(result)
+}
+constraint_metrics_auto_par_ranks$avg_4 <- apply(X= constraint_metrics_auto_par_ranks[,c("LOEUF_rank", "pHI_rank", "RVIS_rank", "Pct_rank")], MARGIN = 1, FUN = myFun)
+
+# write.table(x=constraint_metrics_auto_par_ranks, file="Gene_constraint_auto_PAR_ranks.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names=TRUE)
+
+#get list for autosomal genes (noPAR)
+auto_fullAnno_ranks <- constraint_metrics_auto_par_ranks[!constraint_metrics_auto_par_ranks$Gene %in% c(PAR_genes_all),c("Gene","LOEUF_rank", "pHI_rank", "RVIS_rank", "Pct_rank","avg_4")]
+
+#make a violin plot for PAR genes
+#individual plots for each 
+par_fullAnno_ranks <- constraint_metrics_auto_par_ranks[constraint_metrics_auto_par_ranks$Gene %in% PAR1_genes,c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_4")]
+write.table(x=par_fullAnno_ranks, file="par_constraint_ranks.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names = FALSE)
+#get number of observations for each column
+mySum <- function(x) {
+  theSum <- sum(! is.na(x))
+  return(theSum)
+}
+per_col <- apply(X=par_fullAnno_ranks, MARGIN = 2, FUN = mySum)[2:8]
+
+par_plot <- rbind(data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$LOEUF_rank,"cat" = rep("LOEUF")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$pHI_rank,"cat" = rep("pHI")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$RVIS_rank,"cat" = rep("RVIS")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$Pct_rank,"cat" = rep("Pct")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$avg_4,"cat" = rep("avg_4")))
+
+par_plot$cat <- factor(x=par_plot$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_4"))
+
+pdf(file="par_ranks_plot.pdf", width=3, height=2)
+ggplot(data=par_plot, mapping = aes(x=cat, y=value)) + 
+  geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+    geom_violin(fill=myGreen,color="#00000000", scale="width") + 
+    stat_summary(fun.data=data_summary, size=0.25) +
+  geom_jitter(color="#00000090", position=position_jitter(0.2), size=1, stroke=0) +
+    # geom_point(color="#00000090", size=1, stroke=0) +
+  geom_text_repel(data = par_plot[par_plot$value > 50 , ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+  geom_text_repel(data = par_plot[par_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_4", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+  scale_x_discrete(limits=c("LOEUF","RVIS","pHI", "Pct","avg_4")) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  labs(
+    y = "Percentile ranking"
+  )  + ylim(0,100)
+
+dev.off()
+
+#Get stats for average constraint
+wilcox.test(x=par_fullAnno_ranks$avg_4, y=auto_fullAnno_ranks$avg_4)
+```
+
+#NPX genes constraint metrics
+```{r}
+#Bring in X annotations
+chrX_annotations <- read.delim(file=paste0(myPath,"Annotations/chrX_annotations.txt"), stringsAsFactors = FALSE)
+
+#Select NPX genes that are not ampliconic because they can't be properly estimated
+NPX_annotation <- chrX_annotations[! chrX_annotations$x_class %in% c("Ampliconic","PAR"),]
+
+#bring in deltaEx data
+lcl_res_dEx <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/lcl_regression_results_npx_par.txt"), stringsAsFactors = FALSE)[,c("gene_name.104","deltaEx", "x_adj_pval")]
+colnames(lcl_res_dEx) <- c("gene","LCL_deltaEx","LCL_x_adj_pval")
+
+fib_res_dEx <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/fib_regression_results_npx_par.txt"), stringsAsFactors = FALSE)[,c("gene_name.104","deltaEx", "x_adj_pval")]
+colnames(fib_res_dEx) <- c("gene","fib_deltaEx","fib_x_adj_pval")
+fib_res_dEx <- fib_res_dEx[fib_res_dEx$fib_deltaEx < 3,]
+
+#bring in AR data
+lcl_AR <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_adj_skewed_Plot_mean.txt"))[,c("AR_adj_mean_lcl","AR_pval_adj_lcl")]
+fib_AR <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_adj_skewed_Plot_mean.txt"))[,c("AR_adj_mean_fib","AR_pval_adj_fib")]
+
+NPX_fullAnno_1 <- merge(x=NPX_annotation, y=lcl_res_dEx, by.x = "Gene", by.y = "gene", all.x=TRUE)
+NPX_fullAnno_2 <- merge(x=NPX_fullAnno_1, y=fib_res_dEx, by.x = "Gene", by.y = "gene", all.x=TRUE)
+NPX_fullAnno_3 <- merge(x=NPX_fullAnno_2, y=lcl_AR, by.x = "Gene", by.y = 0, all.x=TRUE)
+NPX_fullAnno_4 <- merge(x=NPX_fullAnno_3, y=fib_AR, by.x = "Gene", by.y = 0, all.x=TRUE)
+NPX_fullAnno_final <- merge(x=NPX_fullAnno_4, y=constraint_metrics, by.x = "Gene", by.y = "Gene", all.x=TRUE)
+
+
+#For LOEUF, need to set anything with <10 observations as "NA"
+NPX_fullAnno_ranks <- NPX_fullAnno_final
+NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$exp_lof) & (NPX_fullAnno_ranks$exp_lof < 10), "LOEUF"] <- NA
+#for the following, lower values = more constrained
+NPX_fullAnno_ranks$LOEUF_rank <- get_rank_pct(NPX_fullAnno_ranks$LOEUF, constrained = "lowest")
+NPX_fullAnno_ranks$RVIS_rank <- get_rank_pct(NPX_fullAnno_ranks$RVIS, constrained = "lowest")
+
+#for the following, higher values = more constrained
+NPX_fullAnno_ranks$pHI_rank <- get_rank_pct(NPX_fullAnno_ranks$Huang_pHI, constrained = "highest")
+NPX_fullAnno_ranks$Pct_rank <- get_rank_pct(NPX_fullAnno_ranks$Gene_Avg_PCT, constrained = "highest")
+
+myFun <- function(x){
+  result <- mean(x = x, na.rm=TRUE)
+  return(result)
+}
+NPX_fullAnno_ranks$avg_4 <- apply(X= NPX_fullAnno_ranks[,c("LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank"  )], MARGIN = 1, FUN = myFun)
+
+#only include genes if they have at least 2 metrics
+NPX_fullAnno_ranks$num.Metrics <- 4 - rowSums(is.na(NPX_fullAnno_ranks[,c("LOEUF_rank", "pHI_rank", "Pct_rank", "RVIS_rank")]))
+
+NPX_fullAnno_ranks <- NPX_fullAnno_ranks[NPX_fullAnno_ranks$num.Metrics > 1,]
+# write.table(x=NPX_fullAnno_ranks, file="NPX_noAmpliconic_ranks_atLeast2metrics.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names=TRUE)
+
+NPX_fullAnno_ranks$avg_4 <- apply(X= NPX_fullAnno_ranks[,c("LOEUF_rank", "RVIS_rank", "Pct_rank", "pHI_rank")], MARGIN = 1, FUN = myFun)
+
+
+#make a violin plot for sigGenes genes
+#individual plots for each 
+lcl_sig_ranks <- NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & NPX_fullAnno_ranks$LCL_x_adj_pval < 0.05,c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_4")]
+fib_sig_ranks <- NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$fib_x_adj_pval) & NPX_fullAnno_ranks$fib_x_adj_pval < 0.05,c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_4")]
+
+#get number of observations for each column
+mySum <- function(x) {
+  theSum <- sum(! is.na(x))
+  return(theSum)
+}
+per_col <- apply(X=lcl_sig_ranks, MARGIN = 2, FUN = mySum)[2:8]
+
+#Scatterplots
+pdf(file="NPX_ranking_lcl.pdf", width=3.6, height=2.25)
+ggplot() +
+  geom_hline(yintercept = 75, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +  
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & NPX_fullAnno_ranks$LCL_x_adj_pval >= 0.05,], mapping= aes(x=LCL_deltaEx, y=avg_4), col="#00000080", size=1, stroke=0) +
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & NPX_fullAnno_ranks$LCL_x_adj_pval < 0.05,],mapping =aes(x=LCL_deltaEx, y=avg_4), col=myOrange, size=1, stroke=0) +
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & NPX_fullAnno_ranks$Human_NPY == "TRUE",],mapping =aes(x=LCL_deltaEx, y=avg_4), col="black", size=0.5, stroke=0) +
+  geom_text_repel(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & NPX_fullAnno_ranks$LCL_x_adj_pval < 0.05 & abs(NPX_fullAnno_ranks$LCL_deltaEx) >= 0.1 & NPX_fullAnno_ranks$avg_4 >= 75,], mapping = aes(x=LCL_deltaEx, y=avg_4, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) +
+  labs(x="LCL deltaEx", y="Average constraint percentile ranking")
+dev.off()
+
+pdf(file="NPX_ranking_fib.pdf", width=3.6, height=2.25)
+ggplot() +
+  geom_hline(yintercept = 75, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +  
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$fib_x_adj_pval) & NPX_fullAnno_ranks$fib_x_adj_pval >= 0.05,], mapping= aes(x=fib_deltaEx, y=avg_4), col="#00000080", size=1, stroke=0) +
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$fib_x_adj_pval) & NPX_fullAnno_ranks$fib_x_adj_pval < 0.05,],mapping =aes(x=fib_deltaEx, y=avg_4), col=myOrange, size=1, stroke=0) +
+  geom_point(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$fib_x_adj_pval) & NPX_fullAnno_ranks$Human_NPY == "TRUE",],mapping =aes(x=fib_deltaEx, y=avg_4), col="black", size=0.5, stroke=0) +
+  geom_text_repel(data=NPX_fullAnno_ranks[! is.na(NPX_fullAnno_ranks$fib_x_adj_pval) & NPX_fullAnno_ranks$fib_x_adj_pval < 0.05 & abs(NPX_fullAnno_ranks$fib_deltaEx) >= 0.1 & NPX_fullAnno_ranks$avg_4 >= 75,], mapping = aes(x=fib_deltaEx, y=avg_4, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) +
+  labs(x="fib deltaEx", y="Average constraint percentile ranking")
+dev.off()
+
+
+#Tables
+#get important genes:
+#has value in LCL or fibroblast
+#Has absolute deltaEX >= 0.1 and FDR<0.05 in either LCL or fibroblast
+NPX_genes_val_LCL_fib <-  NPX_fullAnno_ranks[!(is.na(NPX_fullAnno_ranks$LCL_x_adj_pval) & is.na(NPX_fullAnno_ranks$fib_x_adj_pval)), ]
+
+impt_NPX_genes <- NPX_genes_val_LCL_fib[(((abs(NPX_genes_val_LCL_fib$LCL_deltaEx) >= 0.1) & (NPX_genes_val_LCL_fib$LCL_x_adj_pval < 0.05))  | 
+                                           ((abs(NPX_genes_val_LCL_fib$fib_deltaEx) >= 0.1) & (NPX_genes_val_LCL_fib$fib_x_adj_pval < 0.05)))
+                                        & NPX_genes_val_LCL_fib$avg_4 >= 75, ]
+
+impt_NPX_genes <- impt_NPX_genes[! is.na(impt_NPX_genes$Gene),]
+
+write.table(x=impt_NPX_genes, file="Table2_data.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=FALSE)
+```
+
