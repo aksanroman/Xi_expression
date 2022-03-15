@@ -1,0 +1,1524 @@
+---
+title: "Allele-specific expression"
+output: html_notebook
+---
+
+#Setup
+```{r}
+myPath <- #ADD PATH TO GITHUB FOLDER
+
+data_summary <- function(x){
+  m <- median(x, na.rm=TRUE)
+  ymin <- quantile(x, na.rm=TRUE)[2]
+  ymax <- quantile(x, na.rm=TRUE)[4]
+  test <- c("y"=m,"ymin"=ymin,"ymax"=ymax)
+  names(test) <- c("y","ymin","ymax")
+  return(test)
+}
+
+library(ggplot2)
+library(ggrepel)
+library(deming)
+```
+
+#WITH RAW DATA
+##Call SNPs in RNA-seq data
+```{r, eval=FALSE}
+### The following code is used to run this analysis from the raw data. 
+### All code chunks with eval=FALSE requires the raw data
+### Skip below to begin with provided processed data file.
+## You must obtain access to the raw data through dbGaP (accession # phs002481).
+
+#GENERATE VCF FILES USING SCRIPTS IN Github_folder/Allele_specific_expression/Call_SNPs/
+```
+
+##Bring in VCF files and restrict to heterozygous SNPs with adequate coverage
+```{r, eval=FALSE}
+#USING VCF FILES, RUN THIS CODE
+
+#Bring in the VCF files
+VCF_dir<- #PATH TO DIRECTORY WITH VCF FILES FOR CHR X
+
+#Get file paths and sample names
+files <- list.files(VCF_dir,full.names=TRUE)
+filenames<-list.files(VCF_dir)
+files2<-paste(files,"chrX.annotated.allsnps.ASE.output.table",sep="/") 
+files<-files2
+names(files) <- filenames
+
+#Bring in metadata, and make sure files and metadata match!
+metadata<-read.delim(file=paste0(myPath,"Linear_regressions/metadata.txt"),header=TRUE, stringsAsFactors = FALSE)
+files<-files[which(names(files)%in%metadata$sample)]
+filenames<-filenames[which(filenames%in%names(files))]
+metadata<-metadata[which(metadata$sample%in%filenames),]
+
+#only use samples with two X chromosomes!
+metadata <- metadata[(metadata$karyotype %in% c("XX","XX_t21","XXY","XXYY")),]
+#92 samples
+
+metadata_lcl <- metadata[metadata$cell_type == "LCL",] 
+metadata_fib <- metadata[metadata$cell_type == "Fib",] 
+
+#XXY and XXYY samples
+twoX_andY_samp <- metadata[metadata$karyotype %in% c("XXY","XXYY"), "sample"]
+
+#check if the files exist and compile data
+file_list<-vector("list",length(files))
+missingfiles<-vector("list",length(files))
+for(i in seq(length(files))){
+  if (file.exists(files[i])){
+    curr_dat<-read.delim(files[i])
+    if(dim(curr_dat)[1]>0){
+      curr_dat$Sample.Name<-names(files[i])
+      file_list[[i]]<-curr_dat
+    } else{
+      missingfiles[[i]]<-names(files[i])
+    }
+    
+  }else{
+    missingfiles[[i]]<-names(files[i])
+  }
+}
+unlist(missingfiles)
+
+dat<-do.call("rbind",file_list)
+
+#Restrict to the samples in my metadata list
+dat <-dat[dat$Sample.Name %in% metadata$sample,]
+# write.table(dat, file="all_SNPs.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names = TRUE)
+
+#Restrict to "informative SNPs" - must have 3 reads covering each allele and 10 total counts
+dat<-dat[which(dat$altCount>2),]
+dat<-dat[which(dat$refCount>2),]
+dat<-dat[which(dat$totalCount>9),]
+
+#After restricting to SNPs, how many samples remain in the analysis?
+length(table(dat$Sample.Name))
+
+#What is the median # of SNPs per sample?
+median(table(dat$Sample.Name)) 
+
+#How many samples have fewer than 10 heterozygous SNPs with enough coverage? 
+sum(table(dat$Sample.Name) < 10) #2 samples --> Suggests that they have identical X chromosomes. 
+few_SNPs <- names((table(dat$Sample.Name) < 10)[(table(dat$Sample.Name) < 10) == TRUE])
+#7283A_XXY
+#6382B_XXY
+#REMOVE FROM DOWNSTREAM ANALYSIS!
+
+#90 samples 
+
+dat <-dat[! dat$Sample.Name %in% few_SNPs,]
+
+dat_orig<-dat
+
+#Restrict to dbSNP variants
+dat<-dat[dat$variantID!=".",]
+
+#calculate allele frequencies - we expect that Xi is min allele and Xa is max allele (except for XIST)
+dat$minAllele<-pmin(dat$refCount,dat$altCount)
+dat$maxAllele<-pmax(dat$refCount,dat$altCount)
+dat$ref_portion<-dat$refCount/dat$totalCount
+dat$max_portion<-dat$maxAllele/dat$totalCount
+dat$AR <- dat$minAllele/dat$maxAllele
+
+#merge with metadata to get karyotype and restrict to only samples with two X chromosomes!!
+dat.annot<-merge(dat,metadata[,c("sample","karyotype","cell_type")],by.x="Sample.Name",by.y="sample")
+# write.table(dat.annot,file="chrX_dbSNPs_ASE.txt",sep="\t",quote=FALSE)
+dat.annot.order <- dat.annot[order(dat.annot$position),]
+
+#Order by position, classify as PAR or NPX genes
+dat.annot.order$position<-as.numeric(dat.annot.order$position)
+dat.annot.order$PAR<-"NA"
+dat.annot.order$PAR[which(dat.annot.order$position<2781479 |
+                            dat.annot.order$position>155701383)]<-"PAR"
+dat.annot.order$PAR[which(dat.annot.order$position>2781479 &
+                            dat.annot.order$position<155701383)]<-"nonPAR"
+
+dat.annot.order <- cbind(dat.annot.order, "stop" = dat.annot.order$position + 1)
+dat.annot.order_bed <- dat.annot.order[,c("contig","position","stop","Sample.Name","variantID",
+                                          "refAllele","altAllele" ,"refCount",      "altCount" ,
+                                          "totalCount","lowMAPQDepth","lowBaseQDepth", "rawDepth",
+                                          "otherBases","improperPairs", "minAllele","maxAllele",
+                                          "ref_portion","max_portion",
+                                          "AR","karyotype","cell_type","PAR")]
+
+write.table(x=dat.annot.order_bed, file="dat.annot.order.bed",sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE )
+
+#Merge with gene annotation to obtain SNPs in exons
+#bring in the exon list
+gencode_exons <- read.delim(file=paste0(myPath,"Allele_specific_expression/gencode_exons_chrX.txt"), header=FALSE, stringsAsFactors = FALSE)[,c(1:4)]
+colnames(gencode_exons) <- c("chr","start","stop","exon")
+transcript <- sapply(strsplit(gencode_exons$exon, "\\..*"), "[", 1)
+gencode_exons <- cbind(gencode_exons, transcript)
+
+#merge with gene annotation
+gene_transcript <- read.csv(file=paste0(myPath,"Allele_specific_expression/ensg_enst_chrX.txt"), header = TRUE, stringsAsFactors = FALSE)
+gencode_exons_anno <- merge(x = gencode_exons, y=gene_transcript, by.x = "transcript", by.y = "Transcript.stable.ID")
+gencode_exons_anno_order <- gencode_exons_anno[order(gencode_exons_anno$start),]
+rownames(gencode_exons_anno_order) <- NULL
+
+gencode_exons_anno_order_bed <- gencode_exons_anno_order[,c("chr","start","stop","Gene.name","Gene.stable.ID","transcript","exon")]
+write.table(x=gencode_exons_anno_order_bed, file = "gencode_exons_anno_order.bed", sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
+```
+
+##Intersect exon file with SNPs
+```{bash, eval=FALSE}
+#first merge the exon file
+bedtools merge -i YOUR_PATH/Allele_specific_expression/gencode_exons_anno_order.bed -c 7 -o distinct > merged_chrX_exons.bed
+
+#then intersect
+bedtools intersect -a YOUR_PATH/Allele_specific_expression/dat.annot.order.bed -b YOUR_PATH/Allele_specific_expression/merged_chrX_exons.bed -wa -loj > snps_in_exons.bed
+
+```
+
+##Finish SNP Annotation
+```{r, eval=FALSE}
+#bring in SNPs in exons
+SNPs_comp_exons <- read.delim(file=paste0(myPath,"Allele_specific_expression/snps_in_exons.bed"), stringsAsFactors = FALSE, header=FALSE)
+colnames(SNPs_comp_exons) <- c(colnames(dat.annot.order_bed),"chr_exon","start_exon","stop_exon","exon")
+
+SNPs_in_exons <- SNPs_comp_exons[SNPs_comp_exons$exon != ".",]
+transcript <- sapply(strsplit(SNPs_in_exons$exon, "\\..*"), "[", 1)
+SNPs_in_exons <- cbind(SNPs_in_exons, transcript)
+
+#merge with gene annotation
+SNPs_in_exons_anno <- merge(x = SNPs_in_exons, y=gene_transcript, by.x = "transcript", by.y = "Transcript.stable.ID")
+
+#Use only XX or XX+21 samples for PAR - can use all samples for NPX.
+SNPs_in_exons_anno_update <- SNPs_in_exons_anno[! (SNPs_in_exons_anno$Sample.Name %in% twoX_andY_samp & SNPs_in_exons_anno$PAR == "PAR") , ]
+write.table(SNPs_in_exons_anno_update,file="chrX_dbSNPs_exons_ASE.txt",sep="\t",quote=FALSE, row.names = FALSE, col.names = TRUE)
+```
+
+#Bring in expression data and get list of genes previously annotated as silenced on Xi
+```{r}
+#Genes only expressed from Xa should be mono-allelic in samples with skewed XCI. 
+#We are using a list of Xi "silenced" genes from our results in LCLs and fibs (padj > 0.5, deltaEx <0.05), and also called as silenced in Balaton 2015.
+
+#read in ChrX_anno
+chrX_annotations <- read.delim(file=paste0(myPath,"Annotations/chrX_annotations.txt"), stringsAsFactors = FALSE, header=TRUE)
+
+#bring in expression
+lcl_res <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/lcl_regression_results_npx_par.txt"), header = TRUE, stringsAsFactors = FALSE)
+
+fib_res <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/fib_regression_results_npx_par.txt"), header = TRUE, stringsAsFactors = FALSE)
+fib_res <- fib_res[!fib_res$gene == "BEX1",]
+
+
+#merge expression files #405 X genes total
+lcl_fib_res <- merge(x=lcl_res[,c("gene","deltaEx","x_adj_pval","deltaEy","y_adj_pval")], y=fib_res[,c("gene","deltaEx","x_adj_pval","deltaEy","y_adj_pval")], by="gene", all=TRUE)
+colnames(lcl_fib_res) <- c("gene","deltaEx_LCL","x_adj_pval_LCL","deltaEy_LCL","y_adj_pval_LCL","deltaEx_Fib","x_adj_pval_Fib","deltaEy_Fib","y_adj_pval_Fib")
+
+#merge with X_annotation
+lcl_fib_res_anno <- merge(x=lcl_fib_res,y=chrX_annotations, by.x="gene", by.y="gene_name.84")
+
+#Xa genes --> Balaton "S", and really not sig abs[deltaEx] < 0.05 and padj > 0.5
+#remove from list anything sig in either cell type
+notSig <- lcl_fib_res_anno[lcl_fib_res_anno$x_adj_pval_LCL > 0.05 & lcl_fib_res_anno$x_adj_pval_Fib > 0.05,]
+LCL_Xa <- notSig[! is.na(notSig$deltaEx_LCL) & notSig$Balaton.consensus.calls %in% c("S") & abs(notSig$deltaEx_LCL) < 0.05 & notSig$x_adj_pval_LCL > 0.5,] 
+#remove ATRX
+LCL_Xa <- LCL_Xa[! LCL_Xa$gene == "ATRX",] #59 genes
+LCL_Xa_genes <- LCL_Xa$Gene
+write.table(x=LCL_Xa_genes, file="Xa_lcl_genes.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
+
+Fib_Xa <- notSig[! is.na(notSig$deltaEx_Fib) & notSig$Balaton.consensus.calls %in% c("S") & abs(notSig$deltaEx_Fib) < 0.05 & notSig$x_adj_pval_Fib > 0.5,] 
+Fib_Xa <- Fib_Xa[! Fib_Xa$gene == "ATRX",] #84 genes
+Fib_Xa_genes <- Fib_Xa$Gene
+write.table(x=Fib_Xa_genes, file="Xa_fib_genes.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
+```
+
+##Annotate SNPs, plot skewing
+```{r, eval=FALSE}
+dat.annot <- SNPs_in_exons_anno_update
+
+#Add gene category to the table for observing skewing
+dat.annot$fib_gene_cat<-"other"
+dat.annot[dat.annot$Gene.name %in% Fib_Xa_genes,"fib_gene_cat"] <- "Xa"
+dat.annot$lcl_gene_cat<-"other"
+dat.annot[dat.annot$Gene.name %in% LCL_Xa_genes,"lcl_gene_cat"] <- "Xa"
+#adjust XIST AR
+dat.annot[dat.annot$Gene.name == "XIST","AR"] <- 1 - dat.annot[dat.annot$Gene.name == "XIST","AR"]
+
+# write.table(dat.annot,file="chrX_dbSNPs_exons_annotated_ASE.txt",sep="\t",quote=FALSE, row.names = FALSE, col.names = TRUE)
+
+dat.annot$lcl_gene_cat <- factor(dat.annot$lcl_gene_cat, levels=c("Xa","other"))
+dat.annot$fib_gene_cat <- factor(dat.annot$fib_gene_cat, levels=c("Xa","other"))
+
+#restrict to expressed genes for each cell type
+fib_dat.annot<-dat.annot[dat.annot$cell_type == "Fib",]
+fib_dat.annot <- fib_dat.annot[fib_dat.annot$Gene.name %in% fib_res$gene_name.104,]
+lcl_dat.annot<-dat.annot[dat.annot$cell_type == "LCL",]
+lcl_dat.annot <- lcl_dat.annot[lcl_dat.annot$Gene.name %in% lcl_res$gene_name.104,] 
+
+library(data.table)
+#get number of SNPs per sample
+lcl_dat.annot_numSNPs <- data.frame(table(lcl_dat.annot$Sample.Name))
+#Samples below 10 SNPs to exclude:
+exclude_samp <- as.character(lcl_dat.annot_numSNPs[lcl_dat.annot_numSNPs$Freq < 10, "Var1"])
+#3430_XXY
+
+lcl_dat.annot$Sample.Name <- as.character(lcl_dat.annot$Sample.Name)
+lcl_dat.annot <- lcl_dat.annot[! lcl_dat.annot$Sample.Name %in% exclude_samp,]
+
+#get medians of max proportion
+lcl_dat.annot_calc <- data.table(lcl_dat.annot, stringsAsFactors = FALSE)
+lcl_dat.annot_calc_Xa <- lcl_dat.annot_calc[lcl_dat.annot_calc$lcl_gene_cat == "Xa",]
+lcl_dat.annot_numSNPs_Xa <- data.frame(table(lcl_dat.annot_calc_Xa$Sample.Name))
+
+#remove fewXa samples
+lcl_fewXa <- c(setdiff(as.character(lcl_dat.annot_calc$Sample.Name),as.character(lcl_dat.annot_numSNPs_Xa$Var1)), as.character(lcl_dat.annot_numSNPs_Xa[lcl_dat.annot_numSNPs_Xa$Freq <= 5,"Var1"] ))
+
+lcl_dat.annot_calc <- lcl_dat.annot_calc[! lcl_dat.annot_calc$Sample.Name %in% lcl_fewXa,]
+lcl_dat.annot_calc <- lcl_dat.annot_calc[,.(median=median(max_portion)),.(Sample.Name,lcl_gene_cat)]
+lcl_dat.annot_calc_Xa <- lcl_dat.annot_calc[lcl_dat.annot_calc$lcl_gene_cat == "Xa",]
+lcl_dat.annot_calc_Xa$median <- round(x = lcl_dat.annot_calc_Xa$median, digits = 2)
+lcl_dat.annot_calc_Xa_order <- lcl_dat.annot_calc_Xa[order(lcl_dat.annot_calc_Xa$median, decreasing = TRUE),]
+lcl_dat.annot_calc_use <- lcl_dat.annot_calc_Xa_order[lcl_dat.annot_calc_Xa_order$median >= 0.8,]
+
+lcl_order <- c(lcl_fewXa, lcl_dat.annot_calc_Xa_order$Sample.Name)
+write.table(lcl_order, file="lcl_sample_order.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
+
+lcl_0.8 <- lcl_dat.annot_calc_use$Sample.Name
+
+lcl_skew <- c(lcl_fewXa, lcl_0.8)
+
+lcl_dat.annot_calc_notSkew <- lcl_dat.annot_calc_Xa_order[lcl_dat.annot_calc_Xa_order$median <= 0.75 & ! lcl_dat.annot_calc_Xa_order$Sample.Name %in% lcl_fewXa,]
+
+lcl_notSkewed <- lcl_dat.annot_calc_notSkew$Sample.Name[c(2:11)]
+
+#-------
+#get number of SNPs per sample
+fib_dat.annot_numSNPs <- data.frame(table(fib_dat.annot$Sample.Name))
+#Samples below 10 SNPs to exclude:
+exclude_samp <- as.character(fib_dat.annot_numSNPs[fib_dat.annot_numSNPs$Freq < 10, "Var1"])
+#7283C_XXY, 7410C_XXY, 7485D_XXY
+exclude_samp <- c(exclude_samp, "7504C_XXY") #7504C had 0 SNPs in Xa genes, but SNPs in other genes
+
+fib_dat.annot$Sample.Name <- as.character(fib_dat.annot$Sample.Name)
+fib_dat.annot <- fib_dat.annot[! fib_dat.annot$Sample.Name %in% exclude_samp,]
+
+#get medians of max proportion
+fib_dat.annot_calc <- data.table(fib_dat.annot, stringsAsFactors = FALSE)
+fib_dat.annot_calc_Xa <- fib_dat.annot_calc[fib_dat.annot_calc$fib_gene_cat == "Xa",]
+fib_dat.annot_numSNPs_Xa <- data.frame(table(fib_dat.annot_calc_Xa$Sample.Name))
+
+#remove fewXa samples
+fib_fewXa <- c(setdiff(as.character(fib_dat.annot_calc$Sample.Name),as.character(fib_dat.annot_numSNPs_Xa$Var1)), as.character(fib_dat.annot_numSNPs_Xa[fib_dat.annot_numSNPs_Xa$Freq <= 5,"Var1"] ))
+#remove fewXa samples
+# fib_fewXa <- c("7384C_XX",fib_fewXa)
+
+fib_dat.annot_calc <- fib_dat.annot_calc[! fib_dat.annot_calc$Sample.Name %in% fib_fewXa,]
+fib_dat.annot_calc <- fib_dat.annot_calc[,.(median=median(max_portion)),.(Sample.Name,fib_gene_cat)]
+fib_dat.annot_calc_Xa <- fib_dat.annot_calc[fib_dat.annot_calc$fib_gene_cat == "Xa",]
+fib_dat.annot_calc_Xa$median <- round(fib_dat.annot_calc_Xa$median, digits = 2)
+fib_dat.annot_calc_Xa_order <- fib_dat.annot_calc_Xa[order(fib_dat.annot_calc_Xa$median, decreasing = TRUE),]
+fib_dat.annot_calc_use <- fib_dat.annot_calc_Xa_order[round(fib_dat.annot_calc_Xa_order$median, digits = 2) >= 0.8,]
+
+
+fib_order <- c(fib_fewXa, fib_dat.annot_calc_Xa_order$Sample.Name)
+write.table(fib_order, file="fib_sample_order.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=FALSE)
+
+fib_0.8 <- fib_dat.annot_calc_use$Sample.Name
+
+fib_skew <- c(fib_fewXa, fib_0.8)
+
+
+fib_dat.annot_calc_notSkew <- fib_dat.annot_calc_Xa_order[fib_dat.annot_calc_Xa_order$median <= 0.75 & ! fib_dat.annot_calc_Xa_order$Sample.Name %in% fib_fewXa,]
+
+fib_notSkewed <- fib_dat.annot_calc_notSkew$Sample.Name[c(28:37)]
+
+#Fix the order based on the data!
+#plot without the "other" gene set
+fib_dat.annot_plot <- fib_dat.annot
+fib_dat.annot_plot$Sample.Name <- factor(fib_dat.annot_plot$Sample.Name, levels = fib_order)
+lcl_dat.annot_plot <- lcl_dat.annot
+lcl_dat.annot_plot$Sample.Name <- factor(lcl_dat.annot_plot$Sample.Name, levels = lcl_order)
+
+#plot max allele
+fib_dat.annot_plot_Xa <- fib_dat.annot_plot[fib_dat.annot_plot$fib_gene_cat == "Xa",]
+# fib_dat.annot_plot_Xa <- rbind.data.frame(fib_dat.annot_plot_Xa,c(rep(x = NA,times=4),"7384C_XX",rep(x=NA, times=14),1,rep(x=NA, times=10),"Xa",NA),c(rep(x = NA,times=4),"7384C_XX",rep(x=NA, times=14),1,rep(x=NA, times=10),"Xa",NA))
+fib_dat.annot_plot_Xa$max_portion <- as.numeric(fib_dat.annot_plot_Xa$max_portion)
+fib_dat.annot_plot_Xa <- fib_dat.annot_plot_Xa[!fib_dat.annot_plot_Xa$Sample.Name %in% fib_fewXa,]
+
+pdf("fib_chrX_skew_onePlot_.pdf", width = 7, height=2)
+ggplot(fib_dat.annot_plot_Xa,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+    # geom_jitter(color="#00000050", stroke=0, width = 0.2, size=0.5)+
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+
+#samples not in this plot #few Xa get "other" genes.
+fib_dat.annot_plot_other <- fib_dat.annot_plot[fib_dat.annot_plot$fib_gene_cat == "other",]
+fib_dat.annot_plot_other$max_portion <- as.numeric(fib_dat.annot_plot_other$max_portion)
+fib_dat.annot_plot_other <- fib_dat.annot_plot_other[fib_dat.annot_plot_other$Sample.Name %in% fib_fewXa,]
+
+
+pdf("fib_chrX_skew_onePlot_EXTREME.pdf", width = 1.75, height=2)
+ggplot(fib_dat.annot_plot_other,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+    # geom_jitter(color="#00000050", stroke=0, width = 0.2, size=0.5)+
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+
+
+lcl_dat.annot_plot_Xa <- lcl_dat.annot_plot[lcl_dat.annot_plot$lcl_gene_cat == "Xa",]
+
+lcl_dat.annot_plot_Xa$max_portion <- as.numeric(lcl_dat.annot_plot_Xa$max_portion)
+lcl_dat.annot_plot_Xa <- lcl_dat.annot_plot_Xa[!lcl_dat.annot_plot_Xa$Sample.Name %in% lcl_fewXa,]
+
+pdf("lcl_chrX_skew_onePlot.pdf", width = 7, height=2)
+ggplot(lcl_dat.annot_plot_Xa,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+    # geom_jitter(color="#00000050", stroke=0, width = 0.2, size=0.5)+
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+
+
+#samples not in this plot #few Xa get "other" genes.
+lcl_dat.annot_plot_other <- lcl_dat.annot_plot[lcl_dat.annot_plot$lcl_gene_cat == "other",]
+lcl_dat.annot_plot_other$max_portion <- as.numeric(lcl_dat.annot_plot_other$max_portion)
+lcl_dat.annot_plot_other <- lcl_dat.annot_plot_other[lcl_dat.annot_plot_other$Sample.Name %in% lcl_fewXa,]
+
+
+pdf("lcl_chrX_skew_onePlot_EXTREME.pdf", width = 5, height=2)
+ggplot(lcl_dat.annot_plot_other,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+    # geom_jitter(color="#00000050", stroke=0, width = 0.2, size=0.5)+
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+```
+
+##Re-calculate AR with skewing coefficients
+```{r, eval=FALSE}
+lcl_skewed_measurement <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_skewing_coeff.txt"), header=FALSE, stringsAsFactors = FALSE)
+colnames(lcl_skewed_measurement) <- c("sample","pct_skew", "CI")
+lcl_skewed_measurement$pct_skew <- as.numeric(lcl_skewed_measurement$pct_skew)
+fib_skewed_measurement <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_skewing_coeff.txt"), header=FALSE, stringsAsFactors = FALSE)
+colnames(fib_skewed_measurement) <- c("sample","pct_skew", "CI")
+fib_skewed_measurement$pct_skew <- as.numeric(fib_skewed_measurement$pct_skew)
+
+#restrict to the skewed samples
+lcl_dat.annot_skewed <- lcl_dat.annot[lcl_dat.annot$Sample.Name %in% c(lcl_skew),]
+lcl_dat.annot_notSkewed <- lcl_dat.annot[lcl_dat.annot$Sample.Name %in% c(lcl_notSkewed),]
+
+#adjust the AR based on the skewing
+lcl_dat.annot_skewed_adj <- lcl_dat.annot_skewed
+
+#for each row, figure out which sample, get the ratio for that sample, then do calculation:
+rownames(lcl_dat.annot_skewed_adj) <- NULL
+lcl_dat.annot_skewed_adj$AR_adj <- 0
+for(myRow in c(1:dim(lcl_dat.annot_skewed_adj)[1])){
+  # myRow <- 5
+  mySamp <- lcl_dat.annot_skewed_adj[myRow, "Sample.Name"]
+  myAR <- lcl_dat.annot_skewed_adj[myRow, "AR"]
+  mySkew <- lcl_skewed_measurement[lcl_skewed_measurement$sample == mySamp, "pct_skew"]
+  t <- 1-mySkew
+  x <- (myAR - (myAR * t) - t) / (1 - t - (myAR * t))
+  lcl_dat.annot_skewed_adj[myRow, "AR_adj"] <- x
+}
+
+#Get average AR_adj or AR per sample for skewed and not skewed data!
+#make a table with genes (rows) x columns (each samp)
+lcl_avg_AR_adj_skewed <- reshape2::dcast(data = lcl_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR_adj")
+lcl_avg_AR_adj_skewed[lcl_avg_AR_adj_skewed < 0 ] <- 0
+lcl_avg_AR_adj_skewed[lcl_avg_AR_adj_skewed == "NaN"] <- NA
+rownames(lcl_avg_AR_adj_skewed) <- lcl_avg_AR_adj_skewed$Gene.name
+lcl_avg_AR_adj_skewed <- lcl_avg_AR_adj_skewed[,-1]
+write.table(lcl_avg_AR_adj_skewed, file="lcl_avg_AR_adj_skewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+lcl_avg_AR_skewed <- reshape2::dcast(data = lcl_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+lcl_avg_AR_skewed[lcl_avg_AR_skewed < 0 ] <- 0
+lcl_avg_AR_skewed[lcl_avg_AR_skewed == "NaN"] <- NA
+rownames(lcl_avg_AR_skewed) <- lcl_avg_AR_skewed$Gene.name
+lcl_avg_AR_skewed <- lcl_avg_AR_skewed[,-1]
+write.table(lcl_avg_AR_skewed, file="lcl_avg_AR_skewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+#how many genes are informative!!!
+lcl_avg_AR_adj_skewed_nSamp <- apply(X = lcl_avg_AR_adj_skewed,MARGIN = 1, function(x) sum(! is.na(x)))
+lcl_informative_gene <- data.frame("Gene" = names(lcl_avg_AR_adj_skewed_nSamp), "N" = lcl_avg_AR_adj_skewed_nSamp, row.names = NULL)
+write.table(lcl_informative_gene, file="lcl_informative_gene.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+
+lcl_avg_AR_notSkewed <- reshape2::dcast(data = lcl_dat.annot_notSkewed,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+lcl_avg_AR_notSkewed[lcl_avg_AR_notSkewed == "NaN"] <- NA
+rownames(lcl_avg_AR_notSkewed) <- lcl_avg_AR_notSkewed$Gene.name
+lcl_avg_AR_notSkewed <- lcl_avg_AR_notSkewed[,-1]
+write.table(lcl_avg_AR_notSkewed, file="lcl_avg_AR_notSkewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+####Fibroblast
+#restrict to the skewed samples
+fib_dat.annot_skewed <- fib_dat.annot[fib_dat.annot$Sample.Name %in% c(fib_skew),]
+fib_dat.annot_notSkewed <- fib_dat.annot[fib_dat.annot$Sample.Name %in% c(fib_notSkewed),]
+
+#adjust the AR based on the skewing
+fib_dat.annot_skewed_adj <- fib_dat.annot_skewed
+
+#for each row, figure out which sample, get the ratio for that sample, then do calculation:
+rownames(fib_dat.annot_skewed_adj) <- NULL
+fib_dat.annot_skewed_adj$AR_adj <- 0
+for(myRow in c(1:dim(fib_dat.annot_skewed_adj)[1])){
+  # myRow <- 5
+  mySamp <- fib_dat.annot_skewed_adj[myRow, "Sample.Name"]
+  myAR <- fib_dat.annot_skewed_adj[myRow, "AR"]
+  mySkew <- fib_skewed_measurement[fib_skewed_measurement$sample == mySamp, "pct_skew"]
+  t <- 1-mySkew
+  x <- (myAR - (myAR * t) - t) / (1 - t - (myAR * t))
+  fib_dat.annot_skewed_adj[myRow, "AR_adj"] <- x
+}
+
+#Get average AR_adj or AR per sample for skewed and not skewed data!
+#make a table with genes (rows) x columns (each samp)
+fib_avg_AR_adj_skewed <- reshape2::dcast(data = fib_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR_adj")
+fib_avg_AR_adj_skewed[fib_avg_AR_adj_skewed < 0 ] <- 0
+fib_avg_AR_adj_skewed[fib_avg_AR_adj_skewed == "NaN"] <- NA
+rownames(fib_avg_AR_adj_skewed) <- fib_avg_AR_adj_skewed$Gene.name
+fib_avg_AR_adj_skewed <- fib_avg_AR_adj_skewed[,-1]
+write.table(fib_avg_AR_adj_skewed, file="fib_avg_AR_adj_skewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+fib_avg_AR_skewed <- reshape2::dcast(data = fib_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+fib_avg_AR_skewed[fib_avg_AR_skewed < 0 ] <- 0
+fib_avg_AR_skewed[fib_avg_AR_skewed == "NaN"] <- NA
+rownames(fib_avg_AR_skewed) <- fib_avg_AR_skewed$Gene.name
+fib_avg_AR_skewed <- fib_avg_AR_skewed[,-1]
+write.table(fib_avg_AR_skewed, file="fib_avg_AR_skewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+#how many genes are informative?
+fib_avg_AR_adj_skewed_nSamp <- apply(X = fib_avg_AR_adj_skewed,MARGIN = 1, function(x) sum(! is.na(x)))
+fib_informative_gene <- data.frame("Gene" = names(fib_avg_AR_adj_skewed_nSamp), "N" = fib_avg_AR_adj_skewed_nSamp, row.names = NULL)
+write.table(fib_informative_gene, file="fib_informative_gene.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names = TRUE)
+
+fib_avg_AR_notSkewed <- reshape2::dcast(data = fib_dat.annot_notSkewed,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+fib_avg_AR_notSkewed[fib_avg_AR_notSkewed == "NaN"] <- NA
+rownames(fib_avg_AR_notSkewed) <- fib_avg_AR_notSkewed$Gene.name
+fib_avg_AR_notSkewed <- fib_avg_AR_notSkewed[,-1]
+
+write.table(fib_avg_AR_notSkewed, file="fib_avg_AR_notSkewed.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+```
+
+#WITH PROCESSED DATA BELOW
+##Get AR stats for each informative gene across samples
+```{r}
+#START HERE WITH PRE-PROCESSED DATA!
+#Bring in pre-processed gene average AR values and number of informative samples per gene.
+lcl_informative_gene <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_informative_gene.txt"), stringsAsFactors = FALSE)
+fib_informative_gene <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_informative_gene.txt"), stringsAsFactors = FALSE)
+lcl_avg_AR_adj_skewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_adj_skewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+lcl_avg_AR_skewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_skewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+lcl_avg_AR_notSkewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_notSkewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+fib_avg_AR_adj_skewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_adj_skewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+fib_avg_AR_skewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_skewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+fib_avg_AR_notSkewed <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_notSkewed.txt"), stringsAsFactors = FALSE, check.names = FALSE)
+
+lcl_skewed_measurement <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_skewing_coeff.txt"), header=FALSE, stringsAsFactors = FALSE)
+colnames(lcl_skewed_measurement) <- c("sample","pct_skew", "CI")
+lcl_skewed_measurement$pct_skew <- as.numeric(lcl_skewed_measurement$pct_skew)
+fib_skewed_measurement <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_skewing_coeff.txt"), header=FALSE, stringsAsFactors = FALSE)
+colnames(fib_skewed_measurement) <- c("sample","pct_skew", "CI")
+fib_skewed_measurement$pct_skew <- as.numeric(fib_skewed_measurement$pct_skew)
+
+#want to order by gene location, separate PAR
+#this is all v104
+lcl_informative_gene_anno <- merge(x=lcl_informative_gene,y=lcl_fib_res_anno,by="Gene")
+fib_informative_gene_anno <- merge(x=fib_informative_gene,y=lcl_fib_res_anno,by="Gene")
+
+#Restrict to genes with observations in at least 3 samples
+restrictTo_fib <- 3 #with 3, 119 genes
+restrictTo_LCL <- 3 #with 3, 167 genes
+lcl_informative_gene_restricted <- lcl_informative_gene_anno[lcl_informative_gene_anno$N >= restrictTo_LCL,]
+fib_informative_gene_restricted <- fib_informative_gene_anno[fib_informative_gene_anno$N >= restrictTo_fib,]
+lcl_informative_gene_restricted$Gene <- as.character(lcl_informative_gene_restricted$Gene)
+fib_informative_gene_restricted$Gene <- as.character(fib_informative_gene_restricted$Gene)
+
+##remove WASH6P, ATRX, APOOL, XIST
+lcl_informative_gene_restricted <- lcl_informative_gene_restricted[! lcl_informative_gene_restricted$Gene %in% c("WASH6P","APOOL","ATRX","XIST"), ] #167 genes
+fib_informative_gene_restricted <- fib_informative_gene_restricted[! fib_informative_gene_restricted$Gene %in% c("WASH6P","APOOL","ATRX","XIST"),] #119 genes
+
+#Select genes in AR x Sample table using informative_gene_restricted
+lcl_avg_AR_adj_skewed_Plot <- as.matrix(lcl_avg_AR_adj_skewed[lcl_informative_gene_restricted$Gene,])
+#reorder columns
+lcl_skewed_measurement_order <- lcl_skewed_measurement[order(lcl_skewed_measurement$pct_skew, decreasing = TRUE),]
+lcl_avg_AR_adj_skewed_Plot <- lcl_avg_AR_adj_skewed_Plot[,lcl_skewed_measurement_order$sample]
+write.table(x=lcl_avg_AR_adj_skewed_Plot, file="lcl_avg_AR_adj_skewed_Plot.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=TRUE)
+
+fib_avg_AR_adj_skewed_Plot <- as.matrix(fib_avg_AR_adj_skewed[fib_informative_gene_restricted$Gene,])
+fib_skewed_measurement_order <- fib_skewed_measurement[order(fib_skewed_measurement$pct_skew, decreasing = TRUE),]
+fib_avg_AR_adj_skewed_Plot <- fib_avg_AR_adj_skewed_Plot[,fib_skewed_measurement_order$sample]
+write.table(x=fib_avg_AR_adj_skewed_Plot, file="fib_avg_AR_adj_skewed_Plot.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=TRUE)
+
+
+#get data for the not skewed samples
+lcl_avg_AR_notSkewed_Plot <- as.matrix(lcl_avg_AR_notSkewed[lcl_informative_gene_restricted$Gene,])
+rownames(lcl_avg_AR_notSkewed_Plot) <- lcl_informative_gene_restricted$Gene
+
+fib_avg_AR_notSkewed_Plot <- as.matrix(fib_avg_AR_notSkewed[fib_informative_gene_restricted$Gene,])
+rownames(fib_avg_AR_notSkewed_Plot) <- fib_informative_gene_restricted$Gene
+
+#Get row statistics!!
+#Get row statistics!!
+#for each row
+lcl_avg_AR_adj_skewed_Plot_mean <- data.frame("AR_adj_mean_lcl"=numeric(),"AR_ci95_low_lcl"=numeric(),"AR_ci95_hi_lcl"=numeric(), "AR_pval_lcl" = numeric())
+for(myRow in rownames(lcl_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  my_t <- t.test(x=lcl_avg_AR_adj_skewed_Plot[myRow,], alternative = "greater")
+  myRes <- c(my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  lcl_avg_AR_adj_skewed_Plot_mean[myRow,] <- myRes
+}
+lcl_avg_AR_adj_skewed_Plot_mean$AR_pval_adj_lcl <- p.adjust(p = lcl_avg_AR_adj_skewed_Plot_mean$AR_pval_lcl, method = "BH")
+lcl_avg_AR_adj_skewed_Plot_mean[lcl_avg_AR_adj_skewed_Plot_mean == "NaN"] <- NA
+lcl_avg_AR_adj_skewed_Plot_mean_order <- lcl_avg_AR_adj_skewed_Plot_mean[order(lcl_avg_AR_adj_skewed_Plot_mean$AR_adj_mean_lcl, decreasing=TRUE),]
+write.table(x=lcl_avg_AR_adj_skewed_Plot_mean, file="lcl_avg_AR_adj_skewed_Plot_mean.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+fib_avg_AR_adj_skewed_Plot_mean <- data.frame("AR_adj_mean_fib"=numeric(),"AR_ci95_low_fib"=numeric(),"AR_ci95_hi_fib"=numeric(), "AR_pval_fib" = numeric())
+for(myRow in rownames(fib_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  my_t <- t.test(x=fib_avg_AR_adj_skewed_Plot[myRow,], alternative="greater")
+  myRes <- c(my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  fib_avg_AR_adj_skewed_Plot_mean[myRow,] <- myRes
+}
+fib_avg_AR_adj_skewed_Plot_mean$AR_pval_adj_fib <- p.adjust(p = fib_avg_AR_adj_skewed_Plot_mean$AR_pval_fib, method = "BH")
+fib_avg_AR_adj_skewed_Plot_mean[fib_avg_AR_adj_skewed_Plot_mean == "NaN"] <- NA
+fib_avg_AR_adj_skewed_Plot_mean_order <- fib_avg_AR_adj_skewed_Plot_mean[order(fib_avg_AR_adj_skewed_Plot_mean$AR_adj_mean_fib, decreasing=TRUE),]
+write.table(x=fib_avg_AR_adj_skewed_Plot_mean, file="fib_avg_AR_adj_skewed_Plot_mean.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+
+#reorder by mean AR!
+lcl_avg_AR_adj_skewed_Plot <- lcl_avg_AR_adj_skewed_Plot[rownames(lcl_avg_AR_adj_skewed_Plot_mean_order),]
+
+fib_avg_AR_adj_skewed_Plot <- fib_avg_AR_adj_skewed_Plot[rownames(fib_avg_AR_adj_skewed_Plot_mean_order),]
+
+lcl_avg_AR_notSkewed_Plot <- lcl_avg_AR_notSkewed_Plot[rownames(lcl_avg_AR_adj_skewed_Plot_mean_order),]
+
+fib_avg_AR_notSkewed_Plot <- fib_avg_AR_notSkewed_Plot[rownames(fib_avg_AR_adj_skewed_Plot_mean_order),]
+
+
+#get cell lines that have incomplete skewing
+LCL_skewed_not100 <- lcl_skewed_measurement[lcl_skewed_measurement$pct_skew < 1,]
+LCL_skewed_not100$skew_comp <-  (1 - LCL_skewed_not100$pct_skew) / LCL_skewed_not100$pct_skew
+fib_skewed_not100 <- fib_skewed_measurement[fib_skewed_measurement$pct_skew < 1,]
+fib_skewed_not100$skew_comp <- (1-fib_skewed_not100$pct_skew) / fib_skewed_not100$pct_skew
+
+#get row stats for all lines
+lcl_skewed_measurement$skew_comp <- (1 - lcl_skewed_measurement$pct_skew) / lcl_skewed_measurement$pct_skew
+fib_skewed_measurement$skew_comp <- (1 - fib_skewed_measurement$pct_skew) / fib_skewed_measurement$pct_skew
+
+
+lcl_avg_AR_skewed <- lcl_avg_AR_skewed[lcl_informative_gene_restricted$Gene,]
+fib_avg_AR_skewed <- fib_avg_AR_skewed[fib_informative_gene_restricted$Gene,]
+
+lcl_avg_AR_skewed_Plot <- lcl_avg_AR_skewed[,lcl_skewed_measurement$sample]
+fib_avg_AR_skewed_Plot <- fib_avg_AR_skewed[,fib_skewed_measurement$sample]
+
+lcl_avg_AR_skewed_Plot_mean <- data.frame("AR_adj_mean_lcl"=numeric(),"AR_mean_lcl"=numeric(),"AR_ci95_low_lcl"=numeric(),"AR_pval_lcl" = numeric())
+for(myRow in rownames(lcl_avg_AR_skewed_Plot)){
+  # myRow <- "GTPBP6"
+  my_table <- na.omit(data.frame("AR" = t(lcl_avg_AR_skewed_Plot[myRow,]),"skew" = lcl_skewed_measurement$skew_comp))
+  colnames(my_table) <- c("AR","skew")
+  myAR_adj <- lcl_avg_AR_adj_skewed_Plot_mean[myRow,"AR_adj_mean_lcl"]
+  if(dim(my_table)[1] > 1){
+    my_t <- t.test(x=my_table$AR,y=my_table$skew, paired = TRUE, alternative = "greater")
+  myRes <- c(myAR_adj,my_t$estimate[1], my_t$conf.int[1],my_t$p.value)
+  lcl_avg_AR_skewed_Plot_mean[myRow,] <- myRes
+  }
+  else{
+    myRes <- c(myAR_adj,NA,NA,NA)
+    lcl_avg_AR_skewed_Plot_mean[myRow,] <- myRes
+  }
+}
+lcl_avg_AR_skewed_Plot_mean$AR_pval_adj_lcl <- p.adjust(p = lcl_avg_AR_skewed_Plot_mean$AR_pval_lcl, method = "BH")
+lcl_avg_AR_skewed_Plot_mean[lcl_avg_AR_skewed_Plot_mean == "NaN"] <- NA
+lcl_avg_AR_skewed_Plot_mean_order <- lcl_avg_AR_skewed_Plot_mean[order(lcl_avg_AR_skewed_Plot_mean$AR_mean_lcl, decreasing=TRUE),]
+write.table(x=lcl_avg_AR_skewed_Plot_mean, file="lcl_avg_AR_skewed_Plot_mean.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+lcl_avg_AR_skewed_Plot_mean_sig <- na.omit(lcl_avg_AR_skewed_Plot_mean[lcl_avg_AR_skewed_Plot_mean$AR_pval_adj_lcl < 0.05,])
+#23 with sig AR.
+
+fib_avg_AR_skewed_Plot_mean <- data.frame("AR_adj_mean_fib"=numeric(),"AR_mean_fib"=numeric(),"AR_ci95_low_fib"=numeric(),"AR_pval_fib" = numeric())
+for(myRow in rownames(fib_avg_AR_skewed_Plot)){
+  # myRow <- "GTPBP6"
+  my_table <- na.omit(data.frame("AR" = t(fib_avg_AR_skewed_Plot[myRow,]),"skew" = fib_skewed_measurement$skew_comp))
+  colnames(my_table) <- c("AR","skew")
+    myAR_adj <- fib_avg_AR_adj_skewed_Plot_mean[myRow,"AR_adj_mean_fib"]
+
+  if(dim(my_table)[1] > 1){
+    my_t <- t.test(x=my_table$AR,y=my_table$skew, paired = TRUE, alternative = "greater")
+  myRes <- c(myAR_adj, my_t$estimate[1], my_t$conf.int[1],my_t$p.value)
+  fib_avg_AR_skewed_Plot_mean[myRow,] <- myRes
+  }
+  else{
+    myRes <- c(myAR_adj, NA,NA,NA)
+    fib_avg_AR_skewed_Plot_mean[myRow,] <- myRes
+  }
+}
+fib_avg_AR_skewed_Plot_mean$AR_pval_adj_fib <- p.adjust(p = fib_avg_AR_skewed_Plot_mean$AR_pval_fib, method = "BH")
+fib_avg_AR_skewed_Plot_mean[fib_avg_AR_skewed_Plot_mean == "NaN"] <- NA
+fib_avg_AR_skewed_Plot_mean_order <- fib_avg_AR_skewed_Plot_mean[order(fib_avg_AR_skewed_Plot_mean$AR_mean_fib, decreasing=TRUE),]
+write.table(x=fib_avg_AR_skewed_Plot_mean, file="fib_avg_AR_skewed_Plot_mean.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+fib_avg_AR_skewed_Plot_mean_sig <- na.omit(fib_avg_AR_skewed_Plot_mean[fib_avg_AR_skewed_Plot_mean$AR_pval_adj_fib < 0.05,])
+#7 with sig AR.
+```
+
+##Plot heatmap gene x sample
+```{r}
+#Make heatmap
+library("RColorBrewer")
+breaksList = seq(-0.02, 1, by = 0.01)
+colors <- colorRampPalette( brewer.pal(9, "Blues"))(length(breaksList))
+
+library("pheatmap")
+pdf("LCL_perSample_AR.pdf", height=6, width=3)
+#plot AR for informative genes in skewed samples
+pheatmap(lcl_avg_AR_adj_skewed_Plot,
+         col=colors, cluster_rows = FALSE, cluster_cols = FALSE, fontsize = 4,  cellheight = 1.4, cellwidth = 4, border_color = NA, breaks=breaksList, na_col = "white")
+pheatmap(lcl_avg_AR_notSkewed_Plot,
+         col=colors, cluster_rows = FALSE, cluster_cols = FALSE, fontsize=4,cellheight = 1.4, cellwidth = 4, border_color = NA,breaks=breaksList, na_col = "white")
+dev.off()
+
+pdf("Fib_perSample_AR.pdf", height=6, width=3)
+pheatmap(fib_avg_AR_adj_skewed_Plot,
+         col=colors, cluster_rows = FALSE, cluster_cols = FALSE, fontsize = 4, cellheight = 1.4, cellwidth = 4, border_color = NA, breaks=breaksList, na_col = "white")
+pheatmap(fib_avg_AR_notSkewed_Plot,
+         col=colors, cluster_rows = FALSE, cluster_cols = FALSE, fontsize = 4, cellheight = 1.4, cellwidth = 4, border_color = NA, breaks=breaksList, na_col = "white")
+dev.off
+
+#How many informative genes from my data in the union set of pos deltaEx
+sigUp_genes <- lcl_fib_res[(! is.na(lcl_fib_res$deltaEx_LCL) & lcl_fib_res$deltaEx_LCL > 0 & lcl_fib_res$x_adj_pval_LCL < 0.05) | (! is.na(lcl_fib_res$deltaEx_Fib) & lcl_fib_res$deltaEx_Fib > 0 & lcl_fib_res$x_adj_pval_Fib < 0.05),"gene"] #90 genes
+
+#union informative genes LCL_fib
+lcl_fib_informative <- union(lcl_informative_gene_restricted$Gene, fib_informative_gene_restricted$Gene) #251 genes
+myData_sigUp_informative <- intersect(sigUp_genes, lcl_fib_informative) #59!
+
+#noData
+myData_sigUp_notInformative <- setdiff(sigUp_genes, lcl_fib_informative) #31
+```
+
+
+##Correlating AR with deltaEx
+```{r}
+#merge AR summary results with deltaEx 
+lcl_gene_meanAR_deltaEx <- merge(x=lcl_avg_AR_skewed_Plot_mean, by.x = 0, y=lcl_res, by.y = "gene", all.x = TRUE)
+colnames(lcl_gene_meanAR_deltaEx)[1] <- "gene"
+fib_gene_meanAR_deltaEx <- merge(x=fib_avg_AR_skewed_Plot_mean, by.x = 0, y=fib_res, by.y = "gene", all.x = TRUE)
+colnames(fib_gene_meanAR_deltaEx)[1] <- "gene"
+
+
+#Get list of genes with delta Ex standard deviation that does not cross the identity line! 
+lcl_gene_meanAR_deltaEx_sigX <- lcl_gene_meanAR_deltaEx[! (((lcl_gene_meanAR_deltaEx$deltaEx -  1.96*(lcl_gene_meanAR_deltaEx$deltaEx_err)) < lcl_gene_meanAR_deltaEx$AR_adj_mean_lcl) & (lcl_gene_meanAR_deltaEx$AR_adj_mean_lcl < (lcl_gene_meanAR_deltaEx$deltaEx +  1.96*(lcl_gene_meanAR_deltaEx$deltaEx_err)))),] 
+#let's try this another way:
+lcl_avg_AR_adj_diff_from_dEx <- data.frame("deltaEx_lcl" = numeric(),"dEx_adj_pval" = numeric(),"AR_adj_mean_lcl"=numeric(),"AR_ci95_low_lcl"=numeric(),"AR_ci95_hi_lcl"=numeric(), "AR_pval_lcl" = numeric())
+for(myRow in rownames(lcl_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  dEx <- lcl_res[lcl_res$gene == myRow,"deltaEx"]
+  dEx_padj <- lcl_res[lcl_res$gene == myRow,"x_adj_pval"]
+  my_t <- t.test(x=lcl_avg_AR_adj_skewed_Plot[myRow,], alternative = "two.sided",mu = dEx)
+  myRes <- c(dEx,dEx_padj,my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  lcl_avg_AR_adj_diff_from_dEx[myRow,] <- myRes
+}
+lcl_avg_AR_adj_diff_from_dEx$AR_pval_adj_lcl <- p.adjust(p = lcl_avg_AR_adj_diff_from_dEx$AR_pval_lcl, method = "BH")
+lcl_avg_AR_adj_diff_from_dEx[lcl_avg_AR_adj_diff_from_dEx == "NaN"] <- NA
+lcl_avg_AR_adj_diff_from_dEx_order <- lcl_avg_AR_adj_diff_from_dEx[order(lcl_avg_AR_adj_diff_from_dEx$AR_adj_mean_lcl, decreasing=TRUE),]
+write.table(x=lcl_avg_AR_adj_diff_from_dEx, file="lcl_avg_AR_adj_diff_from_dEx.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+lcl_sig_both <- lcl_avg_AR_adj_diff_from_dEx_order[! is.na(lcl_avg_AR_adj_diff_from_dEx_order$AR_ci95_low_lcl),]
+lcl_sig_both <- lcl_sig_both[! (lcl_sig_both$dEx_adj_pval >= 0.05 & lcl_sig_both$AR_pval_adj_lcl >= 0.1) & lcl_sig_both$AR_pval_adj_lcl < 0.1 & rownames(lcl_sig_both) %in% lcl_gene_meanAR_deltaEx_sigX$gene,]
+lcl_sig_both <- lcl_sig_both[! (lcl_sig_both$dEx_adj_pval >= 0.05 & (! rownames(lcl_sig_both) %in% rownames(lcl_avg_AR_skewed_Plot_mean_sig))),]
+
+lcl_gene_meanAR_deltaEx$sig_AR_lcl <- NA
+lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$gene %in% rownames(lcl_avg_AR_skewed_Plot_mean_sig),"sig_AR_lcl"] <- "Y"
+lcl_gene_meanAR_deltaEx[!lcl_gene_meanAR_deltaEx$gene %in% rownames(lcl_avg_AR_skewed_Plot_mean_sig),"sig_AR_lcl"] <- "N"
+
+lcl_gene_meanAR_deltaEx$off_diag <- NA
+lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$gene %in% rownames(lcl_sig_both),"off_diag"] <- "Y"
+lcl_gene_meanAR_deltaEx[!lcl_gene_meanAR_deltaEx$gene %in% rownames(lcl_sig_both),"off_diag"] <- "N"
+
+
+#Get list of genes with AR standard deviation that does not cross the identity line! 
+fib_gene_meanAR_deltaEx_sigX <- fib_gene_meanAR_deltaEx[! (((fib_gene_meanAR_deltaEx$deltaEx -  1.96*(fib_gene_meanAR_deltaEx$deltaEx_err)) < fib_gene_meanAR_deltaEx$AR_adj_mean_fib) & (fib_gene_meanAR_deltaEx$AR_adj_mean_fib < (fib_gene_meanAR_deltaEx$deltaEx +  1.96*(fib_gene_meanAR_deltaEx$deltaEx_err)))),] 
+#let's try this another way:
+fib_avg_AR_adj_diff_from_dEx <- data.frame("deltaEx_fib" = numeric(),"dEx_adj_pval" = numeric(),"AR_adj_mean_fib"=numeric(),"AR_ci95_low_fib"=numeric(),"AR_ci95_hi_fib"=numeric(), "AR_pval_fib" = numeric())
+for(myRow in rownames(fib_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  dEx <- fib_res[fib_res$gene == myRow,"deltaEx"]
+  dEx_padj <- fib_res[fib_res$gene == myRow,"x_adj_pval"]
+  my_t <- t.test(x=fib_avg_AR_adj_skewed_Plot[myRow,], alternative = "two.sided",mu = dEx)
+  myRes <- c(dEx,dEx_padj,my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  fib_avg_AR_adj_diff_from_dEx[myRow,] <- myRes
+}
+fib_avg_AR_adj_diff_from_dEx$AR_pval_adj_fib <- p.adjust(p = fib_avg_AR_adj_diff_from_dEx$AR_pval_fib, method = "BH")
+fib_avg_AR_adj_diff_from_dEx[fib_avg_AR_adj_diff_from_dEx == "NaN"] <- NA
+fib_avg_AR_adj_diff_from_dEx_order <- fib_avg_AR_adj_diff_from_dEx[order(fib_avg_AR_adj_diff_from_dEx$AR_adj_mean_fib, decreasing=TRUE),]
+write.table(x=fib_avg_AR_adj_diff_from_dEx, file="fib_avg_AR_adj_diff_from_dEx.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+fib_sig_both <- fib_avg_AR_adj_diff_from_dEx_order[! is.na(fib_avg_AR_adj_diff_from_dEx_order$AR_ci95_low_fib),]
+fib_sig_both <- fib_sig_both[! (fib_sig_both$dEx_adj_pval >= 0.05 & fib_sig_both$AR_pval_adj_fib >= 0.1) & fib_sig_both$AR_pval_adj_fib < 0.1 & rownames(fib_sig_both) %in% fib_gene_meanAR_deltaEx_sigX$gene,]
+fib_sig_both <- fib_sig_both[! (fib_sig_both$dEx_adj_pval >= 0.05 & (! rownames(fib_sig_both) %in% rownames(fib_avg_AR_skewed_Plot_mean_sig))),]
+
+fib_gene_meanAR_deltaEx$sig_AR_fib <- NA
+fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$gene %in% rownames(fib_avg_AR_skewed_Plot_mean_sig),"sig_AR_fib"] <- "Y"
+fib_gene_meanAR_deltaEx[!fib_gene_meanAR_deltaEx$gene %in% rownames(fib_avg_AR_skewed_Plot_mean_sig),"sig_AR_fib"] <- "N"
+
+fib_gene_meanAR_deltaEx$off_diag <- NA
+fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$gene %in% rownames(fib_sig_both),"off_diag"] <- "Y"
+fib_gene_meanAR_deltaEx[!fib_gene_meanAR_deltaEx$gene %in% rownames(fib_sig_both),"off_diag"] <- "N"
+
+
+#make a plot!
+pdf(file="deltaEx_AR_scatterplot_labeled.pdf", width = 3.25, height=2.28)
+ggplot() +
+  geom_vline(xintercept = 0, color = "#00000040", size=0.25) +
+  geom_hline(yintercept = 0, color = "#00000040", size=0.25) +
+  geom_abline(slope = 1, intercept = 0, color="black", size=0.25) +
+  #not sig are squares
+  scale_fill_manual(values = c("#00000040","#084c9595")) + 
+  scale_color_manual(values = c("#00000000","#f1897395")) + 
+  geom_point(data=lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$x_adj_pval >= 0.05,], mapping = aes(x = deltaEx, y=AR_adj_mean_lcl, fill=sig_AR_lcl, color=off_diag), pch=22) +
+  geom_point(data=lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$x_adj_pval < 0.05,], mapping = aes(x = deltaEx, y=AR_adj_mean_lcl, fill=sig_AR_lcl, color=off_diag), pch=21) +
+  geom_text_repel(data=lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$gene %in% c("DDX3X","PUDP", "MPP1"),], mapping = aes(x = deltaEx, y=AR_adj_mean_lcl, label=gene), color="#f1897395", size=1, segment.size = 0.25, min.segment.length = 0.05, force=0.5) +
+    geom_text_repel(data=lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$gene %in% c("EIF2S3"),], mapping = aes(x = deltaEx, y=AR_adj_mean_lcl, label=gene), color="#000000", size=1, segment.size = 0.25, min.segment.length = 0.05, force=0.5) + 
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(-0.25,1.25,0.25), limits = c(-0.25,1.25))
+
+
+ggplot() +
+  geom_vline(xintercept = 0, color = "#00000040", size=0.25) +
+  geom_hline(yintercept = 0, color = "#00000040", size=0.25) +
+  geom_abline(slope = 1, intercept = 0, color="black", size=0.25) +
+  #not sig are squares
+  scale_fill_manual(values = c("#00000040","#084c9595")) + 
+  scale_color_manual(values = c("#00000000","#f1897395")) + 
+  geom_point(data=fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$x_adj_pval >= 0.05,], mapping = aes(x = deltaEx, y=AR_adj_mean_fib, fill=sig_AR_fib, color=off_diag), pch=22) +
+  geom_point(data=fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$x_adj_pval < 0.05,], mapping = aes(x = deltaEx, y=AR_adj_mean_fib, fill=sig_AR_fib, color=off_diag), pch=21) +
+  geom_text_repel(data=fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$gene %in% c("DDX3X","PUDP", "MPP1"),], mapping = aes(x = deltaEx, y=AR_adj_mean_fib, label=gene), color="#f1897395", size=1, segment.size = 0.25, min.segment.length = 0.05, force=0.5) +
+    geom_text_repel(data=fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$gene %in% c("EIF2S3"),], mapping = aes(x = deltaEx, y=AR_adj_mean_fib, label=gene), color="#000000", size=1, segment.size = 0.25, min.segment.length = 0.05, force=0.5) + 
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(-0.25,1.25,0.25), limits = c(-0.25,1.25))
+dev.off()
+
+#Get correlations
+cor.test(x=lcl_gene_meanAR_deltaEx$deltaEx, y=lcl_gene_meanAR_deltaEx$AR_adj_mean_lcl)
+
+cor.test(x=fib_gene_meanAR_deltaEx$deltaEx, y=fib_gene_meanAR_deltaEx$AR_adj_mean_fib)
+
+#Summary table LCLs
+# of informative genes
+dim(lcl_gene_meanAR_deltaEx)[1]
+
+#range of mean AR values
+summary(lcl_gene_meanAR_deltaEx$AR_adj_mean_lcl)
+
+#number and percentage of genes with sig AR values
+dim(lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$AR_pval_adj_lcl < 0.05,])[1]
+
+100* (dim(lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$AR_pval_adj_lcl < 0.05,])[1] / 
+        dim(lcl_gene_meanAR_deltaEx)[1])
+
+#number of genes that have AR that does not equal deltaEx
+dim(lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$off_diag == "Y",])[1]
+
+100* (dim(lcl_gene_meanAR_deltaEx[lcl_gene_meanAR_deltaEx$off_diag == "Y",])[1] / 
+        dim(lcl_gene_meanAR_deltaEx)[1])
+
+
+#Summary table fibs
+# of informative genes
+dim(fib_gene_meanAR_deltaEx)[1]
+
+#range of mean AR values
+summary(fib_gene_meanAR_deltaEx$AR_adj_mean_fib)
+
+#number and percentage of genes with sig AR values
+dim(fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$AR_pval_adj_fib < 0.05,])[1]
+
+100* (dim(fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$AR_pval_adj_fib < 0.05,])[1] / 
+        dim(fib_gene_meanAR_deltaEx)[1])
+
+#number of genes that have AR that does not equal deltaEx
+dim(fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$off_diag == "Y",])[1]
+
+100* (dim(fib_gene_meanAR_deltaEx[fib_gene_meanAR_deltaEx$off_diag == "Y",])[1] / 
+        dim(fib_gene_meanAR_deltaEx)[1])
+
+
+lcl_all_samp_supplement_1 <- merge(x=lcl_informative_gene, y=lcl_gene_meanAR_deltaEx, by.x="Gene", by.y="gene")
+lcl_all_samp_supplement_2 <- merge(x=lcl_all_samp_supplement_1, y=lcl_avg_AR_adj_diff_from_dEx_order, by.x="Gene", by.y=0)
+
+fib_all_samp_supplement_1 <- merge(x=fib_informative_gene, y=fib_gene_meanAR_deltaEx, by.x="Gene", by.y="gene")
+fib_all_samp_supplement_2 <- merge(x=fib_all_samp_supplement_1, y=fib_avg_AR_adj_diff_from_dEx_order, by.x="Gene", by.y=0)
+
+```
+
+##Compare ASE results with published datasets
+```{r}
+#Cotton 2013: SNP chip in LCLs and fibroblasts with complete or partially skewed XCI 
+#Assay metric: %Xi which is percentage of Xi expression compared to Xa expression per individual for 409 genes.
+#Over half (18 of the 30) of the CEU LCLs, 8 of the 31 YRI LCLs and 7 of the 38 FIB samples showed an average AI for these subject genes above the threshold at which only 0.5% of the autosomal probes for that sample set were observed.
+
+data_mergeLCL <- merge(x=lcl_avg_AR_skewed_Plot_mean, y=lcl_fib_res_anno, by.x=0, by.y="Gene")
+data_mergeFIB <- merge(x=fib_avg_AR_skewed_Plot_mean, y=lcl_fib_res_anno, by.x=0, by.y="Gene")
+
+pdf(file="cotton_vs_AR.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_lcl~Cotton_AR, data= data_mergeLCL)
+my.cor <- cor.test(x = data_mergeLCL$AR_adj_mean_lcl, y=data_mergeLCL$Cotton_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeLCL, mapping = aes(x = AR_adj_mean_lcl, y=Cotton_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#fibs
+my.deming <- deming(formula = AR_adj_mean_fib~Cotton_AR, data= data_mergeFIB)
+my.cor <- cor.test(x = data_mergeFIB$AR_adj_mean_fib, y=data_mergeFIB$Cotton_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeFIB, mapping = aes(x = AR_adj_mean_fib, y=Cotton_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+
+
+#Tukiainen ASE
+#One individual with skewed XCI throughout body
+pdf(file="tuk_ASE_vs_AR.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_lcl~Tuk_Skew_AR, data= data_mergeLCL)
+my.cor <- cor.test(x = data_mergeLCL$AR_adj_mean_lcl, y=data_mergeLCL$Tuk_Skew_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeLCL, mapping = aes(x = AR_adj_mean_lcl, y=Tuk_Skew_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#fibs
+my.deming <- deming(formula = AR_adj_mean_fib~Tuk_Skew_AR, data= data_mergeFIB)
+my.cor <- cor.test(x = data_mergeFIB$AR_adj_mean_fib, y=data_mergeFIB$Tuk_Skew_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeFIB, mapping = aes(x = AR_adj_mean_fib, y=Tuk_Skew_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+
+
+#single cell RNAseq - exclude data from 24A, which is the dendritic cells - use the others that are from LCLs. 
+pdf(file="tuk_SC_vs_AR.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_lcl~Tuk_SC_AR, data= data_mergeLCL)
+my.cor <- cor.test(x = data_mergeLCL$AR_adj_mean_lcl, y=data_mergeLCL$Tuk_SC_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeLCL, mapping = aes(x = AR_adj_mean_lcl, y=Tuk_SC_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#fibs
+my.deming <- deming(formula = AR_adj_mean_fib~Tuk_SC_AR, data= data_mergeFIB)
+my.cor <- cor.test(x = data_mergeFIB$AR_adj_mean_fib, y=data_mergeFIB$Tuk_SC_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeFIB, mapping = aes(x = AR_adj_mean_fib, y=Tuk_SC_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+
+
+#Garieri 2018 allele-specific single cell RNA-seq - 
+#We investigated XCI at single-cell resolution combining deep single-cell RNA sequencing with whole-genome sequencing to examine allelic-specific expression in 935 primary fibroblast and 48 lymphoblastoid single cells from five female individuals.
+#metric is allelic ratio - Xa to Xa (1 = inactive, 0 = full escape) Relaxed set, AR <= 0.95 in at least one indiv. is "escapee". 296 genes in at least 1 indiv; 203 in at least 2 indiv.
+pdf(file="garieri_vs_AR.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_lcl~garieri_AR, data= data_mergeLCL)
+my.cor <- cor.test(x = data_mergeLCL$AR_adj_mean_lcl, y=data_mergeLCL$garieri_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeLCL, mapping = aes(x = AR_adj_mean_lcl, y=garieri_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#fibs
+my.deming <- deming(formula = AR_adj_mean_fib~garieri_AR, data= data_mergeFIB)
+my.cor <- cor.test(x = data_mergeFIB$AR_adj_mean_fib, y=data_mergeFIB$garieri_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeFIB, mapping = aes(x = AR_adj_mean_fib, y=garieri_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+
+#Sauteraud et al 2021 looks at AR in the Geuvadis data combining genome-seq and RNA-seq
+#Data is from their suppl table S4
+pdf(file="sauteraud_vs_AR.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_lcl~sauteraud_AR, data= data_mergeLCL)
+my.cor <- cor.test(x = data_mergeLCL$AR_adj_mean_lcl, y=data_mergeLCL$sauteraud_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeLCL, mapping = aes(x = AR_adj_mean_lcl, y=sauteraud_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#fibs
+my.deming <- deming(formula = AR_adj_mean_fib~sauteraud_AR, data= data_mergeFIB)
+my.cor <- cor.test(x = data_mergeFIB$AR_adj_mean_fib, y=data_mergeFIB$sauteraud_AR, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=data_mergeFIB, mapping = aes(x = AR_adj_mean_fib, y=sauteraud_AR), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+```
+
+#WITH RAW DATA
+##Same analysis with reduced samples
+```{r, eval=FALSE}
+#restrict to the skewed samples
+lcl_dat.annot_skewed <- lcl_dat.annot[lcl_dat.annot$Sample.Name %in% c(lcl_0.8),]
+lcl_dat.annot_notSkewed <- lcl_dat.annot[lcl_dat.annot$Sample.Name %in% c(lcl_notSkewed),]
+
+#adjust the AR based on the skewing
+lcl_dat.annot_skewed_adj <- lcl_dat.annot_skewed
+
+#for each row, figure out which sample, get the ratio for that sample, then do calculation:
+rownames(lcl_dat.annot_skewed_adj) <- NULL
+lcl_dat.annot_skewed_adj$AR_adj <- 0
+for(myRow in c(1:dim(lcl_dat.annot_skewed_adj)[1])){
+  # myRow <- 5
+  mySamp <- lcl_dat.annot_skewed_adj[myRow, "Sample.Name"]
+  myAR <- lcl_dat.annot_skewed_adj[myRow, "AR"]
+  mySkew <- lcl_skewed_measurement[lcl_skewed_measurement$sample == mySamp, "pct_skew"]
+  t <- 1-mySkew
+  x <- (myAR - (myAR * t) - t) / (1 - t - (myAR * t))
+  lcl_dat.annot_skewed_adj[myRow, "AR_adj"] <- x
+}
+
+#Get average AR_adj or AR per sample for skewed and not skewed data!
+#make a table with genes (rows) x columns (each samp)
+lcl_avg_AR_adj_skewed <- reshape2::dcast(data = lcl_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR_adj")
+lcl_avg_AR_adj_skewed[lcl_avg_AR_adj_skewed < 0 ] <- 0
+lcl_avg_AR_adj_skewed[lcl_avg_AR_adj_skewed == "NaN"] <- NA
+rownames(lcl_avg_AR_adj_skewed) <- lcl_avg_AR_adj_skewed$Gene.name
+lcl_avg_AR_adj_skewed <- lcl_avg_AR_adj_skewed[,-1]
+write.table(lcl_avg_AR_adj_skewed, file="lcl_avg_AR_adj_skewedSamples_notExtreme.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+#how many genes are informative!!!
+lcl_avg_AR_adj_skewed_nSamp <- apply(X = lcl_avg_AR_adj_skewed,MARGIN = 1, function(x) sum(! is.na(x)))
+lcl_informative_gene_notExt <- data.frame("Gene" = names(lcl_avg_AR_adj_skewed_nSamp), "N" = lcl_avg_AR_adj_skewed_nSamp, row.names = NULL)
+
+lcl_avg_AR_notSkewed <- reshape2::dcast(data = lcl_dat.annot_notSkewed,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+lcl_avg_AR_notSkewed[lcl_avg_AR_notSkewed == "NaN"] <- NA
+rownames(lcl_avg_AR_notSkewed) <- lcl_avg_AR_notSkewed$Gene.name
+lcl_avg_AR_notSkewed <- lcl_avg_AR_notSkewed[,-1]
+
+
+####Fibroblast
+#restrict to the skewed samples
+fib_dat.annot_skewed <- fib_dat.annot[fib_dat.annot$Sample.Name %in% c(fib_0.8),]
+fib_dat.annot_notSkewed <- fib_dat.annot[fib_dat.annot$Sample.Name %in% c(fib_notSkewed),]
+
+#adjust the AR based on the skewing
+fib_dat.annot_skewed_adj <- fib_dat.annot_skewed
+
+#for each row, figure out which sample, get the ratio for that sample, then do calculation:
+rownames(fib_dat.annot_skewed_adj) <- NULL
+fib_dat.annot_skewed_adj$AR_adj <- 0
+for(myRow in c(1:dim(fib_dat.annot_skewed_adj)[1])){
+  # myRow <- 5
+  mySamp <- fib_dat.annot_skewed_adj[myRow, "Sample.Name"]
+  myAR <- fib_dat.annot_skewed_adj[myRow, "AR"]
+  mySkew <- fib_skewed_measurement[fib_skewed_measurement$sample == mySamp, "pct_skew"]
+  t <- 1-mySkew
+  x <- (myAR - (myAR * t) - t) / (1 - t - (myAR * t))
+  fib_dat.annot_skewed_adj[myRow, "AR_adj"] <- x
+}
+
+#Get average AR_adj or AR per sample for skewed and not skewed data!
+#make a table with genes (rows) x columns (each samp)
+fib_avg_AR_adj_skewed <- reshape2::dcast(data = fib_dat.annot_skewed_adj,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR_adj")
+fib_avg_AR_adj_skewed[fib_avg_AR_adj_skewed < 0 ] <- 0
+fib_avg_AR_adj_skewed[fib_avg_AR_adj_skewed == "NaN"] <- NA
+rownames(fib_avg_AR_adj_skewed) <- fib_avg_AR_adj_skewed$Gene.name
+fib_avg_AR_adj_skewed <- fib_avg_AR_adj_skewed[,-1]
+write.table(fib_avg_AR_adj_skewed, file="fib_avg_AR_adj_skewedSamples_notExtreme.txt", sep="\t", quote = FALSE, row.names = TRUE, col.names = TRUE )
+
+
+#how many genes are informative!
+fib_avg_AR_adj_skewed_nSamp <- apply(X = fib_avg_AR_adj_skewed,MARGIN = 1, function(x) sum(! is.na(x)))
+fib_informative_gene_notExt <- data.frame("Gene" = names(fib_avg_AR_adj_skewed_nSamp), "N" = fib_avg_AR_adj_skewed_nSamp, row.names = NULL)
+
+fib_avg_AR_notSkewed <- reshape2::dcast(data = fib_dat.annot_notSkewed,formula = Gene.name~Sample.Name,fun.aggregate = mean,value.var = "AR")
+fib_avg_AR_notSkewed[fib_avg_AR_notSkewed == "NaN"] <- NA
+rownames(fib_avg_AR_notSkewed) <- fib_avg_AR_notSkewed$Gene.name
+fib_avg_AR_notSkewed <- fib_avg_AR_notSkewed[,-1]
+```
+
+##Get AR stats for each informative gene across samples
+```{r, eval=FALSE}
+#want to order by gene location, separate PAR
+#this is all v104
+lcl_informative_gene_notExt_anno <- merge(x=lcl_informative_gene_notExt,y=lcl_fib_res_anno,by="Gene")
+fib_informative_gene_notExt_anno <- merge(x=fib_informative_gene_notExt,y=lcl_fib_res_anno,by="Gene")
+
+#Restrict to genes with observations in at least 3 samples
+restrictTo_fib <- 3 #with 3, 110 genes
+restrictTo_LCL <- 3 #with 3, 158 genes
+lcl_informative_gene_notExt_restricted_notExt <- lcl_informative_gene_notExt_anno[lcl_informative_gene_notExt_anno$N >= restrictTo_LCL,]
+fib_informative_gene_notExt_restricted_notExt <- fib_informative_gene_notExt_anno[fib_informative_gene_notExt_anno$N >= restrictTo_fib,]
+lcl_informative_gene_notExt_restricted_notExt$Gene <- as.character(lcl_informative_gene_notExt_restricted_notExt$Gene)
+fib_informative_gene_notExt_restricted_notExt$Gene <- as.character(fib_informative_gene_notExt_restricted_notExt$Gene)
+
+##remove WASH6P, ATRX, APOOL, XIST
+lcl_informative_gene_notExt_restricted_notExt <- lcl_informative_gene_notExt_restricted_notExt[! lcl_informative_gene_notExt_restricted_notExt$Gene %in% c("WASH6P","APOOL","ATRX","XIST"), ] #154 genes
+fib_informative_gene_notExt_restricted_notExt <- fib_informative_gene_notExt_restricted_notExt[! fib_informative_gene_notExt_restricted_notExt$Gene %in% c("WASH6P","APOOL","ATRX","XIST"),] #107 genes
+
+#Select genes in AR x Sample table using informative_gene_restricted
+lcl_avg_AR_adj_skewed_Plot <- as.matrix(lcl_avg_AR_adj_skewed[lcl_informative_gene_notExt_restricted_notExt$Gene,])
+#reorder columns
+lcl_skewed_measurement <- lcl_skewed_measurement[lcl_skewed_measurement$sample %in% lcl_0.8,]
+lcl_skewed_measurement_order <- lcl_skewed_measurement[order(lcl_skewed_measurement$pct_skew, decreasing = TRUE),]
+lcl_avg_AR_adj_skewed_Plot <- lcl_avg_AR_adj_skewed_Plot[,lcl_skewed_measurement_order$sample]
+write.table(x=lcl_avg_AR_adj_skewed_Plot, file="lcl_avg_AR_adj_skewed_Plot_notExtreme.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=TRUE)
+
+fib_avg_AR_adj_skewed_Plot <- as.matrix(fib_avg_AR_adj_skewed[fib_informative_gene_notExt_restricted_notExt$Gene,])
+fib_skewed_measurement <- fib_skewed_measurement[fib_skewed_measurement$sample %in% fib_0.8,]
+fib_skewed_measurement_order <- fib_skewed_measurement[order(fib_skewed_measurement$pct_skew, decreasing = TRUE),]
+fib_avg_AR_adj_skewed_Plot <- fib_avg_AR_adj_skewed_Plot[,fib_skewed_measurement_order$sample]
+write.table(x=fib_avg_AR_adj_skewed_Plot, file="fib_avg_AR_adj_skewed_Plot_notExtreme.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=TRUE)
+
+
+#get data for the not skewed samples
+lcl_avg_AR_notSkewed_Plot <- as.matrix(lcl_avg_AR_notSkewed[lcl_informative_gene_notExt_restricted_notExt$Gene,])
+rownames(lcl_avg_AR_notSkewed_Plot) <- lcl_informative_gene_notExt_restricted_notExt$Gene
+
+fib_avg_AR_notSkewed_Plot <- as.matrix(fib_avg_AR_notSkewed[fib_informative_gene_notExt_restricted_notExt$Gene,])
+rownames(fib_avg_AR_notSkewed_Plot) <- fib_informative_gene_notExt_restricted_notExt$Gene
+
+#Get row statistics!!
+#for each row
+lcl_avg_AR_adj_skewed_Plot_mean <- data.frame("AR_adj_mean_lcl"=numeric(),"AR_ci95_low_lcl"=numeric(),"AR_ci95_hi_lcl"=numeric(), "AR_pval_lcl" = numeric())
+for(myRow in rownames(lcl_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  my_t <- t.test(x=lcl_avg_AR_adj_skewed_Plot[myRow,], alternative = "greater")
+  myRes <- c(my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  lcl_avg_AR_adj_skewed_Plot_mean[myRow,] <- myRes
+}
+lcl_avg_AR_adj_skewed_Plot_mean$AR_pval_adj_lcl <- p.adjust(p = lcl_avg_AR_adj_skewed_Plot_mean$AR_pval_lcl, method = "BH")
+lcl_avg_AR_adj_skewed_Plot_mean[lcl_avg_AR_adj_skewed_Plot_mean == "NaN"] <- NA
+lcl_avg_AR_adj_skewed_Plot_mean_order <- lcl_avg_AR_adj_skewed_Plot_mean[order(lcl_avg_AR_adj_skewed_Plot_mean$AR_adj_mean_lcl, decreasing=TRUE),]
+write.table(x=lcl_avg_AR_adj_skewed_Plot_mean, file="lcl_avg_AR_adj_skewed_Plot_mean_notExtreme.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+fib_avg_AR_adj_skewed_Plot_mean <- data.frame("AR_adj_mean_fib"=numeric(),"AR_ci95_low_fib"=numeric(),"AR_ci95_hi_fib"=numeric(), "AR_pval_fib" = numeric())
+for(myRow in rownames(fib_avg_AR_adj_skewed_Plot)){
+   # myRow <- "GTPBP6"
+  my_t <- t.test(x=fib_avg_AR_adj_skewed_Plot[myRow,], alternative="greater")
+  myRes <- c(my_t$estimate[1], my_t$conf.int[1],my_t$conf.int[2],my_t$p.value)
+  fib_avg_AR_adj_skewed_Plot_mean[myRow,] <- myRes
+}
+fib_avg_AR_adj_skewed_Plot_mean$AR_pval_adj_fib <- p.adjust(p = fib_avg_AR_adj_skewed_Plot_mean$AR_pval_fib, method = "BH")
+fib_avg_AR_adj_skewed_Plot_mean[fib_avg_AR_adj_skewed_Plot_mean == "NaN"] <- NA
+fib_avg_AR_adj_skewed_Plot_mean_order <- fib_avg_AR_adj_skewed_Plot_mean[order(fib_avg_AR_adj_skewed_Plot_mean$AR_adj_mean_fib, decreasing=TRUE),]
+write.table(x=fib_avg_AR_adj_skewed_Plot_mean, file="fib_avg_AR_adj_skewed_Plot_mean_notExtreme.txt", quote=FALSE, sep="\t", row.names=TRUE, col.names=TRUE)
+
+
+#reorder by mean AR!
+lcl_avg_AR_adj_skewed_Plot <- lcl_avg_AR_adj_skewed_Plot[rownames(lcl_avg_AR_adj_skewed_Plot_mean_order),]
+
+fib_avg_AR_adj_skewed_Plot <- fib_avg_AR_adj_skewed_Plot[rownames(fib_avg_AR_adj_skewed_Plot_mean_order),]
+
+lcl_avg_AR_notSkewed_Plot <- lcl_avg_AR_notSkewed_Plot[rownames(lcl_avg_AR_adj_skewed_Plot_mean_order),]
+
+fib_avg_AR_notSkewed_Plot <- fib_avg_AR_notSkewed_Plot[rownames(fib_avg_AR_adj_skewed_Plot_mean_order),]
+
+```
+
+#WITH PROCESSED DATA
+##plotting reduced AR with regular AR to see the difference
+```{r}
+#bring in all samp
+all_samp_fib_AR <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_skewed_Plot_mean.txt"), stringsAsFactors = FALSE)
+all_samp_lcl_AR <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_skewed_Plot_mean.txt"), stringsAsFactors = FALSE)
+
+fib_avg_AR_adj_skewed_Plot_mean_order <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_avg_AR_adj_skewed_Plot_mean_notExtreme.txt"), stringsAsFactors = FALSE)
+lcl_avg_AR_adj_skewed_Plot_mean_order <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_avg_AR_adj_skewed_Plot_mean_notExtreme.txt"), stringsAsFactors = FALSE)
+
+fib_merge_AR <- merge(y= fib_avg_AR_adj_skewed_Plot_mean_order, x= all_samp_fib_AR, by=0)
+lcl_merge_AR <- merge(y= lcl_avg_AR_adj_skewed_Plot_mean_order, x= all_samp_lcl_AR, by=0)
+
+#X = all samp
+#Y = not extreme, but skewed.
+
+pdf(file="allSamp_vs_notExt.pdf", width = 2, height=2)
+
+my.deming <- deming(formula = AR_adj_mean_fib.x~AR_adj_mean_fib.y, data= fib_merge_AR)
+my.cor <- cor.test(x = fib_merge_AR$AR_adj_mean_fib.x, y=fib_merge_AR$AR_adj_mean_fib.y, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=fib_merge_AR, mapping = aes(x = AR_adj_mean_fib.x, y=AR_adj_mean_fib.y), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+
+#lcls
+my.deming <- deming(formula = AR_adj_mean_lcl.x~AR_adj_mean_lcl.y, data= lcl_merge_AR)
+my.cor <- cor.test(x = lcl_merge_AR$AR_adj_mean_lcl.x, y=lcl_merge_AR$AR_adj_mean_lcl.y, method="pearson")
+
+ggplot() +
+  geom_abline(slope = my.deming$coefficients[2], intercept = my.deming$coefficients[1], color="black", size=0.25) +
+  geom_point(data=lcl_merge_AR, mapping = aes(x = AR_adj_mean_lcl.x, y=AR_adj_mean_lcl.y), color="#00000080", stroke=0) +
+  geom_text(aes(x=1, y=0, label=paste0("r = ",formatC(x=my.cor$estimate,digits=2),"\nP =",formatC(x=my.cor$p.value,digits=3))), size=2,hjust=1,vjust=0) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) +
+  scale_y_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0)) +
+  scale_x_continuous(breaks=seq(0,1,0.25), limits = c(-0.01,1.0))
+dev.off()
+```
+
+#WITH RAW DATA
+##chr8 data
+```{r, eval=FALSE}
+#Bring in the VCF files
+ASE_dir<- #PATH TO DIRECTORY WITH VCF FILES FOR CHR 8
+files <- list.files(ASE_dir,full.names=TRUE)
+filenames<-list.files(ASE_dir)
+files2<-paste(files,"chr8.annotated.allsnps.ASE.output.table",sep="/") 
+files<-files2
+names(files) <- filenames
+metadata<-read.delim(file=paste0(myPath,"Linear_regressions/metadata.txt"),header=TRUE, stringsAsFactors = FALSE)
+files<-files[which(names(files)%in%metadata$sample)]
+metadata<-metadata[which(metadata$sample%in%filenames),]
+
+#only use samples with two X chromosomes!
+metadata <- metadata[which(metadata$karyotype %in% c("XX","XX_t21","XXY","XXYY")),]
+filenames<-filenames[which(filenames%in%names(files))]
+
+#check if the files exist and compile data
+file_list<-vector("list",length(files))
+missingfiles<-vector("list",length(files))
+for(i in seq(length(files))){
+  if (file.exists(files[i])){
+    curr_dat<-read.delim(files[i])
+    if(dim(curr_dat)[1]>0){
+      curr_dat$Sample.Name<-names(files[i])
+      file_list[[i]]<-curr_dat
+    } else{
+      missingfiles[[i]]<-names(files[i])
+    }
+    
+  }else{
+    missingfiles[[i]]<-names(files[i])
+  }
+}
+unlist(missingfiles)
+
+dat<-do.call("rbind",file_list)
+
+#Restrict to "informative SNPs" - must have 3 reads covering each allele
+dat<-dat[which(dat$altCount>2),]
+dat<-dat[which(dat$refCount>2),]
+dat<-dat[which(dat$totalCount>9),]
+
+
+dat_orig<-dat
+dat<-dat[grep("8",dat$contig),]
+
+#this is the point where SNPs would get weeded out to only dbSNP.
+dat<-dat[dat$variantID!=".",]
+
+#remove two cell lines with few SNPs:
+#6382B_XXY, 7283A_XXY
+dat<-dat[! dat$Sample.Name %in% c("6382B_XXY","7283A_XXY"),]
+
+#calculate allele frequencies
+dat$minAllele<-pmin(dat$refCount,dat$altCount)
+dat$maxAllele<-pmax(dat$refCount,dat$altCount)
+dat$ref_portion<-dat$refCount/dat$totalCount
+dat$max_portion<-dat$maxAllele/dat$totalCount
+dat$AR <- dat$minAllele/dat$maxAllele
+
+#merge with metadata to get karyotype and restrict to only samples with two X chromosomes!!
+dat.annot<-merge(dat,metadata[,c("sample","karyotype","cell_type")],by.x="Sample.Name",by.y="sample")
+write.table(dat.annot,file="chr8_dbSNPs_ASE.txt",sep="\t",quote=FALSE)
+dat.annot.order <- dat.annot[order(dat.annot$position),]
+
+dat.annot.order$position<-as.numeric(dat.annot.order$position)
+dat.annot.order <- cbind(dat.annot.order, "stop" = dat.annot.order$position + 1)
+dat.annot.order_bed <- dat.annot.order[,c("contig","position","stop","Sample.Name","variantID",
+                                          "refAllele","altAllele" ,"refCount",      "altCount" ,
+                                          "totalCount","lowMAPQDepth","lowBaseQDepth", "rawDepth",
+                                          "otherBases","improperPairs", "minAllele","maxAllele",
+                                          "ref_portion","max_portion",
+                                          "AR","karyotype","cell_type")]
+write.table(x=dat.annot.order_bed, file="chr8.dat.annot.order.bed",sep="\t", quote=FALSE, row.names = FALSE, col.names = FALSE )
+```
+
+##set up exon list
+```{r,eval=FALSE}
+#bring in the exon list
+gencode_exons <- read.delim(file=paste0(myPath,"Allele_specific_expression/gencode_exons_chr8.txt"), header=FALSE, stringsAsFactors = FALSE)[,c(1:4)]
+colnames(gencode_exons) <- c("chr","start","stop","exon")
+transcript <- sapply(strsplit(gencode_exons$exon, "\\..*"), "[", 1)
+gencode_exons <- cbind(gencode_exons, transcript)
+
+#merge with gene annotation
+gene_transcript <- read.csv(file=paste0(myPath,"Allele_specific_expression/ensg_enst_chr8.txt"), header = TRUE, stringsAsFactors = FALSE)
+gencode_exons_anno <- merge(x = gencode_exons, y=gene_transcript, by.x = "transcript", by.y = "Transcript.stable.ID")
+gencode_exons_anno_order <- gencode_exons_anno[order(gencode_exons_anno$start),]
+rownames(gencode_exons_anno_order) <- NULL
+
+gencode_exons_anno_order_bed <- gencode_exons_anno_order[,c("chr","start","stop","Gene.name","Gene.stable.ID","transcript","exon")]
+write.table(x=gencode_exons_anno_order_bed, file = "gencode_exons_anno_order_chr8.bed", sep="\t", quote=FALSE, row.names=FALSE, col.names=FALSE)
+```
+
+##bedtools
+```{bash,eval=FALSE}
+#first merge the exon file
+bedtools merge -i YOUR_PATH/Allele_specific_expression/gencode_exons_anno_order_chr8.bed -c 7 -o distinct > merged_chr8_exons.bed
+
+#then intersect
+bedtools intersect -a YOUR_PATH/Allele_specific_expression/chr8.dat.annot.order.bed -b YOUR_PATH/Allele_specific_expression/merged_chr8_exons.bed -wa -loj > snps_in_exons_chr8.bed
+```
+
+##Get SNPs in exons
+```{r,eval=FALSE}
+#bring in SNPs in exons
+SNPs_comp_exons <- read.delim(file=paste0(myPath,"Allele_specific_expression/snps_in_exons_chr8.bed"), stringsAsFactors = FALSE, header=FALSE)
+colnames(SNPs_comp_exons) <- c(colnames(dat.annot.order_bed),"chr_exon","start_exon","stop_exon","exon")
+
+SNPs_in_exons <- SNPs_comp_exons[SNPs_comp_exons$exon != ".",]
+transcript <- sapply(strsplit(SNPs_in_exons$exon, "\\..*"), "[", 1)
+SNPs_in_exons <- cbind(SNPs_in_exons, transcript)
+
+fib_order <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/fib_sample_order.txt"), stringsAsFactors = FALSE)
+lcl_order <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/lcl_sample_order.txt"), stringsAsFactors = FALSE)
+
+SNPs_in_exons <- SNPs_in_exons[SNPs_in_exons$Sample.Name %in% c(fib_order,lcl_order),]
+
+#merge with gene annotation
+SNPs_in_exons_anno <- merge(x = SNPs_in_exons, y=gene_transcript, by.x = "transcript", by.y = "Transcript.stable.ID")
+write.table(SNPs_in_exons_anno,file="chr8_dbSNPs_exons_ASE.txt",sep="\t",quote=FALSE, row.names = FALSE, col.names = TRUE)
+```
+
+##Annotate SNPs
+```{r,eval=FALSE}
+#bring in expressed genes
+lcl_exp_chr8 <- read.delim(file=paste0(myPath,"Allele_specific_expression/LCLs/chr8_lcl_exp_genes.txt"), stringsAsFactors = FALSE)
+fib_exp_chr8 <- read.delim(file=paste0(myPath,"Allele_specific_expression/Fibroblasts/chr8_fib_exp_genes.txt"), stringsAsFactors = FALSE)
+
+dat.annot <- SNPs_in_exons_anno
+#restrict to expressed genes for each cell type
+fib_dat.annot<-dat.annot[grep("Fib",dat.annot$cell_type),]
+fib_dat.annot <- fib_dat.annot[fib_dat.annot$Gene.name %in% fib_exp_chr8,]
+fib_dat.annot$Sample.Name <- factor(fib_dat.annot$Sample.Name, levels = fib_order)
+
+lcl_dat.annot<-dat.annot[grep("LCL",dat.annot$cell_type),]
+lcl_dat.annot <- lcl_dat.annot[lcl_dat.annot$Gene.name %in% lcl_exp_chr8,]
+lcl_dat.annot$Sample.Name <- factor(lcl_dat.annot$Sample.Name, levels = lcl_order)
+
+
+pdf("lcl_chr8_skew.pdf", width = 8, height=2)
+ggplot(lcl_dat.annot,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+
+pdf("fib_chr8_skew.pdf", width = 8, height=2)
+ggplot(fib_dat.annot,aes(Sample.Name,max_portion))+
+  geom_violin(fill="#00000040",color="#00000000",size=0.25, scale = "width")+
+  stat_summary(fun.data=data_summary,size=0.08) + 
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  geom_hline(yintercept = 0.8, lty=2, size=0.25) + 
+  ylim(0.49,1.01) + labs(y="Skewing estimate\n(Proportion of reads from maximum allele)", title = " ")
+dev.off()
+```
+
