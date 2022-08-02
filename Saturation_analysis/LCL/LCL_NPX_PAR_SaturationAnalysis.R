@@ -25,7 +25,7 @@ metadata$x_count <- metadata$x_count - 1
 metadata_lcl <- metadata[metadata$karyotype %in% c("X","XX","XXX","XXXX","XXXXY","XXXY","XXY","XXYY","XY","XYY","XYYYY") & metadata$cell_type == "LCL" & metadata$Technical_replicate == "N",]
 
 #bring in normalized read counts per sample/gene
-normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/LCLs/lcl_normCounts_expXgenes.txt"), check.names = FALSE) 
+normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/LCLs/LCL_normCounts_expXgenes.txt"), check.names = FALSE) 
 
 #choose this many samples 100 times
 i <- inputValue[1]
