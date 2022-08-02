@@ -1,6 +1,6 @@
 #This is a script to determine whether I have saturated the analysis.
 inputValue <- commandArgs(trailingOnly = TRUE)
-inputValue <- c(10,100)
+#inputValue <- c(10,100)
 print(as.character(inputValue[1]))
 print(as.character(inputValue[2]))
 
@@ -24,7 +24,7 @@ metadata$x_count <- metadata$x_count - 1
 metadata_fib <- metadata[metadata$karyotype %in% c("X","XX","XXX","XXXX","XXXXY","XXXY","XXY","XXYY","XY","XYY","XYYYY") & metadata$cell_type == "Fib" & metadata$Technical_replicate == "N",]
 
 #bring in normalized read counts per sample/gene
-normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/Fibroblasts/fib_normCounts_expXgenes.txt"), check.names = FALSE)
+normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/Fibroblasts/Fib_normCounts_expXgenes.txt"), check.names = FALSE)
 
 #choose this many samples 100 times
 i <- inputValue[1]
