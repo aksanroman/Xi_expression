@@ -24,7 +24,7 @@ rownames(metadata_lcl_male) <- metadata_lcl_male$sample
 metadata_lcl_male$y_count <- metadata_lcl_male$y_count - 1
 
 #bring in normalized read counts table for expressed NPY genes
-normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/LCLs/lcl_normCounts_expYgenes_males.txt"), check.names = FALSE)
+normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/LCLs/LCL_normCounts_expYgenes_male.txt"), check.names = FALSE)
 
 #create results table
 saturationResults <- NULL
