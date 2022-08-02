@@ -13,11 +13,11 @@ PAR1_genes <- c("AKAP17A","ASMT","ASMTL","CD99","CRLF2","CSF2RA","DHRSX","GTPBP6
 PAR2_genes <- c("VAMP7","WASH6P","IL9R","SPRY3")
 
 # extract normalized count data
-data.lcl <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/lcl_normCounts_expXgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
-data.fib <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/fib_normCounts_expXgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
+data.lcl <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/LCL_normCounts_expXgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
+data.fib <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/Fib_normCounts_expXgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
 
-data.lcl.y <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/lcl_normCounts_expYgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
-data.fib.y <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/fib_normCounts_expYgenes.txt"), check.names = FALSE, stringsAsFactors = FALSE)
+data.lcl.y <- read.delim(file=paste0(myPath,"Linear_regressions/LCLs/LCL_normCounts_expYgenes_all.txt"), check.names = FALSE, stringsAsFactors = FALSE)
+data.fib.y <- read.delim(file=paste0(myPath,"Linear_regressions/Fibroblasts/Fib_normCounts_expYgenes_all.txt"), check.names = FALSE, stringsAsFactors = FALSE)
 
 metadata <- read.delim(file=paste0(myPath,"Linear_regressions/metadata.txt"), stringsAsFactors = FALSE)
 meta.lcl <- metadata[metadata$cell_type == "LCL" & metadata$karyotype %in% c("X","XX","XXX","XXXX","XXXXY","XXXY","XXY","XXYY","XY","XYY","XYYYY") & metadata$Technical_replicate == "N",]
@@ -34,8 +34,8 @@ data.fib.y <- data.fib.y[,meta.fib.y$sample]
 data.lcl.y <- data.lcl.y[meta.lcl.y$sample]
 # note: geneAnno and gene sets loaded through asr_funcs_lite.R
 
-#bring in Balaton consensus XCI annotations
-balaton_XCI_anno <- read.delim(file=paste0(myPath,"Annotations/Balaton_annotations.txt"), stringsAsFactors = FALSE)
+#bring in XCI annotations
+XCI_anno <- read.delim(file=paste0(myPath,"Allele_specific_expression/20220719_public_AR_annotation_lclFib_exp.txt"), stringsAsFactors = FALSE)
 ```
 
 #NPX gene Modeling function
@@ -80,9 +80,9 @@ lcl_xgenes_fix <- lcl_xgenes[! lcl_xgenes %in% c("XIST","PRPS1")] #remove XIST a
 LCL_all_NPX <- fit_NLS_model(data = data.lcl, meta = meta.lcl, genes = lcl_xgenes_fix, )
 LCL_all_NPX_conv <- 	LCL_all_NPX[LCL_all_NPX$converged == 1,]
 LCL_all_NPX_non_conv <- LCL_all_NPX[LCL_all_NPX$converged == 0,]
-    interesting <- LCL_all_NPX_conv[(LCL_all_NPX_conv$a > 0.5 & LCL_all_NPX_conv$a < 1.5) & (LCL_all_NPX_conv$b > 0.25 | LCL_all_NPX_conv$b < -0.25),]
+    interesting <- LCL_all_NPX_conv[(LCL_all_NPX_conv$a > 0.5 & LCL_all_NPX_conv$a < 2) & (LCL_all_NPX_conv$b > 0.25 | LCL_all_NPX_conv$b < -0.25),]
   
-  # pdf(file="lcl_all_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
+pdf(file="lcl_all_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
   ggplot() +
     geom_point(data=LCL_all_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     geom_text_repel(data=LCL_all_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
@@ -93,31 +93,20 @@ LCL_all_NPX_non_conv <- LCL_all_NPX[LCL_all_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8) + ylim(-0.6,1.1) 
-  
-  ggplot() +
-    geom_point(data=LCL_all_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=LCL_all_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0.5,1.5) + ylim(0.25,1.25)
-  # dev.off()
+dev.off()
 ```
 
 ## LCL "Esc" NPX
 ```{r}
-esc_genes_balaton <- balaton_XCI_anno[balaton_XCI_anno$Balaton.consensus.calls %in% c("E","Mostly E"),"Gene"]
-lcl_esc_genes <- intersect(lcl_xgenes_fix, esc_genes_balaton) #30 genes
+esc_genes <- XCI_anno[XCI_anno$Final_XCI_Call %in% c("Escape"),"Gene"]
+lcl_esc_genes <- intersect(lcl_xgenes_fix, esc_genes) 
 
 LCL_esc_NPX <- fit_NLS_model(data = data.lcl, meta = meta.lcl, genes = lcl_esc_genes)
 LCL_esc_NPX_conv <- 	LCL_esc_NPX[LCL_esc_NPX$converged == 1,]
 LCL_esc_NPX_non_conv <- LCL_esc_NPX[LCL_esc_NPX$converged == 0,]
-    interesting <- LCL_esc_NPX_conv[(LCL_esc_NPX_conv$a > 0.5 & LCL_esc_NPX_conv$a < 1.5) & (LCL_esc_NPX_conv$b > 0.25 | LCL_esc_NPX_conv$b < -0.25),]
+    interesting <- LCL_esc_NPX_conv[(LCL_esc_NPX_conv$a > 0.5 & LCL_esc_NPX_conv$a < 2) & (LCL_esc_NPX_conv$b > 0.25 | LCL_esc_NPX_conv$b < -0.25),]
 
-  # pdf(file="lcl_esc_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
+pdf(file="lcl_esc_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
   ggplot() +
     geom_point(data=LCL_esc_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     # geom_text_repel(data=LCL_esc_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
@@ -128,38 +117,26 @@ LCL_esc_NPX_non_conv <- LCL_esc_NPX[LCL_esc_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8) + ylim(-0.6,1.1)
-  
-  ggplot() +
-    geom_point(data=LCL_esc_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=LCL_esc_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0.5,1.5) + ylim(0.25,1.25)
-  # dev.off()
+dev.off()
   
 
 ```
 
-
-## LCL "Silenced" NPX
+## LCL "Subject" NPX
 ```{r}
-sil_genes_balaton <- balaton_XCI_anno[balaton_XCI_anno$Balaton.consensus.calls %in% c("S"),"Gene"]
-lcl_sil_genes <- intersect(lcl_xgenes_fix, sil_genes_balaton) #255 genes
+subj_genes <- XCI_anno[XCI_anno$Final_XCI_Call %in% c("Subject"),"Gene"]
+lcl_subj_genes <- intersect(lcl_xgenes_fix, subj_genes) 
 
-LCL_sil_NPX <- fit_NLS_model(data = data.lcl, meta = meta.lcl, genes = lcl_sil_genes)
-LCL_sil_NPX_conv <- 	LCL_sil_NPX[LCL_sil_NPX$converged == 1,]
-LCL_sil_NPX_non_conv <- LCL_sil_NPX[LCL_sil_NPX$converged == 0,]
-    interesting <- LCL_sil_NPX_conv[(LCL_sil_NPX_conv$a > 0.5 & LCL_sil_NPX_conv$a < 1.5) & (LCL_sil_NPX_conv$b > 0.25 | LCL_sil_NPX_conv$b < -0.25),]
+LCL_subj_NPX <- fit_NLS_model(data = data.lcl, meta = meta.lcl, genes = lcl_subj_genes)
+LCL_subj_NPX_conv <- 	LCL_subj_NPX[LCL_subj_NPX$converged == 1,]
+LCL_subj_NPX_non_conv <- LCL_subj_NPX[LCL_subj_NPX$converged == 0,]
+    interesting <- LCL_subj_NPX_conv[(LCL_subj_NPX_conv$a > 0.5 & LCL_subj_NPX_conv$a < 1.5) & (LCL_subj_NPX_conv$b > 0.25 | LCL_subj_NPX_conv$b < -0.25),]
 
   
-  # pdf(file="lcl_sil_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
+pdf(file="lcl_subj_NPX_model_scatter.pdf", width=2, height=2) #un-comment for PDF
   ggplot() +
-    geom_point(data=LCL_sil_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    # geom_text_repel(data=LCL_sil_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
+    geom_point(data=LCL_subj_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
+    # geom_text_repel(data=LCL_subj_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
     geom_vline(xintercept = 1, lty=2, color="red") +
     theme_classic(base_size = 8) +
     theme(
@@ -167,20 +144,7 @@ LCL_sil_NPX_non_conv <- LCL_sil_NPX[LCL_sil_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8) + ylim(-0.6,1.1)
-  
-  ggplot() +
-    geom_point(data=LCL_sil_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=LCL_sil_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0.5,1.5) + ylim(0.25,1.25)
-  # dev.off()
-  
-
+dev.off()
 ```
 
 
@@ -194,10 +158,10 @@ fib_xgenes_fix <- fib_xgenes[! fib_xgenes %in% c("XIST","MAGED1","NDUFA1","ZNF18
 fib_all_NPX <- fit_NLS_model(data = data.fib, meta = meta.fib, genes = fib_xgenes_fix)
 fib_all_NPX_conv <- 	fib_all_NPX[fib_all_NPX$converged == 1,]
 fib_all_NPX_non_conv <- fib_all_NPX[fib_all_NPX$converged == 0,]
-    interesting <- fib_all_NPX_conv[(fib_all_NPX_conv$b > 0.25 | fib_all_NPX_conv$b < -0.25),]
+interesting <- fib_all_NPX_conv[(LCL_all_NPX_conv$a > 0.5 & fib_all_NPX_conv$a < 2) & (fib_all_NPX_conv$b > 0.25 | fib_all_NPX_conv$b < -0.25),]
 
   
-  # pdf(file="fib_all_NPX_model_scatter.pdf", width=4, height=4)
+pdf(file="fib_all_NPX_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=fib_all_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     geom_text_repel(data=fib_all_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
@@ -208,26 +172,15 @@ fib_all_NPX_non_conv <- fib_all_NPX[fib_all_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8)  + ylim(-0.6,1.1)
-  
-  ggplot() +
-    geom_point(data=fib_all_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=fib_all_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0,2) + ylim(0.25,1.25)
-  # dev.off()
+dev.off()
   
 
 ```
 
 ## fib "Esc" NPX
 ```{r}
-esc_genes_balaton <- balaton_XCI_anno[balaton_XCI_anno$Balaton.consensus.calls %in% c("E","Mostly E"),"Gene"]
-fib_esc_genes <- intersect(fib_xgenes_fix, esc_genes_balaton) #30 genes
+esc_genes <- XCI_anno[XCI_anno$Final_XCI_Call %in% c("Escape"),"Gene"]
+fib_esc_genes <- intersect(fib_xgenes_fix, esc_genes)
 
 fib_esc_NPX <- fit_NLS_model(data = data.fib, meta = meta.fib, genes = fib_esc_genes)
 fib_esc_NPX_conv <- 	fib_esc_NPX[fib_esc_NPX$converged == 1,]
@@ -235,7 +188,7 @@ fib_esc_NPX_non_conv <- fib_esc_NPX[fib_esc_NPX$converged == 0,]
     interesting <- fib_esc_NPX_conv[(fib_esc_NPX_conv$a > 0.5 & fib_esc_NPX_conv$a < 1.5) & (fib_esc_NPX_conv$b > 0.25 | fib_esc_NPX_conv$b < -0.25),]
 
   
-# pdf(file="fib_esc_NPX_model_scatter.pdf", width=2, height=2)
+pdf(file="fib_esc_NPX_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=fib_esc_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     # geom_text_repel(data=fib_esc_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
@@ -246,38 +199,27 @@ fib_esc_NPX_non_conv <- fib_esc_NPX[fib_esc_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8) + ylim(-0.6,1.1)
-  
-  ggplot() +
-    geom_point(data=fib_esc_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=fib_esc_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0.5,1.5) + ylim(0.25,1.25)
-  # dev.off()
+dev.off()
   
 
 ```
 
 
-## fib "Silenced" NPX
+## fib "Subject" NPX
 ```{r}
-sil_genes_balaton <- balaton_XCI_anno[balaton_XCI_anno$Balaton.consensus.calls %in% c("S"),"Gene"]
-fib_sil_genes <- intersect(fib_xgenes_fix, sil_genes_balaton) #255 genes
+subj_genes <- XCI_anno[XCI_anno$Final_XCI_Call %in% c("Subject"),"Gene"]
+fib_subj_genes <- intersect(fib_xgenes_fix, subj_genes) #255 genes
 
-fib_sil_NPX <- fit_NLS_model(data = data.fib, meta = meta.fib, genes = fib_sil_genes)
-fib_sil_NPX_conv <- 	fib_sil_NPX[fib_sil_NPX$converged == 1,]
-fib_sil_NPX_non_conv <- fib_sil_NPX[fib_sil_NPX$converged == 0,]
-    interesting <- fib_sil_NPX_conv[(fib_sil_NPX_conv$a > 0.5 & fib_sil_NPX_conv$a < 1.5) & (fib_sil_NPX_conv$b > 0.25 | fib_sil_NPX_conv$b < -0.25),]
+fib_subj_NPX <- fit_NLS_model(data = data.fib, meta = meta.fib, genes = fib_subj_genes)
+fib_subj_NPX_conv <- 	fib_subj_NPX[fib_subj_NPX$converged == 1,]
+fib_subj_NPX_non_conv <- fib_subj_NPX[fib_subj_NPX$converged == 0,]
+    interesting <- fib_subj_NPX_conv[(fib_subj_NPX_conv$a > 0.5 & fib_subj_NPX_conv$a < 1.5) & (fib_subj_NPX_conv$b > 0.25 | fib_subj_NPX_conv$b < -0.25),]
 
  
-  # pdf(file="fib_sil_NPX_model_scatter.pdf", width=2, height=2)
+pdf(file="fib_subj_NPX_model_scatter.pdf", width=2, height=2)
   ggplot() +
-    geom_point(data=fib_sil_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    # geom_text_repel(data=fib_sil_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
+    geom_point(data=fib_subj_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
+    # geom_text_repel(data=fib_subj_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 30) +
     geom_vline(xintercept = 1, lty=2, color="red") +
     theme_classic(base_size = 8) +
     theme(
@@ -285,21 +227,11 @@ fib_sil_NPX_non_conv <- fib_sil_NPX[fib_sil_NPX$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + xlim(-1.5,8) + ylim(-0.6,1.1)
-  
-  ggplot() +
-    geom_point(data=fib_sil_NPX_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
-    geom_text_repel(data=fib_sil_NPX_conv[rownames(interesting),], mapping = aes(x=a, y=b, label=rownames(interesting)), col="#00000040", size=2, min.segment.length = 0, box.padding = 0, force = 50) +
-    geom_vline(xintercept = 1, lty=2, color="red") +
-    theme_classic(base_size = 8) +
-    theme(
-      plot.title = ggtext::element_markdown(hjust = 0.5),
-      axis.text = element_text(color = "black"), 
-      axis.ticks = element_line(color = "black", size = 0.25), 
-      axis.line = element_line(size = 0.25)) + xlim(0.5,1.5) + ylim(0.25,1.25)
-  # dev.off()
+dev.off()
+```
   
 
-```
+
 #PAR genes 
 ```{r}
 #model as a function of total sex chr number for this purpose
@@ -344,7 +276,7 @@ LCL_PAR_non_conv <- LCL_PAR[LCL_PAR$converged == 0,]
   
   myGreen <- "#1B9E7795"
   
-  # pdf(file="LCL_PAR_model_scatter.pdf", width=2, height=2)
+pdf(file="LCL_PAR_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=LCL_PAR_conv[rownames(LCL_PAR_conv) %in% PAR1_genes,], mapping = aes(x=a, y=b), col=myGreen, stroke=0) +
     geom_point(data=LCL_PAR_conv[rownames(LCL_PAR_conv) %in% PAR2_genes,], mapping = aes(x=a, y=b), col="#1B9E7740", stroke=0) +
@@ -355,7 +287,7 @@ LCL_PAR_non_conv <- LCL_PAR[LCL_PAR$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + ylim(-0.6,1.2) + xlim(0,2)
-  # dev.off()
+ dev.off()
   
   fib_PARgenes <- rownames(data.fib)[rownames(data.fib) %in% c(PAR1_genes, PAR2_genes)]
 
@@ -364,8 +296,7 @@ LCL_PAR_non_conv <- LCL_PAR[LCL_PAR$converged == 0,]
 fib_PAR_conv <- 	fib_PAR[fib_PAR$converged == 1,]
 fib_PAR_non_conv <- fib_PAR[fib_PAR$converged == 0,]
 
-  
-   # pdf(file="fib_PAR_model_scatter.pdf", width=2, height=2)
+pdf(file="fib_PAR_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=fib_PAR_conv[rownames(fib_PAR_conv) %in% PAR1_genes,], mapping = aes(x=a, y=b), col=myGreen, stroke=0) +
     geom_point(data=fib_PAR_conv[rownames(fib_PAR_conv) %in% PAR2_genes,], mapping = aes(x=a, y=b), col="#1B9E7740", stroke=0) +
@@ -376,7 +307,7 @@ fib_PAR_non_conv <- fib_PAR[fib_PAR$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) + ylim(-0.6,1.2) + xlim(0,2)
-  # dev.off()
+dev.off()
 ```
 
 #NPY genes 
@@ -417,7 +348,7 @@ LCL_NPY <- fit_NLS_model_NPY(data = data.lcl.y, meta = meta.lcl.y, genes = lcl_N
 LCL_NPY_conv <- 	LCL_NPY[LCL_NPY$converged == 1,]
 LCL_NPY_non_conv <- LCL_NPY[LCL_NPY$converged == 0,]
 
-  # pdf(file="LCL_NPY_model_scatter.pdf", width=2, height=2)
+pdf(file="LCL_NPY_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=LCL_NPY_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     geom_vline(xintercept = 1, lty=2, color="red") +
@@ -427,7 +358,7 @@ LCL_NPY_non_conv <- LCL_NPY[LCL_NPY$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) +xlim(0,2) + ylim(-0.5,1.4)
-  # dev.off()
+dev.off()
   
  fib_NPYgenes <- rownames(data.fib.y)
 
@@ -436,7 +367,7 @@ fib_NPY_conv <- 	fib_NPY[fib_NPY$converged == 1,]
 fib_NPY_non_conv <- fib_NPY[fib_NPY$converged == 0,]
 
 
-  # pdf(file="fib_NPY_model_scatter.pdf", width=2, height=2)
+pdf(file="fib_NPY_model_scatter.pdf", width=2, height=2)
   ggplot() +
     geom_point(data=fib_NPY_conv, mapping = aes(x=a, y=b), col="#00000040", stroke=0) +
     geom_vline(xintercept = 1, lty=2, color="red") +
@@ -446,7 +377,7 @@ fib_NPY_non_conv <- fib_NPY[fib_NPY$converged == 0,]
       axis.text = element_text(color = "black"), 
       axis.ticks = element_line(color = "black", size = 0.25), 
       axis.line = element_line(size = 0.25)) +xlim(0,2) + ylim(-0.5,1.4)
-  # dev.off()
+dev.off()
 ```
 
 ```{r}
