@@ -24,7 +24,7 @@ rownames(metadata_fib_male) <- metadata_fib_male$sample
 metadata_fib_male$y_count <- metadata_fib_male$y_count - 1
 
 #bring in normalized read counts table for expressed NPY genes
-normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/Fibroblasts/fib_normCounts_expYgenes.txt"), check.names = FALSE)
+normCounts <- read.delim(file=paste0(myPath,"/Linear_regressions/Fibroblasts/Fib_normCounts_expYgenes_male.txt"), check.names = FALSE)
 
 #create results table
 saturationResults <- NULL
