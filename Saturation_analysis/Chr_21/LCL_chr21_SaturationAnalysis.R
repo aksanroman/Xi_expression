@@ -6,8 +6,7 @@ print(as.character(inputValue[1])) #number of samples
 print(as.character(inputValue[2])) #number of iterations
 
 #setpath
-myPath <- "/lab/solexa_page/adrianna/U01_RNAseq/2021_August_Analysis/Paper1_Github"
-#PATH TO GITHUB FILES 
+myPath <- #PATH TO GITHUB FILES 
 
 set.seed(1)
 
