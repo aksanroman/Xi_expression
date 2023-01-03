@@ -1,12 +1,13 @@
 This repository contains code necessary to recreate analyses in: 
 
-San Roman, A.K., Godfrey, A.K., Skaletsky, H., Bellot, D.W., Groff, A.F., Harris, H.L., Blanton, L.V., Hughes, J.F., Brown, L., Phou, S., Buscetta, A., Kruszka, P., Banks, N., Dutra, A., Pak, E., Lasutschinkow, P.C., Keen, C., Davis, S.M., Tartaglia, N.R., Samango-Sprouse, C., Muenke, M., and Page, D.C. (2021) Quantitative analysis of gene expression on the inactive human X chromosome. bioRxiv doi: https://doi.org/10.1101/2021.08.09.455676 
+San Roman, A.K., Godfrey, A.K., Skaletsky, H., Bellot, D.W., Groff, A.F., Harris, H.L., Blanton, L.V., Hughes, J.F., Brown, L., Phou, S., Buscetta, A., Kruszka, P., Banks, N., Dutra, A., Pak, E., Lasutschinkow, P.C., Keen, C., Davis, S.M., Tartaglia, N.R., Samango-Sprouse, C., Muenke, M., and Page, D.C. The human inactive X chromosome modulates expression of the active X chromosome. In press, Cell Genomics
+Previously: bioRxiv doi: https://doi.org/10.1101/2021.08.09.455676 
 
 Each folder contains code and processed data that may be used to recreate one or more figures and tables:  
 Saturation_analysis: Fig. S1
 Model_fitting: Fig. S2
-Linear_regressions: Fig. 2, 3, S3, Tables S2, S4, S5
-Linear_regressions_transcripts: Fig. S5, Table S3
-Microarray_comparison: Fig. S4
-Allele_specific_expression: Fig. 4, Table S6, Note S1
-Gene_constraint: Fig. 5, Tables 2, S7, S8
+Linear_regressions: Fig. 2, 3, S3, S4, S5, S6, S10, S11, Tables S2, S4, S5
+Linear_regressions_transcripts: Fig. S7, S8, Table S3
+Microarray_comparison: Fig. S9
+Allele_specific_expression: Fig. 4, S12, S13, S14, S15, S16, S17, S18, S19, Table S6
+Gene_constraint: Fig. 5, Tables 2, S7
