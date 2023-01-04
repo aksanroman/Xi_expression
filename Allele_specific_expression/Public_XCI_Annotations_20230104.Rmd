@@ -1,0 +1,559 @@
+---
+title: "Publicly Available AR Data"
+output: html_notebook
+---
+
+#set up gene annotation lists
+```{r}
+myPath <-  #ADD PATH TO GITHUB FOLDER
+library(readxl)
+library(tidyverse)
+geneAnno <- read.delim(file=paste0(myPath,"Annotations/geneAnno_proteinCoding_all_20210503.txt"), stringsAsFactors = FALSE) 
+
+#Main "Gene" name will be ensembl104
+colnames(geneAnno)[1] <- "Gene"
+
+geneAnno_x <- geneAnno[geneAnno$chr == "chrX",]
+
+#set up gene name 104 as the main gene name to use!
+geneAnno_x <- geneAnno_x[! duplicated(geneAnno_x$Gene),]
+rownames(geneAnno_x) <- geneAnno_x$Gene
+geneAnno_x <- geneAnno_x[,c("Gene","gene_id.104","gene_type.104","chr","start","stop","gene_name.84","gene_id.84","gene_type.84")]
+colnames(geneAnno_x) <- c("Gene","gene_id","type","chr","start","stop","gene_name.84","gene_id.84","gene_type.84")
+
+PAR1_genes <- geneAnno_x[geneAnno_x$start < 2691190,]$Gene
+
+#common gene mixups
+mixup_genes_curated <- as.data.frame(matrix(data = c("HDHD1","PUDP",
+                                                     "HDHD1A","PUDP",
+                                             "KAL1","ANOS1",
+                                             "AC002365.1","CLDN34",
+                                             "GPR64","ADGRG2",
+                                             "CXorf22","CFAP47",
+                                             "TM4SF2","RP5-972B16.2",
+                                             "CXorf27","H2AP",
+                                             "KCNE1L","KCNE5",
+                                             "CXorf64","PRR32",
+                                             "MST4","STK26",
+                                             "GPR112","ADGRG4",
+                                             "PHF16","JADE3",
+                                             "MTCP1NB","CMC4", 
+                                             "ZNF673","KRBOX4",
+                                             "LOC550643","NBDY",
+                                             "MCART6","SLC25A53",
+                                             "CXorf41","DNAAF6",
+                                             "CXorf59","CFAP47",
+                                             "FLJ44635","NHSL2",
+                                             "ITIH5L","ITIH6",
+                                             "CXorf26","PBDC1",
+                                             "ANKRD58","SOWAHD",
+                                             "FAM123B","AMER1",
+                                             "FAM70A","TMEM255A",
+                                             "CXorf30","CFAP47",
+                                             "ODZ1","TENM1",
+                                             "SMEK3P","PPP4R3C",
+                                             "FAM48B1","SUPT20HL1",
+                                              "FAM48B2","SUPT20HL2",
+                                             "CXorf51","CXorf51A",
+                                             "CT45A4","CT45A3",
+                                             "CXorf1","SLITRK2",
+                                             "CXorf61","CT83",
+                                              "GAGE2B", "GAGE2A",
+                                             "GAGE2C","GAGE12F",
+                                             "GAGE2D","GAGE12F",
+                                             "GAGE4","GAGE12G",
+                                             "GAGE5","XAGE5",
+                                             "GAGE6","GAGE12G",
+                                             "GAGE7","GAGE12G",
+                                             "GAGE8","GAGE2A",
+                                             "GAGE12I","GAGE12G",
+                                             "SPANXB2","SPANXB1",
+                                             "SPANXF","SPANXB1",
+                                             "LOC644538","SMIM10",
+                                             "LOC100132963","SMIM9",
+                                             "LOC100329135","TRPC5OS",
+                                             "LOC100129520","TEX13C",
+                                             "LOC347411","MPC1L",
+                                             "LOC100288814","CLDN34",
+                                             "LOC100287428","PNMA6A",
+                                             "CXorf48","CT55",
+                                             "CXorf69","SMIM10",
+                                             "VCX-8r","VCX3A",
+                                             "XAGE1D","XAGE1B",
+                                             "XAGE1","XAGE1B",
+                                             "PCDHX","PCDH11X",
+                                             "SPANXE","SPANXD",
+                                             "PNMA6C","PNMA6A",
+                                             "CXorf68","SMIM9",
+                                             "CXorf15","TXLNG",
+                                             "MAP3K7IP3","TAB3",
+                                             "NCRNA00182","FTX",
+                                             "CXorf39","FAM199X",
+                                             "FLJ30058","ARHGAP36",
+                                             "ARD1A","NAA10",
+                                             "LOC100303728","UBE2A",
+                                             "38961","SEPTIN6",
+                                             "DNASE1L1|RPL10","DNASE1L1",
+                                             "GS1-358P8.4","PDK3",
+                                             "MAP3K15|PDHA1","MAP3K15",
+                                             "NDUFA1|RNF113A","NDUFA1",
+                                             "NDUFB11|RBM10","NDUFB11"
+                                             ),ncol = 2,byrow = TRUE))
+
+colnames(mixup_genes_curated) <- c("old","current")
+#gene name changes between v84 and v104 - use v104!!
+v84.v104 <- geneAnno[,c("gene_name.84","Gene")]
+v84.v104.change <- na.omit(v84.v104[!v84.v104$gene_name.84 == v84.v104$Gene,]) #57 genes
+colnames(v84.v104.change) <- c("old","current")
+
+mixup_genes <- rbind(mixup_genes_curated,v84.v104.change)
+
+mixup_genes$old <- as.character(mixup_genes$old)
+mixup_genes$current <- as.character(mixup_genes$current)
+rownames(mixup_genes) <- mixup_genes$old
+```
+
+#XCI metrics
+##Balaton
+```{r}
+#bring in Balaton 2015 XCI consensus list
+#Download table S1 from Balaton et al 2015 and read in
+balaton_data <- read_excel(paste0(myPath,"PATH TO BALATON DATA"))[,c(1,2,4:7,16,17,21)]
+colnames(balaton_data) <- c("Gene","Balaton.consensus.calls","Carrel_hybrids","Carrel_SNPs","Cotton_AI","Cotton_DNAm","Domain_categories","Other_results","Alt_gene_name")
+
+balaton_data <- data.frame(balaton_data,stringsAsFactors = FALSE)
+
+balaton_data <- balaton_data[! duplicated(balaton_data$Gene),]
+row.names(balaton_data) <- balaton_data$Gene
+
+balaton_mixup <- balaton_data[balaton_data$Gene %in% mixup_genes$old,] #76 genes
+balaton_data[balaton_data$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[balaton_data[balaton_data$Gene %in% mixup_genes$old,"Gene"], "current"]
+
+
+#Any balaton genes not in annotation?
+# balaton_data_notAnno <- balaton_data[! balaton_data$Gene %in% geneAnno_x$Gene,]
+
+#Change status of XIST to "E"
+balaton_data["XIST","Balaton.consensus.calls"] <- "E"
+
+#Change XG to "E"
+balaton_data["XG","Balaton.consensus.calls"] <- "E"
+
+# balaton_int <- intersect(balaton_data$Gene, c(geneAnno_x$Gene)) #785 overlap --> rest aren't on the annotation list.
+
+balaton_data$Balaton_only_methylation_data <- FALSE
+balaton_data[is.na(balaton_data$Carrel_SNPs) & is.na(balaton_data$Carrel_hybrids) & is.na(balaton_data$Cotton_AI) ,"Balaton_only_methylation_data"] <- TRUE
+
+chrX_Balaton <- merge(x=geneAnno_x, y=balaton_data[,c(1:6,10)], by.x="Gene", by.y="Gene", all.x=TRUE)
+
+chrX_Balaton <- chrX_Balaton[! duplicated(chrX_Balaton$Gene),]
+chrX_Balaton[is.na(chrX_Balaton$Balaton.consensus.calls),"Balaton.consensus.calls"] <- "No call"
+
+```
+
+##Cotton ASE data!
+```{r}
+#Cotton 2013: SNP chip in LCLs and fibroblasts with complete or partially skewed XCI 
+#Assay metric: %Xi which is percentage of Xi expression compared to Xa expression per individual for 409 genes.
+#"Using the cutoffs first established by [10], genes in which 78 to 100% of informative females escaped from XCI were classified as escaping from XCI, genes in which 0 to 22% of informative females escaped from XCI were classified as being subject to XCI, and genes in between were defined as variably escaping from XCI."
+#Download Cotton Additional File 7 .xlsx
+cotton_ase <- data.frame(read_excel("PATH TO COTTON FILE 7", skip = 4),stringsAsFactors = FALSE)
+colnames(cotton_ase) <- c("Gene", "training_set","num_inf_females","pct_females_escape","Cotton_XCI_status","Cotton_AR","Cotton_AR_SD" )
+rownames(cotton_ase) <- cotton_ase$Gene 
+
+#restrict to genes with five informative females!
+cotton_ase_five <- cotton_ase[cotton_ase$num_inf_females > 4,]#424 genes
+cotton_ase_five <- cotton_ase_five[! duplicated(cotton_ase_five$Gene),]
+
+cotton_mixup <- cotton_ase_five[cotton_ase_five$Gene %in% mixup_genes$old,] #36 genes
+cotton_ase_five[cotton_ase_five$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[cotton_ase_five[cotton_ase_five$Gene %in% mixup_genes$old,"Gene"], "current"]
+
+#Calculate 95% CI:
+cotton_ase_five$Cotton_AR_SD <- as.numeric(cotton_ase_five$Cotton_AR_SD)
+cotton_ase_five$Cotton_95ci_lo <- cotton_ase_five$Cotton_AR - (1.96 * (cotton_ase_five$Cotton_AR_SD / sqrt(cotton_ase_five$num_inf_females)))
+
+cotton_ase_five$Cotton_Esc_myCall <- NA
+
+#Call as subject if or 95% CI is less than 0 (not robust Xi signal), or if AR value is lower than 0.1 (not robust Xi signal). 
+cotton_ase_five[(! is.na(cotton_ase_five$Cotton_95ci_lo) & cotton_ase_five$Cotton_95ci_lo <= 0) |  # conf interval below 0
+                 (! is.na(cotton_ase_five$Cotton_AR) & cotton_ase_five$Cotton_AR < 0.1) ,"Cotton_Esc_myCall"] <- "Subject" #AR below 0.1
+
+#Call as escape if 95% CI is greater than 0 AND if AR value is >= than 0.1 
+cotton_ase_five[(! is.na(cotton_ase_five$Cotton_95ci_lo) & cotton_ase_five$Cotton_95ci_lo > 0 & 
+                   cotton_ase_five$Cotton_AR >= 0.1),
+                "Cotton_Esc_myCall"] <- "Escape"
+
+ # cotton_int <- intersect(cotton_ase_five$Gene, c(chrX_Balaton$Gene)) #409 overlap
+ # cotton_only <- setdiff(cotton_ase_five$Gene, c(chrX_Balaton$Gene)) #13 don't match! --> all pseudogenes or lncRNAs!!!
+
+chrX_Cotton <- merge(x=chrX_Balaton, y=cotton_ase_five[,c(1,3:9)], 
+                     by="Gene", all.x=TRUE)
+
+chrX_Cotton <- chrX_Cotton[! duplicated(chrX_Cotton$Gene),]
+```
+
+##Tukiainen ASE
+```{r} 
+#### Skewed XCI throughout body ####
+library(data.table)
+#One individual with skewed XCI throughout body
+#Metric is Xi vs total - not exp is 0, equal = 0.5...divide by 0.5 to get percent Xi
+#DOWNLOAD TUKIAINEN S5 .xlsx
+tuk_ASE <- data.frame(read_excel("PATH TO TUKIAINEN TABLE S5"), stringsAsFactors = FALSE) #2011 observations
+
+#get LCL data only...(no fib data from this person!)
+tuk_ASE_LCL <- tuk_ASE[tuk_ASE$Tissue == "LCL",] #119 genes
+colnames(tuk_ASE_LCL) <- c("Gene", "ENSEMBL_ID","chr.pos" ,"Tissue",
+                          "ref_count","nonref_count","total_count","Xa_count",
+                          "Xi_count","Xi_pct_expn", "pval","Tuk_skew_padj","Tuk_skew_esc_XCI")
+
+#In their data, called as sig if padj < 0.05.
+
+
+tuk_ASE_LCL$minAllele <- apply(X= tuk_ASE_LCL[,c("Xa_count","Xi_count")], MARGIN=1, FUN=min)
+tuk_ASE_LCL$maxAllele <- apply(X= tuk_ASE_LCL[,c("Xa_count","Xi_count")], MARGIN=1, FUN=max)
+tuk_ASE_LCL$Tuk_Skew_AR <- tuk_ASE_LCL$minAllele / tuk_ASE_LCL$maxAllele
+tuk_ASE_LCL[tuk_ASE_LCL$Gene == "XIST", "Tuk_Skew_AR"] <- 1 - tuk_ASE_LCL[tuk_ASE_LCL$Gene == "XIST", "Tuk_Skew_AR"]
+
+# tuk_ASE_LCL_mixup <- tuk_ASE_LCL[tuk_ASE_LCL$Gene %in% mixup_genes$old,] #2 genes
+tuk_ASE_LCL[tuk_ASE_LCL$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[tuk_ASE_LCL[tuk_ASE_LCL$Gene %in% mixup_genes$old,"Gene"], "current"]
+
+# tuk_ASE_LCL_missing <- tuk_ASE_LCL[! tuk_ASE_LCL$Gene %in% chrX_Cotton$Gene,] #2 lncRNAs
+
+#### SC RNAseq ####
+#single cell RNAseq - exclude data from 24A, which is the dendritic cells - use the others that are from LCLs. 
+tuk_SC <- data.frame(read_excel(path = "PATH TO TUKIAINEN S8"),stringsAsFactors = FALSE)
+colnames(tuk_SC) <- c("Sample","Gene","Gene.ID","Xa.count","Xi.count","Total.count","Xa.to.total.expression","Lower.CI", "Upper.CI","P.value","Tuk_SC_q.value")   
+
+#Calculate AR
+tuk_SC$minAllele <- apply(X=tuk_SC[,c("Xa.count","Xi.count")], MARGIN=1 , FUN=min)
+tuk_SC$maxAllele <- apply(X=tuk_SC[,c("Xa.count","Xi.count")], MARGIN=1 , FUN=max)
+tuk_SC$Tuk_SC_AR <- tuk_SC$minAllele/ tuk_SC$maxAllele
+
+#Adjust XIST
+tuk_SC[tuk_SC$Gene == "XIST","Tuk_SC_AR"] <- 1 - (tuk_SC[tuk_SC$Gene == "XIST","minAllele"]/tuk_SC[tuk_SC$Gene == "XIST","maxAllele"]) 
+
+# tuk_SC_mixup <- tuk_SC[tuk_SC$Gene %in% mixup_genes$old,] #7 genes
+tuk_SC[tuk_SC$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[tuk_SC[tuk_SC$Gene %in% mixup_genes$old,"Gene"] , "current"]
+
+# tuk_SC_missing <- tuk_SC[! tuk_SC$Gene %in% chrX_Cotton$Gene,] #1 readthrough gene
+
+#remove samples from 24A
+tuk_SC <- tuk_SC[tuk_SC$Sample != "24A",]
+tuk_SC <- as.data.table(tuk_SC)
+
+#For each gene, how many informative samples?
+tuk_SC_reshape_qval <- reshape2::dcast(data = tuk_SC,formula = Gene~Sample,fun.aggregate = mean,value.var = "Tuk_SC_q.value")
+rownames(tuk_SC_reshape_qval) <- tuk_SC_reshape_qval$Gene
+tuk_SC_reshape_qval <- tuk_SC_reshape_qval[,2:4]
+tuk_SC_reshape_qval[tuk_SC_reshape_qval == "NaN"] <- NA
+tuk_SC_reshape_qval$Tuk_SC_sig_samples <- rowSums(tuk_SC_reshape_qval[,1:3] < 0.05, na.rm = TRUE)
+
+
+tuk_SC_reshape <- reshape2::dcast(data = tuk_SC,formula = Gene~Sample,fun.aggregate = mean,value.var = "Tuk_SC_AR")
+rownames(tuk_SC_reshape) <- tuk_SC_reshape$Gene
+tuk_SC_reshape <- tuk_SC_reshape[,2:4]
+tuk_SC_reshape[tuk_SC_reshape == "NaN"] <- NA
+tuk_SC_reshape$Tuk_SC_inf_samples <- rowSums(! is.na(tuk_SC_reshape[,1:3]))
+tuk_SC_reshape$Tuk_SC_sig_samples <- tuk_SC_reshape_qval[rownames(tuk_SC_reshape),"Tuk_SC_sig_samples"]
+tuk_SC_reshape$Tuk_SC_pct_sig <- tuk_SC_reshape$Tuk_SC_sig_samples/tuk_SC_reshape$Tuk_SC_inf_samples
+
+#### Merge to call XCI status ####
+
+#Merge together Tuk_Skew and Tuk_SC to call XCI status
+Tuk_SC_Skew <- merge(x=tuk_ASE_LCL[,c("Gene","total_count","Tuk_Skew_AR","Tuk_skew_padj")], y=tuk_SC_reshape, by.x="Gene", by.y=0, all=TRUE)
+
+
+#Gene informative if there's at least one sample in SC and skew call; or >1 SC sample.
+Tuk_SC_Skew <- Tuk_SC_Skew[(!is.na(Tuk_SC_Skew$Tuk_SC_inf_samples) &
+                              Tuk_SC_Skew$Tuk_SC_inf_samples > 1) | 
+                             (!is.na(Tuk_SC_Skew$Tuk_SC_inf_samples) &
+                                Tuk_SC_Skew$Tuk_SC_inf_samples == 1 &
+                               ! is.na(Tuk_SC_Skew$Tuk_Skew_AR) ),] #82 inf genes
+
+#Get mean across all samples
+Tuk_SC_Skew$Tuk_AR <- apply(X=Tuk_SC_Skew[,c("Tuk_Skew_AR", "Y014", "Y035", "Y117")], MARGIN = 1, FUN = function(x){mean(x, na.rm=TRUE)})
+
+#Call escape with high confidence if there are more than one informative samples for the gene AND all of them are significant!
+Tuk_SC_Skew$Tuk_myCall <- NA
+
+#If neither is sig --> Subject
+Tuk_SC_Skew[((!is.na(Tuk_SC_Skew$Tuk_skew_padj) & Tuk_SC_Skew$Tuk_skew_padj >= 0.05) |
+              is.na(Tuk_SC_Skew$Tuk_skew_padj)) &
+              !is.na(Tuk_SC_Skew$Tuk_SC_pct_sig) & Tuk_SC_Skew$Tuk_SC_pct_sig == 0,
+            "Tuk_myCall"] <- "Subject"
+
+Tuk_SC_Skew[!(((!is.na(Tuk_SC_Skew$Tuk_skew_padj) & Tuk_SC_Skew$Tuk_skew_padj >= 0.05) |
+              is.na(Tuk_SC_Skew$Tuk_skew_padj)) &
+              !is.na(Tuk_SC_Skew$Tuk_SC_pct_sig) & Tuk_SC_Skew$Tuk_SC_pct_sig == 0),
+            "Tuk_myCall"] <- "Escape"
+
+chrX_Tuk <- merge(x=chrX_Cotton, by="Gene", y=Tuk_SC_Skew, all.x=TRUE)
+```
+
+##Garieri single cell
+```{r}
+#### GARIERI 2018 ####
+#Garieri 2018 allele-specific single cell RNA-seq - 
+#We investigated XCI at single-cell resolution combining deep single-cell RNA sequencing with whole-genome sequencing to examine allelic-specific expression in 935 primary fibroblast and 48 lymphoblastoid single cells from five female individuals.
+#metric is allelic ratio - Xa to Xa (1 = inactive, 0 = full escape) Relaxed set, AR <= 0.95 in at least one indiv. is "escapee". 296 genes in at least 1 indiv; 203 in at least 2 indiv.
+
+#"To estimate the allelic ratio (AR) for each gene in each cell, we calculated the ratio of the number of reads supporting the cell-specific expressed haplotypes over the total number of reads covering all SNVs of a gene (more details in SI Appendix, Materials and Methods). Fully inactivated genes displayed an AR equal to 1. In the relaxed discovery set of escapee genes, putative escapees were defined as having an AR ≤ 0.95 in at least one individual."
+#For each gene on the X chromosome, the aggregate monoallelic ratio (AR) per cell was calculated by averaging the allelic ratio of the reads covering the respective heterozygous sites (AR = sum of number of reads from the active X allele / total SNV reads; 0≤AR≤1). 
+
+
+garieri_s3 <- data.frame(read_excel("PATH TO GARIERI ED3"), stringsAsFactors = FALSE)
+garieri_s3[,c(8:19)] <- apply(X=garieri_s3[,c(8:19)], MARGIN = 2, FUN = as.numeric)
+
+#Remove genes with no call in any dataset!
+# garieri_s3_removed <- garieri_s3[!((garieri_s3$Individual.1_nobs == 0 | is.na(garieri_s3$Individual.1_nobs)) & 
+#                                   (garieri_s3$Individual.2_nobs == 0 | is.na(garieri_s3$Individual.2_nobs)) & 
+#                                   (garieri_s3$Individual.3_nobs == 0 | is.na(garieri_s3$Individual.3_nobs)) & 
+#                                   (garieri_s3$Individual.4_nobs == 0 | is.na(garieri_s3$Individual.4_nobs)) & 
+#                                   (garieri_s3$Individual.5_fibro_nobs == 0 | is.na(garieri_s3$Individual.5_fibro_nobs))),]
+
+garieri_s3_rem <- garieri_s3[!((is.na(garieri_s3$Individual.1_AR)) & 
+                                  ( is.na(garieri_s3$Individual.2_AR)) & 
+                                  (is.na(garieri_s3$Individual.3_AR)) & 
+                                  (is.na(garieri_s3$Individual.4_AR)) & 
+                                  (is.na(garieri_s3$Individual.5_.fibro_AR))),]
+                                   
+                                   
+
+garieri_ase <- garieri_s3_rem[,c("GENE.NAME","Individual.1_AR","Individual.2_AR","Individual.3_AR","Individual.4_AR","Individual.5_.fibro_AR","single.cell.inactivation.status.in.fibroblasts")]
+
+colnames(garieri_ase) <- c("Gene","ind1_AR","ind2_AR","ind3_AR","ind4_AR","ind5_AR_fib","Garieri_XCI_status")
+
+
+rownames(garieri_ase) <- garieri_ase$Gene
+# #Values below 0.5 - shouldn't happen! ...it's the opposite ratio --> subtract from 1!
+garieri_ase[! is.na(garieri_ase$ind1_AR) & garieri_ase$ind1_AR < 0.5,"ind1_AR"] <- 1 - garieri_ase[! is.na(garieri_ase$ind1_AR) & garieri_ase$ind1_AR < 0.5,"ind1_AR"]
+garieri_ase[! is.na(garieri_ase$ind2_AR) & garieri_ase$ind2_AR < 0.5,"ind2_AR"] <- 1 - garieri_ase[! is.na(garieri_ase$ind2_AR) & garieri_ase$ind2_AR < 0.5,"ind2_AR"]
+garieri_ase[! is.na(garieri_ase$ind3_AR) & garieri_ase$ind3_AR < 0.5,"ind3_AR"] <- 1 - garieri_ase[! is.na(garieri_ase$ind3_AR) & garieri_ase$ind3_AR < 0.5,"ind3_AR"]
+garieri_ase[! is.na(garieri_ase$ind4_AR) & garieri_ase$ind4_AR < 0.5,"ind4_AR"] <- 1 - garieri_ase[! is.na(garieri_ase$ind4_AR) & garieri_ase$ind4_AR < 0.5,"ind4_AR"]
+garieri_ase[! is.na(garieri_ase$ind5_AR_fib) & garieri_ase$ind5_AR_fib < 0.5,"ind5_AR_fib"] <- 1 - garieri_ase[! is.na(garieri_ase$ind5_AR_fib) & garieri_ase$ind5_AR_fib < 0.5,"ind5_AR_fib"]
+
+
+# garieri_ase[! is.na(garieri_ase$ind1_AR) & garieri_ase$ind1_AR < 0.5,"ind1_AR"] <- NA
+# garieri_ase[! is.na(garieri_ase$ind2_AR) & garieri_ase$ind2_AR < 0.5,"ind2_AR"] <- NA
+# garieri_ase[! is.na(garieri_ase$ind3_AR) & garieri_ase$ind3_AR < 0.5,"ind3_AR"] <- NA
+# garieri_ase[! is.na(garieri_ase$ind4_AR) & garieri_ase$ind4_AR < 0.5,"ind4_AR"] <- NA
+# garieri_ase[! is.na(garieri_ase$ind5_AR_fib) & garieri_ase$ind5_AR_fib < 0.5,"ind5_AR_fib"] <- NA
+
+#Convert data to AR:
+gar_fun <- function(x){
+  if(! is.na(x)){
+      y <- (1/x) - 1
+  } else { y <- NA}
+      return(y)
+}
+garieri_ase[,c(2:6)] <- apply(X = garieri_ase[,c(2:6)], MARGIN = c(1,2), FUN = gar_fun)
+garieri_ase["XIST",c(2:6)] <- 1 - garieri_ase["XIST",c(2:6)]
+garieri_ase$num_inf_samples <- rowSums(! is.na(garieri_ase[,c(2:6)]))
+garieri_ase$num_sig_samples <- rowSums(garieri_ase[,c(2:6)] > gar_fun(0.95), na.rm = TRUE)
+garieri_ase$pct_sig_samples <- garieri_ase$num_sig_samples / garieri_ase$num_inf_samples
+garieri_ase[garieri_ase$pct_sig_samples == "NaN","pct_sig_samples"] <- NA
+garieri_ase$Garieri_AR <- apply(X=garieri_ase[,c(2:6)], MARGIN = 1, FUN = mean, na.rm=TRUE)
+garieri_ase[garieri_ase$Garieri_AR == "NaN","Garieri_AR"] <- NA
+
+#Restrict to samples with at least 2 calls to be considered "informative"
+garieri_ase <- garieri_ase[garieri_ase$num_inf_samples > 1,]
+
+garieri_ase$Garieri_myCall <- "Subject"
+
+#Escape --> At least some are significant
+garieri_ase[garieri_ase$pct_sig_samples > 0 &
+              garieri_ase$Garieri_AR >= 0.1,"Garieri_myCall"] <- "Escape"
+
+# garieri_calc_mixup <- garieri_calc[garieri_calc$Gene %in% mixup_genes$old,] #5 genes
+garieri_ase[garieri_ase$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[garieri_ase[garieri_ase$Gene %in% mixup_genes$old,"Gene"] , "current"]
+
+# garieri_missing <- garieri_calc[! garieri_calc$Gene %in% chrX_Cotton$Gene,] #8 genes <- lncRNAs
+
+#Add to Chr X anno
+chrX_Garieri <- merge(x=chrX_Tuk, by="Gene", y=garieri_ase[,c(1,7:12)], all.x=TRUE)
+```
+
+##Sauteraud Geuvadis ASE
+```{r}
+#Sauteraud et al 2021 looks at AR in the Geuvadis data combining genome-seq and RNA-seq. Informative genes have signal in at least 10 of 136 samples with skewed XCI.
+#Escape genes were expressed from the inactive X in >75% of individuals; genes that escape in <25% of the individuals were deemed X-inactivated; and those that escape in 25%–75% of the individuals were classified as variable escape genes.
+#Data is from their suppl table S4
+sauteraud_ASE <- data.frame(read_excel("PATH TO SAUTERAUD S4"),stringsAsFactors = FALSE)
+sauteraud_ASE_tenSamp <- sauteraud_ASE[sauteraud_ASE$Number.of.samples > 9,] #215 genes
+sauteraud_ASE_use <- sauteraud_ASE_tenSamp[,c("Gene","Mean.Xi.Expression","XCI.status")]
+colnames(sauteraud_ASE_use) <- c("Gene","Sauteraud_AR","Sauteraud_XCI.status")
+
+#Get individual Sauteraud samples
+saut_all_data <- excel_sheets("PATH TO SAUTERAUD S5")
+saut_sheets = lapply(setNames(saut_all_data, saut_all_data),
+                    function(x) read_excel("PATH TO SAUTERAUD S5", sheet=x))
+
+saut_sheets <- saut_sheets[2:217]
+Sauteraud_indiv_samp_data <- bind_rows(saut_sheets, .id="Sheet")[,c(2:13)]
+
+Sauteraud_sample_skewing <- data.frame(Sauteraud_indiv_samp_data[! duplicated(Sauteraud_indiv_samp_data$sample),c("sample","Skewing")])
+Sauteraud_sample_skewing_use <- Sauteraud_sample_skewing[Sauteraud_sample_skewing$Skewing <= 0.25,]
+rownames(Sauteraud_sample_skewing_use) <- Sauteraud_sample_skewing_use$sample
+
+Sauteraud_indiv_samp_data_use <- Sauteraud_indiv_samp_data[Sauteraud_indiv_samp_data$sample %in% Sauteraud_sample_skewing_use$sample,]
+colnames(Sauteraud_indiv_samp_data_use) <- c("sample","Gene","XCI_status","Reads_1","Reads_2",
+                                             "Total","Num_SNPs",      "Num_training_genes", "Skewing",
+                                             "Allelic_ratio","P.value","Xi-expr")                  
+Sauteraud_indiv_samp_data_use$Min_reads <- apply(X = Sauteraud_indiv_samp_data_use[,c("Reads_1","Reads_2")], MARGIN = 1, FUN = min ) 
+Sauteraud_indiv_samp_data_use$Max_reads <- apply(X = Sauteraud_indiv_samp_data_use[,c("Reads_1","Reads_2")], MARGIN = 1, FUN = max ) 
+Sauteraud_indiv_samp_data_use$Sauteraud_AR <- Sauteraud_indiv_samp_data_use$Min_reads / Sauteraud_indiv_samp_data_use$Max_reads
+get_Adj_AR <- function(myAR,t){
+  (myAR - (myAR * t) - t) / (1 - t - (myAR * t))
+}
+Sauteraud_indiv_samp_data_use[Sauteraud_indiv_samp_data_use$Gene == "XIST", "Sauteraud_AR"] <- 1 - Sauteraud_indiv_samp_data_use[Sauteraud_indiv_samp_data_use$Gene == "XIST", "Sauteraud_AR"]
+Sauteraud_indiv_samp_data_use$Sauteraud_AR_adj <- get_Adj_AR(myAR = Sauteraud_indiv_samp_data_use$Sauteraud_AR, Sauteraud_indiv_samp_data_use$Skewing)
+
+Sauteraud_indiv_samp_data_use[Sauteraud_indiv_samp_data_use$Sauteraud_AR_adj < 0, "Sauteraud_AR_adj"] <- 0
+
+#For t.test use the raw AR 
+Sauteraud_reshape_AR <- reshape2::dcast(data = Sauteraud_indiv_samp_data_use,formula = Gene~sample,fun.aggregate = mean,value.var = "Sauteraud_AR")
+rownames(Sauteraud_reshape_AR) <- Sauteraud_reshape_AR$Gene
+Sauteraud_reshape_AR <- Sauteraud_reshape_AR[,2:137]
+Sauteraud_reshape_AR[Sauteraud_reshape_AR == "NaN"] <- NA
+Sauteraud_reshape_AR$Sauteraud_inf_samples <- rowSums(! is.na(Sauteraud_reshape_AR))
+
+Sauteraud_reshape_AR_10samp <- Sauteraud_reshape_AR[Sauteraud_reshape_AR$Sauteraud_inf_samples > 9,] #215 genes with at least 10 samples.
+
+Sauteraud_reshape_AR_10samp$AR_p.value <- NA
+Sauteraud_reshape_AR_10samp$AR_ci95_low <- NA
+for(myRow in rownames(Sauteraud_reshape_AR_10samp)){
+  # myRow <- "GTPBP6"
+  my_table <- na.omit(data.frame("AR" = t(Sauteraud_reshape_AR_10samp[myRow,]),"skew" = Sauteraud_sample_skewing_use[colnames(Sauteraud_reshape_AR_10samp),"Skewing"]))
+  colnames(my_table) <- c("AR","skew")
+    my_t <- t.test(x=my_table$AR,y=my_table$skew, paired = TRUE, alternative = "greater")
+  Sauteraud_reshape_AR_10samp[myRow,"AR_p.value"] <-  my_t$p.value
+  Sauteraud_reshape_AR_10samp[myRow,"AR_ci95_low"] <- my_t$conf.int[1]
+}
+
+Sauteraud_reshape_AR_10samp$AR_raw_mean <- apply(X=Sauteraud_reshape_AR_10samp[,1:136], FUN = function(x){mean(x,na.rm=TRUE)}, MARGIN = 1)
+
+#Get mean AR_adj
+Sauteraud_reshape_AR_Adj <- reshape2::dcast(data = Sauteraud_indiv_samp_data_use,formula = Gene~sample,fun.aggregate = mean,value.var = "Sauteraud_AR_adj")
+rownames(Sauteraud_reshape_AR_Adj) <- Sauteraud_reshape_AR_Adj$Gene
+Sauteraud_reshape_AR_Adj <- Sauteraud_reshape_AR_Adj[,2:137]
+Sauteraud_reshape_AR_Adj[Sauteraud_reshape_AR_Adj == "NaN"] <- NA
+
+Sauteraud_reshape_AR_Adj_10samp <- Sauteraud_reshape_AR_Adj[rownames(Sauteraud_reshape_AR_10samp),]
+Sauteraud_AR_adj_mean <- apply(X=Sauteraud_reshape_AR_Adj_10samp[,c(1:136)], FUN = function(x){mean(x,na.rm=TRUE)}, MARGIN=1)
+
+Sauteraud_data_summary <- Sauteraud_reshape_AR_10samp[,137:140]
+Sauteraud_data_summary$AR_adj_mean <- Sauteraud_AR_adj_mean[rownames(Sauteraud_data_summary)]
+Sauteraud_data_summary$Sauteraud_AR_p.adj <- p.adjust(p = Sauteraud_data_summary$AR_p.value, method = "BH")
+Sauteraud_data_summary$Gene <- rownames(Sauteraud_data_summary)
+
+#Call 
+Sauteraud_data_summary$Sauteraud_myCall <- "Subject"
+
+#Escape have sig p-value
+Sauteraud_data_summary[Sauteraud_data_summary$Sauteraud_AR_p.adj < 0.01, "Sauteraud_myCall"] <- "Escape"
+
+#Need to figure out which genes aren't going to match my list
+# Sauteraud_mixup <- Sauteraud_data_summary[Sauteraud_data_summary$Gene %in% mixup_genes$old,] #14 genes
+
+Sauteraud_data_summary[Sauteraud_data_summary$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[Sauteraud_data_summary[Sauteraud_data_summary$Gene %in% mixup_genes$old,"Gene"] , "current"]
+
+sauteraud_ASE_use[sauteraud_ASE_use$Gene %in% mixup_genes$old,"Gene"] <- mixup_genes[sauteraud_ASE_use[sauteraud_ASE_use$Gene %in% mixup_genes$old,"Gene"] , "current"]
+
+Sauteraud_data_summary_notMatch <- Sauteraud_data_summary[! Sauteraud_data_summary$Gene %in% chrX_Cotton$Gene,] #just lncrnas
+
+
+ChrX_anno_saut_1 <- merge(x=chrX_Garieri, by.x="Gene", y=sauteraud_ASE_use, by.y="Gene", all.x=TRUE)
+ChrX_anno_saut_2 <- merge(x=ChrX_anno_saut_1, by.x="Gene", y=Sauteraud_data_summary[,c("Gene","Sauteraud_AR_p.adj","Sauteraud_myCall")], by.y="Gene", all.x=TRUE)
+
+ChrX_anno_saut_2 <- ChrX_anno_saut_2[! duplicated(ChrX_anno_saut_2$Gene),]
+```
+
+##XCI calculations
+```{r}
+public_AR <- ChrX_anno_saut_2
+public_AR$Avg_AR <- apply(X=public_AR[,c("Cotton_AR","Tuk_AR","Garieri_AR","Sauteraud_AR")], MARGIN = 1, FUN = function(x){mean(x,na.rm=TRUE)})
+public_AR[public_AR$Avg_AR == "NaN","Avg_AR"] <- NA
+
+#How many datasets have calls?
+public_AR$num_studies_XCI_calls <- rowSums(! is.na(public_AR[,c("Cotton_Esc_myCall","Tuk_myCall","Garieri_myCall","Sauteraud_myCall")]))
+
+#How many datasets have Escape calls?
+public_AR$num_studies_Esc <- rowSums(public_AR[,c("Cotton_Esc_myCall","Tuk_myCall","Garieri_myCall","Sauteraud_myCall")] == "Escape", na.rm = TRUE)
+public_AR$pct_studies_Esc <- public_AR$num_studies_Esc / public_AR$num_studies_XCI_calls
+public_AR[public_AR$pct_studies_Esc == "NaN","pct_studies_Esc"] <- NA
+
+#How many datasets have subjectcalls?
+public_AR$num_studies_Subject <- rowSums(public_AR[,c("Cotton_Esc_myCall","Tuk_myCall","Garieri_myCall","Sauteraud_myCall")] == "Subject", na.rm = TRUE)
+public_AR$pct_studies_Subject <- public_AR$num_studies_Subject/public_AR$num_studies_XCI_calls
+public_AR[public_AR$pct_studies_Subject == "NaN","pct_studies_Subject"] <- NA
+
+#### Make my own calls ####
+public_AR$Final_XCI_Call <- NA
+
+#Confident that if more than 50% of calls are in an escape category (less than 50% in S category), then it's definitely ESCAPE!
+public_AR[!is.na(public_AR$pct_studies_Subject) & public_AR$pct_studies_Subject < 0.5,"Final_XCI_Call"] <- "Escape"
+
+#Confident that if there are only subject calls that they are SUBJECT!
+public_AR[!is.na(public_AR$pct_studies_Subject) & public_AR$pct_studies_Subject == 1,"Final_XCI_Call"] <- "Subject" 
+
+#No data
+public_AR[public_AR$num_studies_XCI_calls == 0,"Final_XCI_Call"] <- "No call"
+
+#if Mostly Subject...and avg_AR < 0.1 --> SUBJECT
+public_AR[!is.na(public_AR$pct_studies_Subject) & 
+            public_AR$pct_studies_Subject >= 0.5 & public_AR$pct_studies_Subject < 1 &
+            public_AR$Avg_AR < 0.1,
+          "Final_XCI_Call"] <- "Subject" 
+
+#if Mostly Subject...overturn if AR is robust --> ESCAPE
+public_AR[!is.na(public_AR$pct_studies_Subject) & 
+            public_AR$pct_studies_Subject >= 0.5 & public_AR$pct_studies_Subject < 1 &
+            (public_AR$Avg_AR >= 0.1 | public_AR$num_studies_Esc > 1),
+          "Final_XCI_Call"] <- "Escape" 
+
+#If no call, but there is data from Hybrids - use that!
+public_AR[public_AR$num_studies_XCI_calls == 0 &
+           (!is.na(public_AR$Carrel_hybrids) &
+              public_AR$Carrel_hybrids < 0.22),"Final_XCI_Call"] <- "Subject"
+
+public_AR[public_AR$num_studies_XCI_calls == 0 &
+           (!is.na(public_AR$Carrel_hybrids) &
+              public_AR$Carrel_hybrids >= 0.22),"Final_XCI_Call"] <- "Escape"
+
+summary(as.factor(public_AR$Final_XCI_Call))
+
+# test <- public_AR[is.na(public_AR$Final_XCI_Call),]
+
+#Which genes is there a discrepancy with Balaton?
+public_AR$Diff_from_Balaton <- FALSE
+public_AR[public_AR$Final_XCI_Call == "Escape" & public_AR$Balaton.consensus.calls %in% c("S","Mostly S","No call"),"Diff_from_Balaton"] <- TRUE #If we call esc but balaton called subject
+public_AR[public_AR$Final_XCI_Call == "Subject" & public_AR$Balaton.consensus.calls %in% c("E","Mostly E","Mostly VE","VE","Discordant","No call","PAR"),"Diff_from_Balaton"] <- TRUE #If we call subj but balaton called esc
+public_AR[public_AR$Final_XCI_Call == "No call" & ! public_AR$Balaton.consensus.calls == "No call","Diff_from_Balaton"] <- TRUE #If we call No call but balaton called something
+
+public_AR$Diff_from_Balaton <- as.character(public_AR$Diff_from_Balaton)
+
+write.table(public_AR, file="public_AR_annotation.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+
+
+```
+
+#Comparing to expressed genes!
+```{r}
+lcl_fib_anno <- read.delim(file=paste0(myPath,"Linear_regressions/table_s2_npx_par_response.txt"), stringsAsFactors = FALSE)
+lcl_fib_anno <- lcl_fib_anno[!lcl_fib_anno$gene_name.84 == "BEX1",]
+
+public_AR_exp <- public_AR[public_AR$Gene %in% lcl_fib_anno$Gene,]
+
+summary(as.factor(public_AR_exp$Final_XCI_Call))
+
+write.table(public_AR_exp, file="20220719_public_AR_annotation_lclFib_exp.txt", quote=FALSE, sep="\t", row.names=FALSE, col.names=TRUE)
+
+diff_balaton <- public_AR_exp[public_AR_exp$Diff_from_Balaton == TRUE,]
+diff_balaton_noCall_me <- diff_balaton[diff_balaton$Final_XCI_Call %in% c("No call"),]
+diff_balaton_noCall_bal <- diff_balaton[diff_balaton$Balaton.consensus.calls %in% c("No call"),]
+diff_balaton_esc <- diff_balaton[!(diff_balaton$Balaton.consensus.calls %in% c("No call")) & diff_balaton$Final_XCI_Call %in% c("Escape"),]
+diff_balaton_sub <- diff_balaton[!(diff_balaton$Balaton.consensus.calls %in% c("No call")) & diff_balaton$Final_XCI_Call %in% c("Subject"),]
+
+```
+
