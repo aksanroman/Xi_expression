@@ -1,0 +1,1017 @@
+Cytogenetic location	Genomic coordinates (From NCBI/GRCh38)	Gene/Locus	Gene/Locus name	Gene/Locus MIM number	Approved Symbol	Entrez Gene ID	Ensembl Gene ID	Comments	Phenotype	Phenotype MIM number	Inheritance	Pheno map key	Mouse Gene (from MGI)
+Xp22.33		VSPA	Visuospatial/perceptual abilities	313000		59332			Turner syndrome-associated neurocognitive phenotype	313000	?X-linked recessive	2	
+Xp22.33		VSPA	Visuospatial/perceptual abilities	313000		59332			[Visuospatial/perceptual abilities]	313000	?X-linked recessive	2	
+Xq24	X:121047609-121050093	GLUD2	Glutamate dehydrogenase-2	300144	GLUD2	2747	"ENSG00000182890,ENST00000328078.3"		"{Parkinson disease, age of onset, modifier}"	168600	Autosomal dominant; Multifactorial	3	Glud1
+Xq12	X:67544020-67730618	"AR, DHTR, TFM, SBMA, KD, SMAX1, HYSP1"	Androgen receptor (dihydrotestosterone receptor)	313700	AR	367	"ENSG00000169083,ENST00000374690.9"		"{Prostate cancer, susceptibility to}"	176807	Autosomal dominant; Somatic mutation	3	Ar
+Xq13.1	X:71144840-71175306	"NLGN3, ASPGX1, AUTSX1"	Neuroligin 3	300336	NLGN3	54413	"ENSG00000196338,ENST00000536169.6"		"{Asperger syndrome susceptibility, X-linked 1}"	300494	Isolated cases; Multifactorial; X-linked	3	Nlgn3
+Xp22.32-p22.31	X:5890041-6228866	"NLGN4, KIAA1260, AUTSX2, ASPGX2"	Neuroligin 4	300427	NLGN4X	57502	"ENSG00000146938,ENST00000381092.1"		"Intellectual developmental disorder, X-linked"	300495	Isolated cases; Multifactorial; X-linked	3	Nlgn4l
+Xp22.32-p22.31	X:5890041-6228866	"NLGN4, KIAA1260, AUTSX2, ASPGX2"	Neuroligin 4	300427	NLGN4X	57502	"ENSG00000146938,ENST00000381092.1"		"{Autism susceptibility, X-linked 2}"	300495	Isolated cases; Multifactorial; X-linked	3	Nlgn4l
+Xp22.33	X:624343-659410	"SHOX, GCFX, SS, PHOG"	Short stature homeobox	312865	SHOX	6473	"ENSG00000185960,ENST00000686671.1"	pseudoautosomal; ?gene causing short stature in Turner syndrome	Leri-Weill dyschondrosteosis	127300	Pseudoautosomal dominant	3	
+Xp22.33	X:624343-659410	"SHOX, GCFX, SS, PHOG"	Short stature homeobox	312865	SHOX	6473	"ENSG00000185960,ENST00000686671.1"	pseudoautosomal; ?gene causing short stature in Turner syndrome	Langer mesomelic dysplasia	249700	Pseudoautosomal recessive	3	
+Xp22.2	X:12906619-12923168	"TLR8, IMD98"	Toll-like receptor 8	300366	TLR8	51311	"ENSG00000101916,ENST00000311912.5"	16kb telomeric to TLR7	"Immunodeficiency 98 with autoinflammation, X-linked"	301078	Somatic mosaicism; X-linked	3	Tlr8
+Xp11.23	X:48903182-48911957	"SLC35A2, UGALT, UGTL, UGT2, CDGX, CDG2M"	"Solute carrier family 35 (UDP-galactose transporter), member 2"	314375	SLC35A2	7355	"ENSG00000102100,ENST00000445167.7"		"Congenital disorder of glycosylation, type IIm"	300896	Somatic mosaicism; X-linked dominant	3	Slc35a2
+Xp22.13	X:18989306-19122955	"ADGRG2, GPR64, HE6, CBAVDX"	Adhesion G protein-coupled receptor G2	300572	ADGRG2	10149	"ENSG00000173698,ENST00000379869.8"		"Congenital bilateral absence of vas deferens, X-linked"	300985	X-linked	3	Adgrg2
+Xp11.21	X:55009054-55030976	"ALAS2, ANH1, ASB, XLEPP, XLSA, SIDBA1"	"Aminolevulinate, delta-, synthase-2"	301300	ALAS2	212	"ENSG00000158578,ENST00000650242.1"		"Protoporphyria, erythropoietic, X-linked"	300752	X-linked	3	Alas2
+Xq23	X:111681169-111760648	"ALG13, GLT28D1, CDG1S, DEE36"	ALG13 UDP-N-acetylglucosaminyltransferase subunit	300776	ALG13	79868	"ENSG00000101901,ENST00000394780.8"		Developmental and epileptic encephalopathy 36	300884	X-linked	3	Alg13
+Xq11.1	X:63634966-63785213	"ARHGEF9, PEM2, KIAA0424, DEE8"	Rho guanine nucleotide exchange factor 9	300429	ARHGEF9	23229	"ENSG00000131089,ENST00000623517.3"		Developmental and epileptic encephalopathy 8	300607	X-linked	3	Arhgef9
+Xq13.1	X:70268333-70281882	"ARR3, MYP26"	"Arrestin 3, retinal"	301770	ARR3	407	"ENSG00000120500,ENST00000307959.9"		"Myopia 26, X-linked, female-limited"	301010	X-linked	3	Arr3
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		Hydranencephaly with abnormal genitalia	300215	X-linked	3	Arx
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		"Lissencephaly, X-linked 2"	300215	X-linked	3	Arx
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		Proud syndrome	300004	X-linked	3	Arx
+Xq28	X:153494979-153509545	"BGN, SEMDX, MRLS"	Biglycan	301870	BGN	633	"ENSG00000182492,ENST00000331595.9"	proximal Xq28	Meester-Loeys syndrome	300989	X-linked	3	Bgn
+Xp11.22	X:50910734-50916640	"BMP15, GDF9B, ODG2, POF4"	Bone morphogenetic protein 15	300247	BMP15	9210	"ENSG00000130385,ENST00000252677.4"		Ovarian dysgenesis 2	300510	X-linked	3	Bmp15
+Xp11.22	X:50910734-50916640	"BMP15, GDF9B, ODG2, POF4"	Bone morphogenetic protein 15	300247	BMP15	9210	"ENSG00000130385,ENST00000252677.4"		Premature ovarian failure 4	300510	X-linked	3	Bmp15
+Xp11.23	X:49205062-49233339	"CACNA1F, CSNB2, CORDX3, CSNB2A, AIED, OA2"	"Calcium channel, voltage-dependent, alpha-1F subunit"	300110	CACNA1F	778	"ENSG00000102001,ENST00000323022.10"		Aland Island eye disease	300600	X-linked	3	Cacna1f
+Xp11.23	X:49205062-49233339	"CACNA1F, CSNB2, CORDX3, CSNB2A, AIED, OA2"	"Calcium channel, voltage-dependent, alpha-1F subunit"	300110	CACNA1F	778	"ENSG00000102001,ENST00000323022.10"		"Night blindness, congenital stationary (incomplete), 2A, X-linked"	300071	X-linked	3	Cacna1f
+Xq21.2	X:85861179-86047557	"CHM, TCD"	CHM Rab escort protein	300390	CHM	1121	"ENSG00000188419,ENST00000357749.7"		Choroideremia	303100	X-linked	3	Chm
+Xp22.12	X:21374417-21654688	"CNKSR2, CNK2, KIAA0902, MRXSHG"	connector enhancer of KSR 2	300724	CNKSR2	22866	"ENSG00000149970,ENST00000425654.7"		"Intellectual developmental disorder, X-linked, syndromic, Houge type"	301008	X-linked	3	Cnksr2
+Xq23	X:111293778-111412191	"DCX, DBCN, LISX"	Doublecortin	300121	DCX	1641	"ENSG00000077279,ENST00000636035.2"		"Lissencephaly, X-linked"	300067	X-linked	3	Dcx
+Xq23	X:111293778-111412191	"DCX, DBCN, LISX"	Doublecortin	300121	DCX	1641	"ENSG00000077279,ENST00000636035.2"		"Subcortical laminal heterotopia, X-linked"	300067	X-linked	3	Dcx
+Xp21.2-p21.1	X:31119221-33339387	"DMD, BMD, CMD3B"	Dystrophin	300377	DMD	1756	"ENSG00000198947,ENST00000357033.9"	dystrophin gene; cen-5'-3'-pter; 2Mb; ?Xp21.13	"Cardiomyopathy, dilated, 3B"	302045	X-linked	3	Dmd
+Xq27.1	X:139530738-139563458	"F9, HEMB, THPH8"	Coagulation factor IX (plasma thromboplastic component)	300746	F9	2158	"ENSG00000101981,ENST00000218099.7"	distal to HPRT; proximal part of Xq27	{Warfarin sensitivity}	301052	X-linked	3	F9
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	"Reducing body myopathy, X-linked 1b, with late childhood or adult onset"	300718	X-linked	3	Fhl1
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	?FG syndrome 2	300321	X-linked	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	"Cardiac valvular dysplasia, X-linked"	314400	X-linked	3	Flna
+Xq27.3	X:147911918-147951124	"FMR1, FRAXA, POF1"	Fragile X messenger ribonucleoprotein 1	309550	FMR1	2332	"ENSG00000102081,ENST00000370471.7"	8-8.7Mb from telomere	Premature ovarian failure 1	311360	X-linked	3	Fmr1
+Xq26.2	X:132076989-132128019	"FRMD7, NYS1, XIPAN"	FERM domain-containing 7	300628	FRMD7	90167	"ENSG00000165694,ENST00000464296.1"		"Nystagmus 1, congenital, X-linked"	310700	X-linked	3	Frmd7
+Xq26.2	X:132076989-132128019	"FRMD7, NYS1, XIPAN"	FERM domain-containing 7	300628	FRMD7	90167	"ENSG00000165694,ENST00000464296.1"		"Nystagmus, infantile periodic alternating, X-linked"	310700	X-linked	3	Frmd7
+Xp22.2	X:11822438-12724522	"FRMPD4, PRESO, KIAA0316, XLID104"	FERM and PDZ domains-containing protein 4	300838	FRMPD4	9758	"ENSG00000169933,ENST00000656302.1"		"Intellectual developmental disorder, X-linked 104"	300983	X-linked	3	Frmpd4
+Xq13.1	X:71578436-71613582	"GCNA, ACRC, SPGFX4"	Germ cell nuclear acidic peptidase	300369	GCNA	93953	"ENSG00000147174,ENST00000373696.8"		"Spermatogenic failure, X-linked, 4"	301077	X-linked	3	
+Xq22.1	X:101397802-101407924	GLA	"Galactosidase, alpha"	300644	GLA	2717	"ENSG00000102393,ENST00000218516.4"		Fabry disease	301500	X-linked	3	Gla
+Xq22.1	X:101397802-101407924	GLA	"Galactosidase, alpha"	300644	GLA	2717	"ENSG00000102393,ENST00000218516.4"		"Fabry disease, cardiac variant"	301500	X-linked	3	Gla
+Xp22.2	X:14448778-14731811	"GLRA2, MRXSP"	"Glycine receptor, alpha-2 polypeptide"	305990	GLRA2	2742	"ENSG00000101958,ENST00000355020.8"		"Intellectual developmental disorder, X-linked, syndromic, Pilorge type"	301076	X-linked	3	Glra2
+Xq26.3	X:137023928-137033994	"GPR101, PAGH2, PITA2"	G protein-coupled receptor 101	300393	GPR101	83550	"ENSG00000165370,ENST00000651716.2"		"Pituitary adenoma 2, GH-secreting"	300943	X-linked	3	Gpr101
+Xp22.2	X:9725345-9778601	"GPR143, OA1, NYS6"	G protein-coupled receptor 143	300808	GPR143	4935	"ENSG00000101850,ENST00000467482.6"	linked to XG	"Ocular albinism, type I, Nettleship-Falls type"	300500	X-linked	3	Gpr143
+Xq28	X:150980506-150990770	"HMGB3, HMG4, HMG2A, MCOPS13"	High-mobility group box 3 (high mobility group protein 4)	300193	HMGB3	3149	"ENSG00000029993,ENST00000448905.6"	mutation identified in 1 MCOPS13 family	"?Microphthalmia, syndromic 13"	300915	X-linked	3	Hmgb3
+Xp11.22	X:53532095-53686718	"HUWE1, UREB1, KIAA0312, LASU1, MRXST"	"HECT, UBA, and WWE domains-containing protein 1"	300697	HUWE1	10075	"ENSG00000086758,ENST00000262854.11"		"Intellectual developmental disorder, X-linked, Turner type"	309590	X-linked	3	Huwe1
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"{Autism susceptibility, X-linked 3"	300496	X-linked	3	Mecp2
+Xq28	X:153929224-153935036	"NAA10, ARD1A, ARD1, TE2, NATD, OGDNS, MCOPS1"	"N-alpha-acetyltransferase 10, NatA catalytic subunit"	300013	NAA10	8260	"ENSG00000102030,ENST00000370009.5"		"Microphthalmia, syndromic 1"	309800	X-linked	3	Naa10
+Xp11.3	X:47142215-47145490	"NDUFB11, LSDMCA3, MC1DN30"	NADH-ubiquinone oxidoreductase subunit B11	300403	NDUFB11	54539	"ENSG00000147123,ENST00000377811.4"	mutation identified in 1 MC1DN30 patient	"?Mitochondrial complex I deficiency, nuclear type 30"	301021	X-linked	3	"Ndufb11,Ndufb11b"
+Xp22.2-p22.13	X:17375199-17735993	"NHS, CXN, CTRCT40"	NHS actin remodeling regulator	300457	NHS	4810	"ENSG00000188158,ENST00000398097.7"		"Cataract 40, X-linked"	302200	X-linked	3	Nhs
+Xq13.1	X:71144840-71175306	"NLGN3, ASPGX1, AUTSX1"	Neuroligin 3	300336	NLGN3	54413	"ENSG00000196338,ENST00000536169.6"		"{Autism susceptibility, X-linked 1}"	300425	X-linked	3	Nlgn3
+Xp22.32-p22.31	X:5890041-6228866	"NLGN4, KIAA1260, AUTSX2, ASPGX2"	Neuroligin 4	300427	NLGN4X	57502	"ENSG00000146938,ENST00000381092.1"		"{Asperger syndrome susceptibility, X-linked 2}"	300497	X-linked	3	Nlgn4l
+Xq13.1	X:71283634-71301167	"NONO, NRB54, MRXS34"	"Non-Pou domain-containing octamer (ATGCAAAT) binding protein (nuclear RNA-binding protein, 54-kD)"	300084	NONO	4841	"ENSG00000147140,ENST00000420903.6"	2Mb proximal to PHKA1	"Intellectual developmental disorder, X-linked syndromic 34"	300967	X-linked	3	Nono
+Xp21.2	X:30304205-30309389	"NR0B1, DAX1, AHC, AHX, SRXY2"	"Nuclear receptor subfamily 0, group B, member 1"	300473	NR0B1	190	"ENSG00000169297,ENST00000378970.5"	distal to GK	"46XY sex reversal 2, dosage-sensitive"	300018	X-linked	3	Nr0b1
+Xq28	X:154144242-154159031	"OPN1LW, RCP, CBP, CBBM"	"Red cone pigment (opsin 1, long-wave-sensitive)"	300822	OPN1LW	5956	"ENSG00000102076,ENST00000369951.9"	5' to CBD	"Colorblindness, protan"	303900	X-linked	3	Opn1mw
+Xq28	X:154182595-154196860	"OPN1MW, GCP, CBD, CBBM"	"Green cone pigment (opsin 1, medium-wave-sensitive)"	300821	OPN1MW	2652	"ENSG00000268221,ENST00000595290.6"	linked to G6PD; multiple genes	"Colorblindness, deutan"	303800	X-linked	3	Opn1mw
+Xp11.4	X:38352603-38421445	OTC	Ornithine transcarbamylase	300461	OTC	5009	"ENSG00000036473,ENST00000039007.5"	"proximal to DMD, CGD"	Ornithine transcarbamylase deficiency	311250	X-linked	3	Otc
+Xq22.1	X:100291643-100410272	"PCDH19, KIAA1313, EFMR, DEE9"	Protocadherin 19	300460	PCDH19	57526	"ENSG00000165194,ENST00000255531.8"		Developmental and epileptic encephalopathy 9	300088	X-linked	3	Pcdh19
+Xq22.3	X:107628509-107651025	"PRPS1, CMTX5, DFNX1, DFN2"	Phosphoribosyl pyrophosphate synthetase-1	311850	PRPS1	5631	"ENSG00000147224,ENST00000372435.10"		"Deafness, X-linked 1"	304500	X-linked	3	Prps1
+Xq13.2	X:74582975-74614623	"RLIM, RNF12, TOKAS"	"RING finger protein, LIM domain-interacting"	300379	RLIM	51132	"ENSG00000131263,ENST00000332687.11"		Tonne-Kalscheuer syndrome	300978	X-linked	3	Rlim
+Xq24	X:119870474-119871732	"RNF113A, ZNF183, TTD5"	RING finger protein 113A	300951	RNF113A	7737	"ENSG00000125352,ENST00000371442.4"		"Trichothiodystrophy 5, nonphotosensitive"	300953	X-linked	3	"Rnf113a1,Rnf113a2"
+Xp11.3	X:46837042-46882357	RP2	RP2 activator of ARL3 GTPase	300757	RP2	6102	"ENSG00000102218,ENST00000218340.4"		Retinitis pigmentosa 2	312600	X-linked	3	Rp2
+Xq22.3	X:106032434-106038726	"TBG, TBGQTL"	Thyroxine-binding globulin	314200	SERPINA7	6906	"ENSG00000123561,ENST00000372563.2"		[Thyroxine-binding globulin QTL]	300932	X-linked	3	Serpina7
+Xp11.22	X:50575533-50814193	"SHROOM4, KIAA1202, SDSX, MRXSSDS"	Shroom family member 4	300579	SHROOM4	57477	"ENSG00000158352,ENST00000376020.9"		"Intellectual developmental disorder, X-linked syndromic, Stocco dos Santos type"	300434	X-linked	3	Shroom4
+Xq13.2	X:74421492-74533915	"SLC16A2, DXS128, XPCT"	"Solute carrier family 16 (monocarboxylic acid transporters), member 2"	300095	SLC16A2	6567	"ENSG00000147100,ENST00000587091.6"		Allan-Herndon-Dudley syndrome	300523	X-linked	3	Slc16a2
+Xq26.3	X:135973836-136047268	"SLC9A6, NHE6, MRXSCH"	"Solute carrier family 9 (sodium/hydrogen exchanger), member 6"	300231	SLC9A6	10479	"ENSG00000198689,ENST00000370695.8"		"Intellectual developmental disorder, X-linked syndromic, Christianson type"	300243	X-linked	3	Slc9a6
+Xq27.1	X:140502984-140505068	"SOX3, MRGH"	SRY (sex determining region Y)-box 3	313430	SOX3	6658	"ENSG00000134595,ENST00000370536.5"	P mutant in BFLS	"Panhypopituitarism, X-linked"	312000	X-linked	3	Sox3
+Xq25	X:123960559-124102655	"STAG2, SA2, MKMS, HPE13"	Stromal antigen 2	300826	STAG2	10735	"ENSG00000101972,ENST00000218089.13"		Mullegama-Klein-Martinez syndrome	301022	X-linked	3	Stag2
+Xq24	X:119538148-119565408	"STEEP1, CXorf56, XLID107"	STING1 ER exit protein 1	301012	STEEP1	63932	"ENSG00000018610,ENST00000320339.8"	mutation identified in 1 XLID107 family	"?Intellectual developmental disorder, X-linked 107"	301013	X-linked	3	Steep1
+Xp11.3-p11.23	X:47571900-47619856	"SYN1, EPILX, MRX50"	Synapsin I	313440	SYN1	6853	"ENSG00000008056,ENST00000295987.13"		"Intellectual developmental disorder, X-linked 50"	300115	X-linked	3	Syn1
+Xq22.3	X:106802672-106876149	"TBC1D8B, NPHS20"	"TBC1 domain family, member 8B"	301027	TBC1D8B	54885	"ENSG00000133138,ENST00000357242.10"		"Nephrotic syndrome, type 20"	301028	X-linked	3	Tbc1d8b
+Xp22.31-p22.2	X:9463294-9719739	"TBL1X, TBL1, CHNG8"	"Transducin-beta-like 1, X-linked"	300196	TBL1X	6907	"ENSG00000101849,ENST00000407597.7"		"Hypothyroidism, congenital, nongoitrous, 8"	301033	X-linked	3	Tbl1x
+Xq21.1	X:80014752-80031773	"TBX22, CPX, ABERS"	T-box 22	300307	TBX22	50945	"ENSG00000122145,ENST00000373296.8"	1 ABERS family identified with mutation	?Abruzzo-Erickson syndrome	302905	X-linked	3	Tbx22
+Xq21.1	X:80014752-80031773	"TBX22, CPX, ABERS"	T-box 22	300307	TBX22	50945	"ENSG00000122145,ENST00000373296.8"	1 ABERS family identified with mutation	Cleft palate with ankyloglossia	303400	X-linked	3	Tbx22
+Xp11.23	X:49028725-49043356	"TFE3, RCCX1, MRXSPF"	Transcription factor for IgH enhancer	314310	TFE3	7030	"ENSG00000068323,ENST00000315869.8"	fuses with PRCC in RCCP	"Intellectual developmental disorder, X-linked, syndromic, with pigmentary mosaicism and coarse facies"	301066	X-linked	3	Tfe3
+Xp21.1	X:37685790-37732129	"XK, MCLDS"	Kell blood group precursor	314850	XK	7504	"ENSG00000047597,ENST00000378616.5"	~500kb distal to CGD	McLeod syndrome with or without chronic granulomatous disease	300842	X-linked	3	Xk
+Xq26.1	X:129803287-129843885	"ZDHHC9, DHHC9, MRXSR"	Zinc finger DHHC domain-containing protein 9	300646	ZDHHC9	51114	"ENSG00000188706,ENST00000371064.7"		"Intellectual developmental disorder, X-linked, syndromic, Raymond type"	300799	X-linked	3	Zdhhc9
+Xq21.1	X:85243990-85273356	"ZNF711, ZNF6, CMPX1, XLID97"	Zinc finger protein-711	314990	ZNF711	7552	"ENSG00000147180,ENST00000674551.1"		"Intellectual developmental disorder, X-linked 97"	300803	X-linked	3	Zfp711
+Xp22.3	X:6100000-9600000	OASD	Ocular albinism and sensorineural deafness	300650		4941		?allelic to OA1	Ocular albinism with sensorineural deafness	300650	X-linked	2	
+Xp22.3	X:6100000-9600000	"XLID2, MRX2"	"Intellectual developmental disorder, X-linked 2"	300428					"Intellectual developmental disorder, X-linked 2"	300428	X-linked	2	
+Xp22.2	X:9600000-17400000	"HBFQTL3, FCP1, FCPX, FCP"	Fetal hemoglobin quantitative trait locus 3	305435		2221			Fetal hemoglobin quantitative trait locus 3	305435	X-linked	2	
+Xp21.3-p21.2	X:24900000-31500000	RP6	"Retinitis pigmentosa-6, X-linked recessive"	312612		6104			"?Retinitis pigmentosa, X-linked recessive, 6"	312612	X-linked	2	
+Xp21.2	X:29300000-31500000	"DFNX3, DFN4"	"Deafness, X-linked 3"	300030		1680		?same as DMD	"Deafness, X-linked 3"	300030	X-linked	2	
+Xp11.4-p11.21	X:37800000-58100000	OPA2	"Optic atrophy, X-linked"	311050		4977			"Optic atrophy 2, X-linked"	311050	X-linked	2	
+Xp11.3-q22	X:42500000-109400000	MRXS7	"Intellectual developmental disorder, X-linked, syndromic 7"	300218		4429			"Intellectual developmental disorder, X-linked, syndromic 7"	300218	X-linked	2	
+Xp11.3-q13.3	X:42500000-76800000	"XLID14, MRX14"	"Intellectual developmental disorder, X-linked 14"	300062		4378			"Intellectual developmental disorder, X-linked 14"	300062	X-linked	2	
+Xp11.3-p11.21	X:42500000-58100000	"XLID45, MRX45"	"Intellectual developmental disorder, X-linked 45"	300498					"Intellectual developmental disorder, X-linked 45"	300498	X-linked	2	
+Xp11	X:58100000-61000000	MRXS12	"Intellectual developmental disorder, X-linked, syndromic 12"	309545		8246			"?Intellectual developmental disorder, X-linked, syndromic 12"	309545	X-linked	2	
+Xp11-q21	X:58100000-99100000	"XLID20, MRX20"	"Intellectual developmental disorder, X-linked 20"	300047		4384			"Intellectual developmental disorder, X-linked 20"	300047	X-linked	2	
+Xq	X:61000000-156040895	CGF1	"Cognitive function-1, social"	300082		1083		imprinted locus	[Social cognition]	300082	X-linked	2	
+Xq	X:61000000-156040895	MGR2	"Migraine, familial typical, susceptibility to, 2"	300125		8249			"{Migraine, familial typical, susceptibility to, 2}"	300125	X-linked	2	
+Xq13.2	X:73000000-74700000	MRXSAB	"Intellectual developmental disorder, X-linked, Abidi type"	300262		57792			"Intellectual developmental disorder, X-linked, syndromic, Abidi type"	300262	X-linked	2	
+Xq22-q28	X:104500000-156040895	"AI1E2, AIH3"	"Amelogenesis imperfecta, hypomaturation or hypoplastic type, X-linked 2"	301201		201			"?Amelogenesis imperfecta, type IE, X-linked 2"	301201	X-linked	2	
+Xq23-q24	X:109400000-121800000	"XLID23, MRX23"	"Intellectual developmental disorder, X-linked 23"	300046		4387		"other MRX in same region MRX27, MRX30, MRX35, MRX47, MRX80"	"Intellectual developmental disorder, X-linked 23"	300046	X-linked	2	
+Xq24-q26	X:117400000-138900000	"ADFN, ALDS"	Albinism-deafness syndrome	300700		122		~8cM proximal to F9	Albinism-deafness syndrome	300700	X-linked	2	
+Xq24-qter	X:117400000-156040895	CND	Corneal dermoids	304730		8231			Dermoids of cornea	304730	X-linked	2	
+Xq24	X:117400000-121800000	"XLID88, MRX88"	"Intellectual developmental disorder, X-linked 88"	300852		105463129			"Intellectual developmental disorder, X-linked 88"	300852	X-linked	2	
+Xq25	X:121800000-129500000	DUPXq25	Xq25 duplication syndrome	300979					Xq25 duplication syndrome	300979	X-linked	4	
+Xq25-q26.1	X:121800000-131300000	"THAS, TAS"	Thoracoabdominal syndrome	313850		7055			Thoracoabdominal syndrome	313850	X-linked	2	
+Xq26	X:134500000-138900000	GUST	"Gustavson mental retardation syndrome (with microcephaly, optic atrophy, deafness)"	309555		8258			Gustavson syndrome	309555	X-linked	2	
+Xq26	X:134500000-138900000	"SHFM2, SHFD2"	"Split hand/foot malformation, type (ectrodactyly) 2"	313350		6463			Split hand/foot malformation 2	313350	X-linked	2	
+Xq27.1	X:138900000-141200000	"HPT, HPTX, HYPX"	Hypoparathyroidism	307700				interstitial deletion/insertion on Xq27.1	"Hypoparathyroidism, X-linked"	307700	X-linked	4	
+Xq27	X:143000000-148000000	COD2	"Cone dystrophy-2, X-linked"	300085		1275			"Cone dystrophy, progressive X-linked, 2"	300085	X-linked	2	
+Xq28	X:148000000-156040895	"HMS1, GAY1"	"Homosexuality, male"	306995					"[?Homosexuality, male]"	306995	X-linked	2	
+Xq28	X:148000000-156040895	"MRSD, CHRS"	"Intellectual developmental disorder, X-linked, with skeletal dysplasia and abducens palsy"	309620		4364			"Intellectual developmental disorder, X-linked, with skeletal dysplasia and abducens palsy"	309620	X-linked	2	
+Xq28	X:148000000-156040895	"TKCR, TKC"	"Torticollis, keloids, cryptorchidism and renal dysplasia"	314300		7085		distal to G6PD	Goeminne TKCR syndrome	314300	X-linked	2	
+Xq23	X:109641334-109733256	"ACSL4, FACL4, ACS4, XLID63"	Acyl-CoA synthetase long-chain family member 4	300157	ACSL4	2182	"ENSG00000068366,ENST00000469796.7"		"Intellectual developmental disorder, X-linked 63"	300387	X-linked dominant	3	Acsl4
+Xp22.2	X:11293412-11309587	"AMELX, AMG, AIH1, AMGX, AI1E"	Amelogenin	300391	AMELX	265	"ENSG00000125363,ENST00000380714.7"	also Y	"Amelogenesis imperfecta, type 1E"	301200	X-linked dominant	3	Amelx
+Xq11.2	X:64185116-64205707	"AMER1, FAM123B, WTX, OSCS"	APC membrane recruitment protein 1	300647	AMER1	139285	"ENSG00000184675,ENST00000374869.8"		Osteopathia striata with cranial sclerosis	300373	X-linked dominant	3	Amer1
+Xq21.1	X:77504879-77786215	"ATRX, XH2, XNP, SHS, SFM1, MRXHF1"	ATRX chromatin remodeler	300032	ATRX	546	"ENSG00000085224,ENST00000373344.11"		Alpha-thalassemia/mental retardation syndrome	301040	X-linked dominant	3	Atrx
+Xp11.4	X:40051245-40177328	"BCOR, KIAA1575, MCOPS2, MAA2, ANOP2"	BCL6 corepressor	300485	BCOR	54880	"ENSG00000183337,ENST00000342274.8"		"Microphthalmia, syndromic 2"	300166	X-linked dominant	3	Bcor
+Xp11.4	X:41514933-41923553	"CASK, MICPCH, FGS4, CMG, MRXSNA"	Calcium/calmodulin-dependent serine protein kinase	300172	CASK	8573	"ENSG00000147044,ENST00000646120.2"		Intellectual developmental disorder and microcephaly with pontine and cerebellar hypoplasia	300749	X-linked dominant	3	Cask
+Xq28	X:153587924-153599138	"FAM58A, STAR"	"Family with sequence similarity 58, member A"	300708	CCNQ	92002	"ENSG00000262919,ENST00000440428.5"		STAR syndrome	300707	X-linked dominant	3	Ccnq
+Xp22.13	X:18425607-18653628	"CDKL5, STK9, ISSX, DEE2"	Cyclin-dependent kinase-like 5 (serine/threonine protein kinase 9)	300203	CDKL5	6792	"ENSG00000008086,ENST00000379989.6"		Developmental and epileptic encephalopathy 2	300672	X-linked dominant	3	Cdkl5
+Xp22.2	X:10156974-10237659	"CLCN4, MRX49, MRX15, MRXSRC"	Chloride channel-4	302910	CLCN4	1183	"ENSG00000073464,ENST00000674669.1"		Raynaud-Claes syndrome	300114	X-linked dominant	3	Clcn4
+Xq22.3	X:108439837-108697544	"COL4A5, ATS1"	"Collagen IV, alpha-5 polypeptide"	303630	COL4A5	1287	"ENSG00000188153,ENST00000361603.7"	diffuse leiomyomatosis with Alport syndrome = contiguous gene syndrome with COL4A6	"Alport syndrome 1, X-linked"	301050	X-linked dominant	3	Col4a5
+Xq21.1	X:77899467-77907375	"COX7B, LSDMCA2"	"Cytochrome c oxidase, subunit VIIb"	300885	COX7B	1349	"ENSG00000131174,ENST00000650309.2"		Linear skin defects with multiple congenital anomalies 2	300887	X-linked dominant	3	Cox7b
+Xq21.33	X:96684841-97604996	"DIAPH2, DIA, POF2A"	diaphanous-related formin 2	300108	DIAPH2	1730	"ENSG00000147202,ENST00000324765.13"	mutation identified in 1 POF2A family	?Premature ovarian failure 2A	300511	X-linked dominant	3	Diaph2
+Xp11.23	X:48521807-48528715	"EBP, CDPX2, CPXD, CPX, MEND"	Emopamil-binding protein	300205	EBP	10682	"ENSG00000147155,ENST00000495186.6"		"Chondrodysplasia punctata, X-linked dominant"	302960	X-linked dominant	3	Ebp
+Xq13.1	X:69616112-70039471	"EDA, ED1, ECTD1, HED1, STHAGX1"	Ectodysplasin A	300451	EDA	1896	"ENSG00000158813,ENST00000374553.6"		"Tooth agenesis, selective, X-linked 1"	313500	X-linked dominant	3	Eda
+Xq13.1	X:68829020-68842159	"EFNB1, EPLG2, CFNS, CFND"	eph-related receptor tyrosine kinase ligand 2 (ephrin B1)	300035	EFNB1	1947	"ENSG00000090776,ENST00000204961.5"	?CFNS also on Xp22	Craniofrontonasal dysplasia	304110	X-linked dominant	3	Efnb1
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	"Reducing body myopathy, X-linked 1a, severe, infantile or early childhood onset"	300717	X-linked dominant	3	Fhl1
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	"Scapuloperoneal myopathy, X-linked dominant"	300695	X-linked dominant	3	Fhl1
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	"Heterotopia, periventricular, 1"	300049	X-linked dominant	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	Melnick-Needles syndrome	309350	X-linked dominant	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	"Otopalatodigital syndrome, type I"	311300	X-linked dominant	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	"Otopalatodigital syndrome, type II"	304120	X-linked dominant	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	Terminal osseous dysplasia	300244	X-linked dominant	3	Flna
+Xq27.3	X:147911918-147951124	"FMR1, FRAXA, POF1"	Fragile X messenger ribonucleoprotein 1	309550	FMR1	2332	"ENSG00000102081,ENST00000370471.7"	8-8.7Mb from telomere	Fragile X syndrome	300624	X-linked dominant	3	Fmr1
+Xq27.3	X:147911918-147951124	"FMR1, FRAXA, POF1"	Fragile X messenger ribonucleoprotein 1	309550	FMR1	2332	"ENSG00000102081,ENST00000370471.7"	8-8.7Mb from telomere	Fragile X tremor/ataxia syndrome	300623	X-linked dominant	3	Fmr1
+Xq28	X:154531389-154547568	"G6PD, G6PD1"	Glucose-6-phosphate dehydrogenase	305900	G6PD	2539	"ENSG00000160211,ENST00000393564.7"		"Hemolytic anemia, G6PD deficient (favism)"	300908	X-linked dominant	3	"G6pd2,G6pdx"
+Xq28	X:154437153-154443466	"GDI1, RABGD1A, MRX41, MRX48, XLID41"	GDP dissociation inhibitor 1	300104	GDI1	2664	"ENSG00000203879,ENST00000447750.7"		"Intellectual developmental disorder, X-linked 41"	300849	X-linked dominant	3	Gdi1
+Xq13.1	X:71215238-71225515	"GJB1, CX32, CMTX1"	"Gap junction protein, beta-1, 32kD (connexin 32)"	304040	GJB1	2705	"ENSG00000169562,ENST00000361726.7"		"Charcot-Marie-Tooth neuropathy, X-linked dominant, 1"	302800	X-linked dominant	3	Gjb1
+Xp22.2	X:11111331-11123085	"HCCS, MCOPS7, LSDMCA1"	Holocytochrome c synthase (cytochrome c heme-lyase)	300056	HCCS	3052	"ENSG00000004961,ENST00000321143.8"		Linear skin defects with multiple congenital anomalies 1	309801	X-linked dominant	3	Hccs
+Xp11.23	X:48801397-48824981	"HDAC6, CPBHM"	Histone deacetylase 6	300272	HDAC6	10013	"ENSG00000094631,ENST00000644068.1"	mutation identified in 1 CPBHM family	"?Chondrodysplasia with platyspondyly, distinctive brachydactyly, hydrocephaly, and microphthalmia"	300863	X-linked dominant	3	Hdac6
+Xq13.1	X:72329515-72572842	"HDAC8, MRXS6, CDLS5"	Histone deacetylase 8	300269	HDAC8	55869	"ENSG00000147099,ENST00000373589.9"		Cornelia de Lange syndrome 5	300882	X-linked dominant	3	Hdac8
+Xq22.1	X:101408221-101414132	"HNRNPH2, NRPH2, MRXSB"	Heterogeneous nuclear ribonucleoprotein H2	300610	HNRNPH2	3188	"ENSG00000126945,ENST00000316594.6"		"Intellectual developmental disorder, X-linked, syndromic, Bain type"	300986	X-linked dominant	3	Hnrnph2
+Xp11.22	X:53431257-53434375	"HSD17B10, HADH2, ERAB, MRXS10, HSD10MD"	17-beta-hydroxysteroid dehydrogenase X	300256	HSD17B10	3028	"ENSG00000072506,ENST00000375304.9"		HSD10 mitochondrial disease	300438	X-linked dominant	3	Hsd17b10
+Xq28	X:154541237-154565045	"IKBKG, NEMO, FIP3, IP, EDAID1, IMD33, SAIDX"	"Inhibitor of nuclear factor kappa B kinase, regulatory subunit gamma"	300248	IKBKG	8517	"ENSG00000269335,ENST00000618670.4"		Incontinentia pigmenti	308300	X-linked dominant	3	Ikbkg
+Xp11.22	X:53225812-53321349	"IQSEC2, KIAA0522, MRX1, MRX78, XLID1"	IQ motif- and Sec7 domain-containing protein 2	300522	IQSEC2	23096	"ENSG00000124313,ENST00000642864.1"		"Intellectual developmental disorder, X-linked 1"	309530	X-linked dominant	3	Iqsec2
+Xp11.3	X:44873187-45112778	"KDM6A, UTX, KABUK2"	Lysine demethylase 6A	300128	KDM6A	7403	"ENSG00000147050,ENST00000611820.5"	UTY also in mouse and man; escapes inactivation	Kabuki syndrome 2	300867	X-linked dominant	3	Kdm6a
+Xq24	X:120426147-120469348	"LAMP2, LAMPB, LGP110, DND"	Lysosome-associated membrane protein-2	309060	LAMP2	3920	"ENSG00000005893,ENST00000434600.6"		Danon disease	300257	X-linked dominant	3	Lamp2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	Rett syndrome	312750	X-linked dominant	3	Mecp2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"Rett syndrome, atypical"	312750	X-linked dominant	3	Mecp2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"Rett syndrome, preserved speech variant"	312750	X-linked dominant	3	Mecp2
+Xq13.1	X:71118595-71142449	"MED12, TNRC11, TRAP230, HOPA, KIAA0192, OKS, FGS1, OHDOX, HDKR"	Mediator complex subunit 12	300188	MED12	9968	"ENSG00000184634,ENST00000374080.8"		Hardikar syndrome	301068	X-linked dominant	3	Med12
+Xp22.2	X:11758158-11775771	"MSL3, MSL3L1, MRXSBA"	MSL complex subunit 3	300609	MSL3	10943	"ENSG00000005302,ENST00000398527.7"		Basilicata-Akhtar syndrome	301032	X-linked dominant	3	Msl3
+Xp11.3	X:47142215-47145490	"NDUFB11, LSDMCA3, MC1DN30"	NADH-ubiquinone oxidoreductase subunit B11	300403	NDUFB11	54539	"ENSG00000147123,ENST00000377811.4"	mutation identified in 1 MC1DN30 patient	Linear skin defects with multiple congenital anomalies 3	300952	X-linked dominant	3	"Ndufb11,Ndufb11b"
+Xq13.3	X:74732855-74925451	"NEXMIF, KIAA2022, XLID98"	Neurite extension and migration factor	300524	NEXMIF	340533	"ENSG00000050030,ENST00000055682.12"	inv(X)(q13;p22)	"Intellectual developmental disorder, X-linked 98"	300912	X-linked dominant	3	Nexmif
+Xp22.2-p22.13	X:17375199-17735993	"NHS, CXN, CTRCT40"	NHS actin remodeling regulator	300457	NHS	4810	"ENSG00000188158,ENST00000398097.7"		Nance-Horan syndrome	302350	X-linked dominant	3	Nhs
+Xq28	X:152831062-152869728	NSDHL	NAD(P)H steroid dehydrogenase-like protein	300275	NSDHL	50814	"ENSG00000147383,ENST00000440023.5"		CHILD syndrome	308050	X-linked dominant	3	Nsdhl
+Xp22.2	X:13714504-13773737	"OFD1, CXorf5, SGBS2, JBTS10, RP23"	OFD1 centriole and centriolar satellite protein	300170	OFD1	8481	"ENSG00000046651,ENST00000380550.6"	mutation identified in 1 RP23 family	Orofaciodigital syndrome I	311200	X-linked dominant	3	Ofd1
+Xp22.12	X:19343926-19361717	"PDHA1, PHE1A, PDHAD"	"Pyruvate dehydrogenase E1, subunit alpha 1"	300502	PDHA1	5160	"ENSG00000131828,ENST00000422285.7"		Pyruvate dehydrogenase E1-alpha deficiency	312170	X-linked dominant	3	Pdha1
+Xp22.11	X:24465285-24550465	"PDK3, CMTX6"	"Pyruvate dehydrogenase kinase, isoenzyme 3"	300906	PDK3	5165	"ENSG00000067992,ENST00000568479.2"	1 family identified with mutation	"?Charcot-Marie-Tooth disease, X-linked dominant, 6"	300905	X-linked dominant	3	Pdk3
+Xp22.11	X:22032324-22251309	"PHEX, HYP, HPDR1, LXHR"	"Phosphate regulating endopeptidase homolog, X-linked"	300550	PHEX	5251	"ENSG00000102174,ENST00000379374.5"		"Hypophosphatemic rickets, X-linked dominant"	307800	X-linked dominant	3	Phex
+Xq23	X:115561173-115650860	"PLS3, BMND18"	Plastin 3	300131	PLS3	5358	"ENSG00000102024,ENST00000539310.5"		"Bone mineral density QTL18, osteoporosis"	300910	X-linked dominant	3	Pls3
+Xp11.23	X:48508991-48520813	"PORCN, PORC, DHOF, FODH"	Porcupine O-acyltransferase	300651	PORCN	64840	"ENSG00000102312,ENST00000361988.7"		Focal dermal hypoplasia	305600	X-linked dominant	3	Porcn
+Xp11.23	X:49174801-49186372	"PRICKLE3, LMO6, LOAM"	"Prickle, Drosophila, homolog of, 3"	300111	PRICKLE3	4007	"ENSG00000012211,ENST00000453382.5"		"{Leber hereditary optic neuropathy, modifier of}"	308905	X-linked dominant	3	Prickle3
+Xp22.12	X:20149910-20267096	"RPS6KA3, RSK2, XLID19"	Ribosomal protein S6 kinase A3	300075	RPS6KA3	6197	"ENSG00000177189,ENST00000379565.9"		Coffin-Lowry syndrome	303600	X-linked dominant	3	Rps6ka3
+Xp22.12	X:20149910-20267096	"RPS6KA3, RSK2, XLID19"	Ribosomal protein S6 kinase A3	300075	RPS6KA3	6197	"ENSG00000177189,ENST00000379565.9"		"Intellectual developmental disorder, X-linked 19"	300844	X-linked dominant	3	Rps6ka3
+Xp11.22	X:53374148-53422727	"SMC1A, SMC1L1, SMC1, DXS423E, KIAA0178, CDLS2, DEE85"	"Segregation of mitotic chromosomes 1 (SMC1, yeast, homolog of; DXS423E; SB1.8)"	300040	SMC1A	8243	"ENSG00000072501,ENST00000375340.10"	escapes lyonization	Cornelia de Lange syndrome 2	300590	X-linked dominant	3	Smc1a
+Xp11.22	X:53374148-53422727	"SMC1A, SMC1L1, SMC1, DXS423E, KIAA0178, CDLS2, DEE85"	"Segregation of mitotic chromosomes 1 (SMC1, yeast, homolog of; DXS423E; SB1.8)"	300040	SMC1A	8243	"ENSG00000072501,ENST00000375340.10"	escapes lyonization	"Developmental and epileptic encephalopathy 85, with or without midline brain defects"	301044	X-linked dominant	3	Smc1a
+Xp22.12	X:21705977-21758115	"SMPX, DFNX4, MPD7"	"Small muscle protein, X-linked"	300226	SMPX	23676	"ENSG00000091482,ENST00000379494.4"		"Deafness, X-linked 4"	300066	X-linked dominant	3	Smpx
+Xp22.2	X:12867071-12890360	"TLR7, IMD74, SLEB17"	Toll-like receptor 7	300365	TLR7	51284	"ENSG00000196664,ENST00000380659.4"	centromeric to TLR8	Systemic lupus erythematosus 17	301080	X-linked dominant	3	Tlr7
+Xp11.21	X:56563626-56567867	"UBQLN2, PLIC2, CHAP1, ALS15"	Ubiquilin 2	300264	UBQLN2	29978	"ENSG00000188021,ENST00000338222.7"		"Amyotrophic lateral sclerosis 15, with or without frontotemporal dementia"	300857	X-linked dominant	3	Ubqln2
+Xp11.4	X:41085444-41236578	"USP9X, DFFRX, XLID99, MRXS99F"	"Ubiquitin-specific protease-9, X chromosome (Drosophila fat facets related, X-linked)"	300072	USP9X	8239	"ENSG00000124486,ENST00000324545.9"		"Intellectual developmental disorder, X-linked 99, syndromic, female-restricted"	300968	X-linked dominant	3	Usp9x
+Xp11.23	X:49074441-49101177	"WDR45, WIPI4, NBIA5"	WD repeat-containing protein 45	300526	WDR45	11152	"ENSG00000196998,ENST00000376372.9"	?pseudogene on 4q31.3	Neurodegeneration with brain iron accumulation 5	300894	X-linked dominant	3	Wdr45
+Xq11.2	X:64915806-65034740	"ZC4H2, KIAA1166, WRWF, MRXS4, WRWFFR"	Zinc finger C4H2 domain-containing protein	300897	ZC4H2	55906	"ENSG00000126970,ENST00000337990.2"		"Wieacker-Wolff syndrome, female-restricted"	301041	X-linked dominant	3	Zc4h2
+Xp22.3	X:6100000-9600000	LECD	"Corneal dystrophy, Lisch epithelial"	300778		100302509		max lod between DXYS233 and DXYS228X	"Corneal dystrophy, Lisch epithelial"	300778	X-linked dominant	2	
+Xp22	X:21900000-24900000	AIC	Aicardi syndrome	304050		192		?in p22.31 with FDH as contiguous gene syndrome	Aicardi syndrome	304050	X-linked dominant	2	
+Xp22	X:21900000-24900000	MNG2	Multinodular goiter-2	300273		59081			"Goiter, multinodular, 2"	300273	X-linked dominant	2	
+Xp21.3	X:24900000-29300000	MENOQ1	"Menopause, natural, age at, QTL 1"	300488		494029			"{Menopause, natural, age at, QTL1}"	300488	X-linked dominant	2	
+Xp11.4	X:37800000-42500000	NYS5	"Nystagmus 5, congenital, X-linked"	300589		780901		max lod at DXS993	"Nystagmus 5, congenital, X-linked"	300589	X-linked dominant	2	
+Xp11.3-q12	X:42500000-68500000	AGSPX	"Angioma serptiginosum, X-linked"	300652		100188767		between DXS8026 and DXS106	Angio serpiginosum	300652	X-linked dominant	2	
+Xp11.3	X:42500000-47600000	"XLID89, MRX89"	"Intellectual developmental disorder, X-linked 89"	300848				t(X;7)(p11.3;q11.21)	"Intellectual developmental disorder, X-linked 89"	300848	X-linked dominant	2	
+Xp11.23-p11.22	X:47600000-54800000	"DUPXp11.23p11.22, CXDUPp11.23p11.22"	Chromosome Xp11.23-p11.22 duplication syndrome	300801					Chromosome Xp11.23-p11.22 duplication syndrome	300801	X-linked dominant	4	
+Xq13.1-q22.1	X:68500000-103300000	CFTDX	"Myopathy, congenital, with fiber-type disproportion, X-linked"	300580		100188765		between DXS8019 and DXS99	"Myopathy, congenital, with fiber-type disproportion, X-linked"	300580	X-linked dominant	2	
+Xq13.3	X:74700000-76800000	"XLID91, MRX91"	"Intellectual developmental disorder, X-linked 91"	300577				t(X;15)(q13.3;cen)	"Intellectual developmental disorder, X-linked 91"	300577	X-linked dominant	4	
+Xq24-q27	X:117400000-148000000	BZX	Bazex syndrome	301845		8255			Bazex syndrome	301845	X-linked dominant	2	
+Xq24-q27.1	X:117400000-141200000	"PTOS2, PTOSX"	"Ptosis, hereditary congenital 2"	300245		54115			"Ptosis, hereditary congenital 2"	300245	X-linked dominant	2	
+Xq25	X:121800000-129500000	XECD	"Corneal dystrophy, endothelial, X-linked"	300779		100302510		between DXS8057 and DXS1047	"Corneal dystrophy, endothelial, X-linked"	300779	X-linked dominant	2	
+Xq26.3	X:134500000-138900000	"CXDUPq26.3, DUPXq26.3, XLAG"	Chromosome Xq26.3 duplication syndrome	300942					Chromosome Xq26.3 duplication syndrome	300942	X-linked dominant	4	
+Xq26-qter	X:134500000-156040895	INDX	"Immunoneurologic syndrome X-linked, of Woods, Black, and Norbury"	300076		8259			Woods-Black-Norbury syndrome	300076	X-linked dominant	2	
+Xq26.3	X:134500000-138900000	SRXX3	46XX sex reversal 3	300833				due to deletion/duplication/rearrangement upstream of SOX3	46XX sex reversal 3	300833	X-linked dominant	4	
+Xq27.1	X:138900000-141200000	"HTC2, HCG, CGH, CXINSq27.1"	"Hypertrichosis, congenital generalized"	307150				palindrome-mediated interchromosomal insertion at Xq27.1	"Hypertrichosis, congenital generalized"	307150	X-linked dominant	4	
+Xq27.2-q28	X:141200000-156040895	"BPP, PMGX, CBPS"	"Polymicrogyria, bilateral perisylvian"	300388				possible genetic heterogeneity	"Polymicrogyria, bilateral perisylvian"	300388	X-linked dominant	2	
+Xq28	X:148000000-156040895	"MAFD2, MDX"	Major affective disorder 2	309200		4096		"linkage to G6PD,CB in non-Ashkenazi Jews"	{?Major affective disorder 2}	309200	X-linked dominant	2	
+Chr.X		"XLID95, MRX95"	"Intellectual developmental disorder, X-linked 95"	300716		102775568			"Intellectual developmental disorder, X-linked 95"	300716	X-linked dominant	2	
+Xp11.4	X:41333307-41364471	"DDX3X, DDX3, DBX, MRX102, MRXSSB"	"DEAD-box helicase 3, X-linked"	300160	DDX3X	1654	"ENSG00000215301,ENST00000646319.1"		"Intellectual developmental disorder, X-linked, syndrome, Snijders Blok type"	300958	X-linked dominant; X-linked recessive	3	"D1Pas1,Ddx3x"
+Xq26.3-q27.1	X:138614726-139205022	"FGF13, FGF2, DEE90"	Fibroblast growth factor-13	300070	FGF13	2258	"ENSG00000129682,ENST00000626909.2"		Developmental and epileptic encephalopathy 90	301058	X-linked dominant; X-linked recessive	3	Fgf13
+Xq28	X:153929224-153935036	"NAA10, ARD1A, ARD1, TE2, NATD, OGDNS, MCOPS1"	"N-alpha-acetyltransferase 10, NatA catalytic subunit"	300013	NAA10	8260	"ENSG00000102030,ENST00000370009.5"		Ogden syndrome	300855	X-linked dominant; X-linked recessive	3	Naa10
+Xp11.3	X:43948775-43973389	"NDP, ND, EVR2"	Norrin cystine knot growth factor	300658	NDP	4693	"ENSG00000124479,ENST00000642620.1"		"Exudative vitreoretinopathy 2, X-linked"	305390	X-linked dominant; X-linked recessive	3	Ndp
+Xq25	X:123960559-124102655	"STAG2, SA2, MKMS, HPE13"	Stromal antigen 2	300826	STAG2	10735	"ENSG00000101972,ENST00000218089.13"		"Holoprosencephaly 13, X-linked"	301043	X-linked dominant; X-linked recessive	3	Stag2
+Xp11.3-p11.23	X:47571900-47619856	"SYN1, EPILX, MRX50"	Synapsin I	313440	SYN1	6853	"ENSG00000008056,ENST00000295987.13"		"Epilepsy, X-linked, with variable learning disabilities and behavior disorders"	300491	X-linked dominant; X-linked recessive	3	Syn1
+Xq26-q27	X:134500000-148000000	CFSS	Craniofacioskeletal syndrome	300712		100188773			?Craniofacioskeletal syndrome	300712	X-linked dominant; X-linked recessive	2	
+Xq13.3	X:75051047-75156282	"ABCB7, ABC7, ASAT"	ATP-binding cassette-7	300135	ABCB7	22	"ENSG00000131269,ENST00000373394.8"		"Anemia, sideroblastic, with ataxia"	301310	X-linked recessive	3	Abcb7
+Xq28	X:153724855-153744754	"ABCD1, ALD, AMN"	"ATP-binding cassette, subfamily D, member 1"	300371	ABCD1	215	"ENSG00000101986,ENST00000218104.6"	about 650kb from GCP/RCP	Adrenoleukodystrophy	300100	X-linked recessive	3	Abcd1
+Xq28	X:153724855-153744754	"ABCD1, ALD, AMN"	"ATP-binding cassette, subfamily D, member 1"	300371	ABCD1	215	"ENSG00000101986,ENST00000218104.6"	about 650kb from GCP/RCP	"Adrenomyeloneuropathy, adult"	300100	X-linked recessive	3	Abcd1
+Xq28	X:148500616-149000662	"AFF2, FMR2, FRAXE, XLID109"	"AF4/FMR2 family, member 2 (fragile site, X-linked, E)"	300806	AFF2	2334	"ENSG00000155966,ENST00000342251.7"		"Intellectual developmental disorder, X-linked 109"	309548	X-linked recessive	3	Aff2
+Xq26.1	X:130129361-130165840	"AIFM1, PDCD8, AIF, COXPD6, COWCK, CMTX4, DFNX5, SEMDHL"	"Apoptosis-inducing factor, mitochondrion-associated, 1"	300169	AIFM1	9131	"ENSG00000156709,ENST00000460436.6"		Combined oxidative phosphorylation deficiency 6	300816	X-linked recessive	3	Aifm1
+Xq26.1	X:130129361-130165840	"AIFM1, PDCD8, AIF, COXPD6, COWCK, CMTX4, DFNX5, SEMDHL"	"Apoptosis-inducing factor, mitochondrion-associated, 1"	300169	AIFM1	9131	"ENSG00000156709,ENST00000460436.6"		Cowchock syndrome	310490	X-linked recessive	3	Aifm1
+Xq26.1	X:130129361-130165840	"AIFM1, PDCD8, AIF, COXPD6, COWCK, CMTX4, DFNX5, SEMDHL"	"Apoptosis-inducing factor, mitochondrion-associated, 1"	300169	AIFM1	9131	"ENSG00000156709,ENST00000460436.6"		"Deafness, X-linked 5"	300614	X-linked recessive	3	Aifm1
+Xq26.1	X:130129361-130165840	"AIFM1, PDCD8, AIF, COXPD6, COWCK, CMTX4, DFNX5, SEMDHL"	"Apoptosis-inducing factor, mitochondrion-associated, 1"	300169	AIFM1	9131	"ENSG00000156709,ENST00000460436.6"		"Spondyloepimetaphyseal dysplasia, X-linked, with hypomyelinating leukodystrophy"	300232	X-linked recessive	3	Aifm1
+Xp11.21	X:55009054-55030976	"ALAS2, ANH1, ASB, XLEPP, XLSA, SIDBA1"	"Aminolevulinate, delta-, synthase-2"	301300	ALAS2	212	"ENSG00000158578,ENST00000650242.1"		"Anemia, sideroblastic, 1"	300751	X-linked recessive	3	Alas2
+Xq23	X:110194185-110440232	"AMMECR1, MFHIEN"	"Alport syndrome, mental retardation, midface hypoplasia, and elliptocytosis chromosomal region gene 1"	300195	AMMECR1	9949	"ENSG00000101935,ENST00000372059.6"		"Midface hypoplasia, hearing impairment, elliptocytosis, and nephrocalcinosis"	300990	X-linked recessive	3	Ammecr1
+Xp22.31	X:8528873-8732136	"ANOS1, KAL1, KMS, ADMLX, HH1"	Anosmin 1	300836	ANOS1	3730	"ENSG00000011201,ENST00000262648.8"	with ichthyosis in probable microdeletion syndrome	Hypogonadotropic hypogonadism 1 with or without anosmia (Kallmann syndrome 1)	308700	X-linked recessive	3	
+Xp22.2	X:15825805-15854812	"AP1S2, MRX59, MRXSF, MRXS21, MRXS5, PGS"	"Adaptor-related protein complex 1, sigma-2 subunit"	300629	AP1S2	8905	"ENSG00000182287,ENST00000672987.1"		Pettigrew syndrome	304340	X-linked recessive	3	Ap1s2
+Xq12	X:67544020-67730618	"AR, DHTR, TFM, SBMA, KD, SMAX1, HYSP1"	Androgen receptor (dihydrotestosterone receptor)	313700	AR	367	"ENSG00000169083,ENST00000374690.9"		Androgen insensitivity	300068	X-linked recessive	3	Ar
+Xq12	X:67544020-67730618	"AR, DHTR, TFM, SBMA, KD, SMAX1, HYSP1"	Androgen receptor (dihydrotestosterone receptor)	313700	AR	367	"ENSG00000169083,ENST00000374690.9"		"Androgen insensitivity, partial, with or without breast cancer"	312300	X-linked recessive	3	Ar
+Xq12	X:67544020-67730618	"AR, DHTR, TFM, SBMA, KD, SMAX1, HYSP1"	Androgen receptor (dihydrotestosterone receptor)	313700	AR	367	"ENSG00000169083,ENST00000374690.9"		"Hypospadias 1, X-linked"	300633	X-linked recessive	3	Ar
+Xq12	X:67544020-67730618	"AR, DHTR, TFM, SBMA, KD, SMAX1, HYSP1"	Androgen receptor (dihydrotestosterone receptor)	313700	AR	367	"ENSG00000169083,ENST00000374690.9"		Spinal and bulbar muscular atrophy of Kennedy	313200	X-linked recessive	3	Ar
+Xp22.33	X:2934520-2968244	"ARSE, CDPX1, CDPXR"	Arylsulfatase E	300180	ARSL	415	"ENSG00000157399,ENST00000381134.9"	CDPX1 in contiguous gene syndrome with STS	"Chondrodysplasia punctata, X-linked recessive"	302950	X-linked recessive	3	
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		Developmental and epileptic encephalopathy 1	308350	X-linked recessive	3	Arx
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		"Intellectual developmental disorder, X-linked 29"	300419	X-linked recessive	3	Arx
+Xp21.3	X:25003693-25015964	"ARX, ISSX, PRTS, MRXS1, MRX36, MRX54, MRX43, MRX87, MRX29, MRX32"	"Aristaless-related homeobox, X-linked"	300382	ARX	170302	"ENSG00000004848,ENST00000379044.5"		Partington syndrome	309510	X-linked recessive	3	Arx
+Xq27.1	X:139726347-139936902	"ATP11C, ATPIQ, ATPIG, HACXL"	"ATPase, class VI, type 11C"	300516	ATP11C	286410	"ENSG00000101974,ENST00000361648.6"	mutation identified in 1 HACXL patient	"?Hemolytic anemia, congenital, X-linked"	301015	X-linked recessive	3	Atp11c
+Xq28	X:153517641-153582928	"ATP2B3, PMCA3, SCAX1"	"ATPase, Ca++ transporting, plasma membrane, 3"	300014	ATP2B3	492	"ENSG00000067842,ENST00000263519.5"	mutation identified in 1 family	"?Spinocerebellar ataxia, X-linked 1"	302500	X-linked recessive	3	Atp2b3
+Xq28	X:154428676-154436515	"ATP6AP1, ATP6IP1, ATP6S1, VATPS1"	"ATPase, H+ transporting, lysosomal, accessory protein 1"	300197	ATP6AP1	537	"ENSG00000071553,ENST00000369762.7"		Immunodeficiency 47	300972	X-linked recessive	3	Atp6ap1
+Xp11.4	X:40580969-40606847	"ATP6AP2, ATP6M8-9, XMRE, MRXSH, XPDS, CDG2R"	"ATPase, H+ transporting, lysosomal, accessory protein 2"	300556	ATP6AP2	10159	"ENSG00000182220,ENST00000636580.2"	mutation identified in 1 XPDS family	"?Parkinsonism with spasticity, X-linked"	300911	X-linked recessive	3	Atp6ap2
+Xp11.4	X:40580969-40606847	"ATP6AP2, ATP6M8-9, XMRE, MRXSH, XPDS, CDG2R"	"ATPase, H+ transporting, lysosomal, accessory protein 2"	300556	ATP6AP2	10159	"ENSG00000182220,ENST00000636580.2"	mutation identified in 1 XPDS family	"Congenital disorder of glycosylation, type IIr"	301045	X-linked recessive	3	Atp6ap2
+Xp11.4	X:40580969-40606847	"ATP6AP2, ATP6M8-9, XMRE, MRXSH, XPDS, CDG2R"	"ATPase, H+ transporting, lysosomal, accessory protein 2"	300556	ATP6AP2	10159	"ENSG00000182220,ENST00000636580.2"	mutation identified in 1 XPDS family	"Intellectual developmental disorder, X-linked, syndromic, Hedera type"	300423	X-linked recessive	3	Atp6ap2
+Xq21.1	X:77910692-78050394	"ATP7A, MNK, MK, OHS, SMAX3"	"ATPase, Cu++ transporting, alpha polypeptide"	300011	ATP7A	538	"ENSG00000165240,ENST00000341514.11"	"probably Xq13.2-q13.3, ~150kb prox. to PGK1"	Menkes disease	309400	X-linked recessive	3	Atp7a
+Xq21.1	X:77910692-78050394	"ATP7A, MNK, MK, OHS, SMAX3"	"ATPase, Cu++ transporting, alpha polypeptide"	300011	ATP7A	538	"ENSG00000165240,ENST00000341514.11"	"probably Xq13.2-q13.3, ~150kb prox. to PGK1"	Occipital horn syndrome	304150	X-linked recessive	3	Atp7a
+Xq21.1	X:77910692-78050394	"ATP7A, MNK, MK, OHS, SMAX3"	"ATPase, Cu++ transporting, alpha polypeptide"	300011	ATP7A	538	"ENSG00000165240,ENST00000341514.11"	"probably Xq13.2-q13.3, ~150kb prox. to PGK1"	"Spinal muscular atrophy, distal, X-linked 3"	300489	X-linked recessive	3	Atp7a
+Xq21.1	X:77504879-77786215	"ATRX, XH2, XNP, SHS, SFM1, MRXHF1"	ATRX chromatin remodeler	300032	ATRX	546	"ENSG00000085224,ENST00000373344.11"		"Intellectual disability-hypotonic facies syndrome, X-linked"	309580	X-linked recessive	3	Atrx
+Xq28	X:153902624-153907165	"AVPR2, DIR, DI1, ADHR, NDI1"	Arginine vasopressin receptor-2	300538	AVPR2	554	"ENSG00000126895,ENST00000646375.2"		"Diabetes insipidus, nephrogenic, 1"	304800	X-linked recessive	3	Avpr2
+Xq28	X:153902624-153907165	"AVPR2, DIR, DI1, ADHR, NDI1"	Arginine vasopressin receptor-2	300538	AVPR2	554	"ENSG00000126895,ENST00000646375.2"		Nephrogenic syndrome of inappropriate antidiuresis	300539	X-linked recessive	3	Avpr2
+Xq28	X:153700491-153724386	"BCAP31, BAP31, DXS1357E, DDCH"	B-cell receptor-associated protein 31	300398	BCAP31	10134	"ENSG00000185825,ENST00000458587.8"		"Deafness, dystonia, and cerebral hypomyelination"	300475	X-linked recessive	3	Bcap31
+Xq26.1	X:129980312-130058070	"BCORL1, SHUVER"	BCL6 corepressor-like 1	300688	BCORL1	63035	"ENSG00000085185,ENST00000540052.6"		Shukla-Vernon syndrome	301029	X-linked recessive	3	Bcorl1
+Xq28	X:153494979-153509545	"BGN, SEMDX, MRLS"	Biglycan	301870	BGN	633	"ENSG00000182492,ENST00000331595.9"	proximal Xq28	"Spondyloepimetaphyseal dysplasia, X-linked"	300106	X-linked recessive	3	Bgn
+Xq21.1	X:80669502-80809876	"BRWD3, MRX93, XLID93"	Bromodomain-and WD repeat-containing protein 3	300553	BRWD3	254065	"ENSG00000165288,ENST00000373275.5"		"Intellectual developmental disorder, X-linked 93"	300659	X-linked recessive	3	Brwd3
+Xq22.1	X:101349449-101390795	"BTK, AGMX1, IMD1, XLA, AT, IGHD3"	Bruton agammaglobulinemia tyrosine kinase	300300	BTK	695	"ENSG00000010671,ENST00000308731.8"		"Agammaglobulinemia, X-linked 1"	300755	X-linked recessive	3	Btk
+Xq22.1	X:101349449-101390795	"BTK, AGMX1, IMD1, XLA, AT, IGHD3"	Bruton agammaglobulinemia tyrosine kinase	300300	BTK	695	"ENSG00000010671,ENST00000308731.8"		"Isolated growth hormone deficiency, type III, with agammaglobulinemia"	307200	X-linked recessive	3	Btk
+Xp11.23	X:49205062-49233339	"CACNA1F, CSNB2, CORDX3, CSNB2A, AIED, OA2"	"Calcium channel, voltage-dependent, alpha-1F subunit"	300110	CACNA1F	778	"ENSG00000102001,ENST00000323022.10"		"Cone-rod dystrophy, X-linked, 3"	300476	X-linked recessive	3	Cacna1f
+Xp11.23	X:49235469-49250519	"CCDC22, RTSC2"	Coiled-coil domain-containing protein 22	300859	CCDC22	28952	"ENSG00000101997,ENST00000376227.4"		Ritscher-Schinzel syndrome 2	300963	X-linked recessive	3	Ccdc22
+Xq26.3	X:136648157-136660389	"TNFSF5, CD40LG, HIGM1, IGM"	"Tumor necrosis factor ligand superfamily, member 5"	300386	CD40LG	959	"ENSG00000102245,ENST00000370629.7"	Between DSX144E and DSX300	"Immunodeficiency, X-linked, with hyper-IgM"	308230	X-linked recessive	3	Cd40lg
+Xp21.1	X:35919733-36385316	"CFAP47, CXorf22, SPGFX3"	Cilia- and flagella-associated protein 47	301057	CFAP47	286464	"ENSG00000165164,ENST00000378653.8"		"Spermatogenic failure, X-linked 3"	301059	X-linked recessive	3	Cfap47
+Xp11.23	X:47623281-47630304	"PFC, PFD"	"Properdin P factor, complement"	300383	CFP	5199	"ENSG00000126759,ENST00000396992.8"		"Properdin deficiency, X-linked"	312060	X-linked recessive	3	Cfp
+Xq23	X:110673855-110795816	"CHRDL1, VOPT, MGC1"	Chordin-like 1	300350	CHRDL1	91851	"ENSG00000101938,ENST00000372042.6"		"Megalocornea 1, X-linked"	309300	X-linked recessive	3	Chrdl1
+Xp11.23	X:49922595-50099229	"CLCN5, CLCK2, NPHL2, DENT1, NPHL1"	Chloride channel-5	300008	CLCN5	1184	"ENSG00000171365,ENST00000376108.7"		Dent disease 1	300009	X-linked recessive	3	Clcn5
+Xp11.23	X:49922595-50099229	"CLCN5, CLCK2, NPHL2, DENT1, NPHL1"	Chloride channel-5	300008	CLCN5	1184	"ENSG00000171365,ENST00000376108.7"		Hypophosphatemic rickets	300554	X-linked recessive	3	Clcn5
+Xp11.23	X:49922595-50099229	"CLCN5, CLCK2, NPHL2, DENT1, NPHL1"	Chloride channel-5	300008	CLCN5	1184	"ENSG00000171365,ENST00000376108.7"		"Nephrolithiasis, type I"	310468	X-linked recessive	3	Clcn5
+Xp11.23	X:49922595-50099229	"CLCN5, CLCK2, NPHL2, DENT1, NPHL1"	Chloride channel-5	300008	CLCN5	1184	"ENSG00000171365,ENST00000376108.7"		"Proteinuria, low molecular weight, with hypercalciuric nephrocalcinosis"	308990	X-linked recessive	3	Clcn5
+Xq22.3	X:106900163-106930860	"CLDN2, OAZON"	Claudin 2	300520	CLDN2	9075	"ENSG00000165376,ENST00000541806.6"	mutation identified in 1 OAZON family	"?Azoospermia, obstructive, with nephrolithiasis"	301060	X-linked recessive	3	Cldn2
+Xq28	X:155276210-155334613	"CLIC2, XAP121, MRXS32"	Chloride intracellular channel 2	300138	CLIC2	1193	"ENSG00000155962,ENST00000369449.7"	mutation identified in 1 MRXS32 family	"?Intellectual developmental disorder, X-linked, syndromic 32"	300886	X-linked recessive	3	
+Xq22.3	X:108155613-108439457	"COL4A6, DELXq22.3, CXDELq22.3, DFNX6"	"Collagen IV, alpha-6 polypeptide"	303631	COL4A6	1288	"ENSG00000197565,ENST00000394872.6"	mutation identified in 1 DFNX6 family	"?Deafness, X-linked 6"	300914	X-linked recessive	3	Col4a6
+Xq24	X:120523857-120575531	"CUL4B, MRXSC, MRXHF2, SFM2, MRXS15"	Cullin-4B	300304	CUL4B	8450	"ENSG00000158290,ENST00000371322.11"		"Intellectual developmental disorder, X-linked, syndromic, Cabezas type"	300354	X-linked recessive	3	Cul4b
+Xp21.1-p11.4	X:37780058-37813460	"CYBB, CGDX, AMCBX2, IMD34"	"Cytochrome b-245, beta polypeptide"	300481	CYBB	1536	"ENSG00000165168,ENST00000378588.5"	proximal to DMD	"Chronic granulomatous disease, X-linked"	306400	X-linked recessive	3	Cybb
+Xp21.1-p11.4	X:37780058-37813460	"CYBB, CGDX, AMCBX2, IMD34"	"Cytochrome b-245, beta polypeptide"	300481	CYBB	1536	"ENSG00000165168,ENST00000378588.5"	proximal to DMD	"Immunodeficiency 34, mycobacteriosis, X-linked"	300645	X-linked recessive	3	Cybb
+Xq28	X:154762863-154777688	"DKC1, DKCX"	Dyskerin	300126	DKC1	1736	"ENSG00000130826,ENST00000696575.1"		"Dyskeratosis congenita, X-linked"	305000	X-linked recessive	3	Dkc1
+Xq13.1	X:70444834-70505489	"DLG3, NEDLG, SAP102, XLID90"	Discs large MAGUK scaffold protein 3	300189	DLG3	1741	"ENSG00000082458,ENST00000542398.1"		"Intellectual developmental disorder, X-linked 90"	300850	X-linked recessive	3	Dlg3
+Xp21.2-p21.1	X:31119221-33339387	"DMD, BMD, CMD3B"	Dystrophin	300377	DMD	1756	"ENSG00000198947,ENST00000357033.9"	dystrophin gene; cen-5'-3'-pter; 2Mb; ?Xp21.13	Becker muscular dystrophy	300376	X-linked recessive	3	Dmd
+Xp21.2-p21.1	X:31119221-33339387	"DMD, BMD, CMD3B"	Dystrophin	300377	DMD	1756	"ENSG00000198947,ENST00000357033.9"	dystrophin gene; cen-5'-3'-pter; 2Mb; ?Xp21.13	Duchenne muscular dystrophy	310200	X-linked recessive	3	Dmd
+Xq22.3	X:107206610-107244246	"PIH1D3, CILD36"	PIH1 domain-containing protein 3	300933	DNAAF6	139212	"ENSG00000080572,ENST00000535523.6"		"Ciliary dyskinesia, primary, 36, X-linked"	300991	X-linked recessive	3	"Dnaaf6,Dnaaf6b"
+Xp11.23	X:48521807-48528715	"EBP, CDPX2, CPXD, CPX, MEND"	Emopamil-binding protein	300205	EBP	10682	"ENSG00000147155,ENST00000495186.6"		MEND syndrome	300960	X-linked recessive	3	Ebp
+Xq13.1	X:69616112-70039471	"EDA, ED1, ECTD1, HED1, STHAGX1"	Ectodysplasin A	300451	EDA	1896	"ENSG00000158813,ENST00000374553.6"		"Ectodermal dysplasia 1, hypohidrotic, X-linked"	305100	X-linked recessive	3	Eda
+Xp22.11	X:24054955-24078809	"EIF2S3, EIF2G, MEHMO, MRXSBRK"	"Eukaryotic translation initiation factor 2, subunit 3"	300161	EIF2S3	1968	"ENSG00000130741,ENST00000253039.9"		MEHMO syndrome	300148	X-linked recessive	3	Eif2s3x
+Xq26.1	X:130063954-130111926	"ELF4, MEF, AIFBL2"	E74-like ETS transcription factor 4	300775	ELF4	2000	"ENSG00000102034,ENST00000335997.11"		"Autoinflammatory syndrome, familial, X-linked, Behcet-like 2"	301074	X-linked recessive	3	Elf4
+Xq28	X:154379294-154381522	"EMD, EDMD, STA"	Emerin	300384	EMD	2010	"ENSG00000102119,ENST00000369842.9"	in distal Xq28	"Emery-Dreifuss muscular dystrophy 1, X-linked"	310300	X-linked recessive	3	Emd
+Xq28	X:154835791-155022722	"F8, F8C, HEMA, THPH13"	"Coagulation factor VIII, procoagulant component"	300841	F8	2157	"ENSG00000185010,ENST00000360256.9"	cen-G6PD-3' end of F8C-5'-ter; 1.1Mb from telomere	Hemophilia A	306700	X-linked recessive	3	F8
+Xq27.1	X:139530738-139563458	"F9, HEMB, THPH8"	Coagulation factor IX (plasma thromboplastic component)	300746	F9	2158	"ENSG00000101981,ENST00000218099.7"	distal to HPRT; proximal part of Xq27	Hemophilia B	306900	X-linked recessive	3	F9
+Xq27.1	X:139530738-139563458	"F9, HEMB, THPH8"	Coagulation factor IX (plasma thromboplastic component)	300746	F9	2158	"ENSG00000101981,ENST00000218099.7"	distal to HPRT; proximal part of Xq27	"Thrombophilia 8, X-linked, due to factor IX defect"	300807	X-linked recessive	3	F9
+Xq27.1	X:139530738-139563458	"F9, HEMB, THPH8"	Coagulation factor IX (plasma thromboplastic component)	300746	F9	2158	"ENSG00000101981,ENST00000218099.7"	distal to HPRT; proximal part of Xq27	"{Deep venous thrombosis, protection against}"	300807	X-linked recessive	3	F9
+Xq28	X:154444140-154450653	"FAM50A, DXS9928E, HXC26, MRXSA"	"Family with sequence similarity 50, member A"	300453	FAM50A	9130	"ENSG00000071859,ENST00000393600.8"		"Intellectual developmental disorder, X-linked, syndromic, Armfield type"	300261	X-linked recessive	3	Fam50a
+Xp22.2	X:14689523-14873068	"FANCB, FAAP95, FAAP90, FLJ34064"	"Fanconi anemia, complementation group B gene"	300515	FANCB	2187	"ENSG00000181544,ENST00000650831.1"		"Fanconi anemia, complementation group B"	300514	X-linked recessive	3	Fancb
+Xp11.22	X:54445453-54496233	"FGD1, FGDY, AAS, MRXS16"	"FYVE, RhoGEF, and PH domain-containing protein 1"	300546	FGD1	2245	"ENSG00000102302,ENST00000375135.4"		Aarskog-Scott syndrome	305400	X-linked recessive	3	Fgd1
+Xp11.22	X:54445453-54496233	"FGD1, FGDY, AAS, MRXS16"	"FYVE, RhoGEF, and PH domain-containing protein 1"	300546	FGD1	2245	"ENSG00000102302,ENST00000375135.4"		"Intellectual developmental disorder, X-linked, syndromic 16"	305400	X-linked recessive	3	Fgd1
+Xq21.1	X:77447388-77457277	"FGF16, MF4"	Fibroblast growth factor 16	300827	FGF16	8823	"ENSG00000196468,ENST00000439435.3"	previously mapped to 8q21.3	Metacarpal 4-5 fusion	309630	X-linked recessive	3	Fgf16
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	?Uruguay faciocardiomusculoskeletal syndrome	300280	X-linked recessive	3	Fhl1
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	"Emery-Dreifuss muscular dystrophy 6, X-linked"	300696	X-linked recessive	3	Fhl1
+Xq26.3	X:136146701-136211358	"FHL1, SLIM1, XMPMA, KYOT, FHL1A, FHL1B, RBMX1A, RBMX1B, FCMSU"	Four-and-a-half LIM domains 1	300163	FHL1	2273	"ENSG00000022267,ENST00000370683.6"	mutation identified in 1 FCMSU family	"Myopathy, X-linked, with postural muscle atrophy"	300696	X-linked recessive	3	Fhl1
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	Congenital short bowel syndrome	300048	X-linked recessive	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	Frontometaphyseal dysplasia 1	305620	X-linked recessive	3	Flna
+Xq28	X:154348530-154374633	"FLNA, FLN1, NHBP, OPD1, OPD2, FMD, MNS, CVD1, CSBS, FGS2"	"Filamin A, alpha (actin-binding protein-280)"	300017	FLNA	2316	"ENSG00000196924,ENST00000369850.10"	mutation identified in 1 FGS2 patient	"Intestinal pseudoobstruction, neuronal"	300048	X-linked recessive	3	Flna
+Xp11.23	X:49250437-49264709	"FOXP3, IPEX, AIID, XPID, PIDX"	Forkhead box P3 (scurfin)	300292	FOXP3	50943	"ENSG00000049768,ENST00000376199.7"		"Immunodysregulation, polyendocrinopathy, and enteropathy, X-linked"	304790	X-linked recessive	3	Foxp3
+Xp11.23	X:48476020-48486363	"FTSJ1, JM23, SPB1, MRX44, MRX9, XLID9"	FTSJ RNA 2-prime-O-methyltransferase 1	300499	FTSJ1	24140	"ENSG00000068438,ENST00000396894.8"		"Intellectual developmental disorder, X-linked 9"	309549	X-linked recessive	3	Ftsj1
+Xp11.23	X:48786589-48794310	"GATA1, GF1, ERYF1, NFE1, XLTDA, XLTT, XLANP"	GATA-binding protein-1 (globin transcription factor-1)	305371	GATA1	2623	"ENSG00000102145,ENST00000376670.9"		"Anemia, X-linked, with/without neutropenia and/or platelet abnormalities"	300835	X-linked recessive	3	Gata1
+Xp11.23	X:48786589-48794310	"GATA1, GF1, ERYF1, NFE1, XLTDA, XLTT, XLANP"	GATA-binding protein-1 (globin transcription factor-1)	305371	GATA1	2623	"ENSG00000102145,ENST00000376670.9"		"Thrombocytopenia with beta-thalassemia, X-linked"	314050	X-linked recessive	3	Gata1
+Xp11.23	X:48786589-48794310	"GATA1, GF1, ERYF1, NFE1, XLTDA, XLTT, XLANP"	GATA-binding protein-1 (globin transcription factor-1)	305371	GATA1	2623	"ENSG00000102145,ENST00000376670.9"		"Thrombocytopenia, X-linked, with or without dyserythropoietic anemia"	300367	X-linked recessive	3	Gata1
+Xp21.2	X:30653422-30731461	GK	Glycerol kinase	300474	GK	2710	"ENSG00000198814,ENST00000378945.7"	2Mb distal to DMD; pseudogene on 4q32	Glycerol kinase deficiency	307030	X-linked recessive	3	"Gk,Gykl1"
+Xq26.2	X:133535744-133985593	"GPC3, SDYS, SGBS1"	Glypican 3	300037	GPC3	2719	"ENSG00000147257,ENST00000394299.7"		"Simpson-Golabi-Behmel syndrome, type 1"	312870	X-linked recessive	3	Gpc3
+Xq26.2	X:133300102-133415488	"GPC4, KPTS"	Glypican 4	300168	GPC4	2239	"ENSG00000076716,ENST00000370828.4"	centromeric to GPC3	Keipert syndrome	301026	X-linked recessive	3	Gpc4
+Xp22.2	X:9725345-9778601	"GPR143, OA1, NYS6"	G protein-coupled receptor 143	300808	GPR143	4935	"ENSG00000101850,ENST00000467482.6"	linked to XG	"Nystagmus 6, congenital, X-linked"	300814	X-linked recessive	3	Gpr143
+Xq22.1	X:102712447-102717732	"GPRASP2, GASP2, DFNX7"	G protein-coupled receptor-associated sorting protein 2	300969	GPRASP2	114928	"ENSG00000158301,ENST00000483720.7"	mutation identified in 1 DFNX7 family	"?Deafness, X-linked 7"	301018	X-linked recessive	3	Gprasp2
+Xq25	X:123184277-123490914	"GRIA3, GLUR3, MRXSW"	"Glutamate receptor, ionotropic, AMPA 3"	305915	GRIA3	2892	"ENSG00000125675,ENST00000622768.5"		"Intellectual developmental disorder, X-linked, syndromic, Wu type"	300699	X-linked recessive	3	Gria3
+Xq28	X:153947556-153971817	"HCFC1, HCF1, MAHCX, XLID3"	Host cell factor C1 (VP16-accessory protein)	300019	HCFC1	3054	"ENSG00000172534,ENST00000310441.12"	50kb distal to V2R	"Methylmalonic aciduria and homocysteinemia, cblX type"	309541	X-linked recessive	3	Hcfc1
+Xq26.2-q26.3	X:134460164-134500667	"HPRT1, HPRT"	Hypoxanthine phosphoribosyltransferase 1	308000	HPRT1	3251	"ENSG00000165704,ENST00000298556.8"		"Hyperuricemia, HRPT-related"	300323	X-linked recessive	3	Hprt
+Xq26.2-q26.3	X:134460164-134500667	"HPRT1, HPRT"	Hypoxanthine phosphoribosyltransferase 1	308000	HPRT1	3251	"ENSG00000165704,ENST00000298556.8"		Lesch-Nyhan syndrome	300322	X-linked recessive	3	Hprt
+Xq26.2	X:132626014-132961369	"HS6ST2, MRXSPM"	Heparan sulfate 6-O-sulfotransferase 2	300545	HS6ST2	90161	"ENSG00000171004,ENST00000521489.5"	mutation identified in 1 MRXSPM family	?Paganini-Miozzo syndrome	301025	X-linked recessive	3	Hs6st2
+Xq28	X:149476987-149505305	"IDS, MPS2, SIDS"	Iduronate 2-sulfatase (Hunter syndrome)	300823	IDS	3423	"ENSG00000010404,ENST00000340855.11"	telomeric IDS2 source of inversion in IDS	Mucopolysaccharidosis II	309900	X-linked recessive	3	Ids
+Xq13.1	X:70133446-70166323	"IGBP1, MRXS28"	Immunoglobulin-binding protein 1	300139	IGBP1	3476	"ENSG00000089289,ENST00000356413.5"	mutation identified in 1 MRXS28 family	"?Corpus callosum, agenesis of, with impaired intellectual development, ocular coloboma and micrognathia"	300472	X-linked recessive	3	Igbp1
+Xq26.1	X:131273505-131289463	"IGSF1, IGDC1, CHTE"	"Immunoglobulin superfamily, member 1"	300137	IGSF1	3547	"ENSG00000147255,ENST00000370903.8"		"Hypothyroidism, central, and testicular enlargement"	300888	X-linked recessive	3	Igsf1
+Xq28	X:154541237-154565045	"IKBKG, NEMO, FIP3, IP, EDAID1, IMD33, SAIDX"	"Inhibitor of nuclear factor kappa B kinase, regulatory subunit gamma"	300248	IKBKG	8517	"ENSG00000269335,ENST00000618670.4"		Ectodermal dysplasia and immunodeficiency 1	300291	X-linked recessive	3	Ikbkg
+Xq28	X:154541237-154565045	"IKBKG, NEMO, FIP3, IP, EDAID1, IMD33, SAIDX"	"Inhibitor of nuclear factor kappa B kinase, regulatory subunit gamma"	300248	IKBKG	8517	"ENSG00000269335,ENST00000618670.4"		Immunodeficiency 33	300636	X-linked recessive	3	Ikbkg
+Xp21.3-p21.2	X:28587445-29956717	"IL1RAPL1, IL1R8, MRX21, MRX34"	Il-1 receptor accessory protein-like 1	300206	IL1RAPL1	11141	"ENSG00000169306,ENST00000378993.6"		"Intellectual developmental disorder, X-linked 21"	300143	X-linked recessive	3	Il1rapl1
+Xq13.1	X:71107403-71111576	"IL2RG, SCIDX1, SCIDX, IMD4"	"Interleukin-2 receptor, gamma"	308380	IL2RG	3561	"ENSG00000147168,ENST00000374202.7"	linked to DXS159	"Combined immunodeficiency, X-linked, moderate"	312863	X-linked recessive	3	Il2rg
+Xq13.1	X:71107403-71111576	"IL2RG, SCIDX1, SCIDX, IMD4"	"Interleukin-2 receptor, gamma"	308380	IL2RG	3561	"ENSG00000147168,ENST00000374202.7"	linked to DXS159	"Severe combined immunodeficiency, X-linked"	300400	X-linked recessive	3	Il2rg
+Xq22.3	X:108719945-108736562	"IRS4, CHNG9"	Insulin receptor substrate 4	300904	IRS4	8471	"ENSG00000133124,ENST00000372129.4"		"Hypothyroidism, congenital, nongoitrous, 9"	301035	X-linked recessive	3	Irs4
+Xp11.22	X:53176276-53225206	"KDM5C, JARID1C, SMCX, DXS1272E, XE169, MRXSCJ"	Lysine demethylase 5C	314690	KDM5C	8242	"ENSG00000126012,ENST00000452825.7"	escapes inactivation	"Intellectual developmental disorder, X-linked syndromic, Claes-Jensen type"	300534	X-linked recessive	3	Kdm5c
+Xq13.1	X:70290103-70420885	"KIF4A, KIF4, XLID100"	Kinesin family member 4A	300521	KIF4A	24137	"ENSG00000090889,ENST00000374403.4"	mutation identified in 1 XLID100 family	"?Intellectual developmental disorder, X-linked 100"	300923	X-linked recessive	3	Kif4
+Xp22.11	X:23983719-24027185	"KLHL15, KIAA1677, XLID103"	Kelch-like 15	300980	KLHL15	80311	"ENSG00000174010,ENST00000328046.8"		"Intellectual developmental disorder, X-linked 103"	300982	X-linked recessive	3	Klhl15
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	"Corpus callosum, partial agenesis of"	304100	X-linked recessive	3	L1cam
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	CRASH syndrome	303350	X-linked recessive	3	L1cam
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	Hydrocephalus due to aqueductal stenosis	307000	X-linked recessive	3	L1cam
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	Hydrocephalus with congenital idiopathic intestinal pseudoobstruction	307000	X-linked recessive	3	L1cam
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	Hydrocephalus with Hirschsprung disease	307000	X-linked recessive	3	L1cam
+Xq28	X:153861513-153886172	"L1CAM, CAML1, HSAS1, MASA, SPG1"	L1 cell adhesion molecule	308840	L1CAM	3897	"ENSG00000198910,ENST00000361981.7"	between RCP/GCP cluster and G6PD	MASA syndrome	303350	X-linked recessive	3	L1cam
+Xq28	X:154477774-154479280	"LAGE3, ITBA2, GAMOS2"	L antigen family member 3	300060	LAGE3	8270	"ENSG00000196976,ENST00000357360.5"		"Galloway-Mowat syndrome 2, X-linked"	301006	X-linked recessive	3	Lage3
+Xq12	X:65512581-65534786	"LAS1L, MRXSWTS"	Las1-like ribosome biogenesis factor	300964	LAS1L	81887	"ENSG00000001497,ENST00000374807.9"		Wilson-Turner syndrome	309585	X-linked recessive	3	Las1l
+Xp11.21	X:54807744-54816014	"MAGED2, MAGED, BARTS5"	"Melanoma antigen, family D, 2"	300470	MAGED2	10916	"ENSG00000102316,ENST00000375058.5"		"Bartter syndrome, type 5, antenatal, transient"	300971	X-linked recessive	3	Maged2
+Xq21.1	X:77825746-77895567	"MAGT1, IAP, XMEN, CDG1CC"	Magnesium transporter 1	300715	MAGT1	84061	"ENSG00000102158,ENST00000618282.5"		"Congenital disorder of glycosylation, type Icc"	301031	X-linked recessive	3	Magt1
+Xq21.1	X:77825746-77895567	"MAGT1, IAP, XMEN, CDG1CC"	Magnesium transporter 1	300715	MAGT1	84061	"ENSG00000102158,ENST00000618282.5"		"Immunodeficiency, X-linked, with magnesium defect, Epstein-Barr virus infection and neoplasia"	300853	X-linked recessive	3	Magt1
+Xq28	X:150361571-150514172	"MAMLD1, CXorf6, F18, HYSP2"	Mastermind-like domain containing 1	300120	MAMLD1	10046	"ENSG00000013619,ENST00000432680.7"	near MTM1 in microdeletion	"Hypospadias 2, X-linked"	300758	X-linked recessive	3	Mamld1
+Xp11.3	X:43655005-43746816	"MAOA, BRNRS"	Monoamine oxidase A	309850	MAOA	4128	"ENSG00000189221,ENST00000338702.4"	"NDP, MAOA, MAOB closely linked"	Brunner syndrome	300615	X-linked recessive	3	Maoa
+Xp11.3	X:43655005-43746816	"MAOA, BRNRS"	Monoamine oxidase A	309850	MAOA	4128	"ENSG00000189221,ENST00000338702.4"	"NDP, MAOA, MAOB closely linked"	{Antisocial behavior}	300615	X-linked recessive	3	Maoa
+Xp22.12	X:21839616-21885422	"MBTPS2, S2P, IFAP, KFSDX, OLMSX, OI19"	"Membrane-bound transcription factor protease, site 2"	300294	MBTPS2	51360	"ENSG00000012174,ENST00000379484.10"	mutation identified in 1 OLMSX family	"?Olmsted syndrome, X-linked"	300918	X-linked recessive	3	Mbtps2
+Xp22.12	X:21839616-21885422	"MBTPS2, S2P, IFAP, KFSDX, OLMSX, OI19"	"Membrane-bound transcription factor protease, site 2"	300294	MBTPS2	51360	"ENSG00000012174,ENST00000379484.10"	mutation identified in 1 OLMSX family	IFAP syndrome with or without BRESHECK syndrome	308205	X-linked recessive	3	Mbtps2
+Xp22.12	X:21839616-21885422	"MBTPS2, S2P, IFAP, KFSDX, OLMSX, OI19"	"Membrane-bound transcription factor protease, site 2"	300294	MBTPS2	51360	"ENSG00000012174,ENST00000379484.10"	mutation identified in 1 OLMSX family	"Keratosis follicularis spinulosa decalvans, X-linked"	308800	X-linked recessive	3	Mbtps2
+Xp22.12	X:21839616-21885422	"MBTPS2, S2P, IFAP, KFSDX, OLMSX, OI19"	"Membrane-bound transcription factor protease, site 2"	300294	MBTPS2	51360	"ENSG00000012174,ENST00000379484.10"	mutation identified in 1 OLMSX family	"Osteogenesis imperfecta, type XIX"	301014	X-linked recessive	3	Mbtps2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"Encephalopathy, neonatal severe"	300673	X-linked recessive	3	Mecp2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"Intellectual developmental disorder, X-linked syndromic, Lubs type"	300260	X-linked recessive	3	Mecp2
+Xq28	X:154021572-154097716	"MECP2, RTT, PPMX, AUTSX3, MRXSL, MRXS13"	Methyl-CpG-binding protein-2	300005	MECP2	4204	"ENSG00000169057,ENST00000453960.7"	70kb centromeric of RCP/GCP	"Intellectual developmental disorder, X-linked, syndromic 13"	300055	X-linked recessive	3	Mecp2
+Xq13.1	X:71118595-71142449	"MED12, TNRC11, TRAP230, HOPA, KIAA0192, OKS, FGS1, OHDOX, HDKR"	Mediator complex subunit 12	300188	MED12	9968	"ENSG00000184634,ENST00000374080.8"		Lujan-Fryns syndrome	309520	X-linked recessive	3	Med12
+Xq13.1	X:71118595-71142449	"MED12, TNRC11, TRAP230, HOPA, KIAA0192, OKS, FGS1, OHDOX, HDKR"	Mediator complex subunit 12	300188	MED12	9968	"ENSG00000184634,ENST00000374080.8"		"Ohdo syndrome, X-linked"	300895	X-linked recessive	3	Med12
+Xq13.1	X:71118595-71142449	"MED12, TNRC11, TRAP230, HOPA, KIAA0192, OKS, FGS1, OHDOX, HDKR"	Mediator complex subunit 12	300188	MED12	9968	"ENSG00000184634,ENST00000374080.8"		Opitz-Kaveggia syndrome	305450	X-linked recessive	3	Med12
+Xp22.2	X:10445309-10833682	"MID1, OGS1, GBBB, FXY, OSX"	Midline-1	300552	MID1	4281	"ENSG00000101871,ENST00000317552.9"	type II defect on chr.22	Opitz GBBB syndrome	300000	X-linked recessive	3	Mid1
+Xq22.3	X:107825734-107931636	"MID2, XLID101"	Midline 2	300204	MID2	11043	"ENSG00000080561,ENST00000262843.11"	mutation identified in 1 XLID101 family	"?Intellectual developmental disorder, X-linked 101"	300928	X-linked recessive	3	Mid2
+Xq12	X:65588376-65741930	"MSN, IMD50"	Moesin	309845	MSN	4478	"ENSG00000147065,ENST00000360270.7"		Immunodeficiency 50	300988	X-linked recessive	3	Msn
+Xq28	X:150562652-150673142	"MTM1, MTMX, CNMX"	Myotubularin	300415	MTM1	4534	"ENSG00000171100,ENST00000370396.7"	close to F8	"Myopathy, centronuclear, X-linked"	310400	X-linked recessive	3	Mtm1
+Xp11.3	X:43948775-43973389	"NDP, ND, EVR2"	Norrin cystine knot growth factor	300658	NDP	4693	"ENSG00000124479,ENST00000642620.1"		Norrie disease	310600	X-linked recessive	3	Ndp
+Xq24	X:119871831-119876661	"NDUFA1, MWFE, MC1DN12"	NADH-ubiquinone oxidoreductase subunit A1	300078	NDUFA1	4694	"ENSG00000125356,ENST00000371437.5"		"Mitochondrial complex I deficiency, nuclear type 12"	301020	X-linked recessive	3	Ndufa1
+Xq24	X:119920671-119943750	"NKAP, MRXSHD"	NFKB-activating protein	300766	NKAP	79576	"ENSG00000101882,ENST00000371410.5"		"Intellectual developmental disorder, X-linked, syndromic, Hackman-Di Donato type"	301039	X-linked recessive	3	Nkap
+Xp21.2	X:30304205-30309389	"NR0B1, DAX1, AHC, AHX, SRXY2"	"Nuclear receptor subfamily 0, group B, member 1"	300473	NR0B1	190	"ENSG00000169297,ENST00000378970.5"	distal to GK	"Adrenal hypoplasia, congenital"	300200	X-linked recessive	3	Nr0b1
+Xq28	X:152831062-152869728	NSDHL	NAD(P)H steroid dehydrogenase-like protein	300275	NSDHL	50814	"ENSG00000147383,ENST00000440023.5"		CK syndrome	300831	X-linked recessive	3	Nsdhl
+Xp11.4	X:41447342-41475651	"NYX, CSNB1A, NBM1"	Nyctalopin	300278	NYX	60506	"ENSG00000188937,ENST00000378220.3"		"Night blindness, congenital stationary (complete), 1A, X-linked"	310500	X-linked recessive	3	Nyx
+Xq26.1	X:129540258-129592555	"OCRL, LOCR, OCRL1, NPHL2, DENT2"	OCRL inositol polyphosphate-5-phosphatase	300535	OCRL	4952	"ENSG00000122126,ENST00000371113.9"		Dent disease 2	300555	X-linked recessive	3	Ocrl
+Xq26.1	X:129540258-129592555	"OCRL, LOCR, OCRL1, NPHL2, DENT2"	OCRL inositol polyphosphate-5-phosphatase	300535	OCRL	4952	"ENSG00000122126,ENST00000371113.9"		Lowe syndrome	309000	X-linked recessive	3	Ocrl
+Xp22.2	X:13714504-13773737	"OFD1, CXorf5, SGBS2, JBTS10, RP23"	OFD1 centriole and centriolar satellite protein	300170	OFD1	8481	"ENSG00000046651,ENST00000380550.6"	mutation identified in 1 RP23 family	?Retinitis pigmentosa 23	300424	X-linked recessive	3	Ofd1
+Xp22.2	X:13714504-13773737	"OFD1, CXorf5, SGBS2, JBTS10, RP23"	OFD1 centriole and centriolar satellite protein	300170	OFD1	8481	"ENSG00000046651,ENST00000380550.6"	mutation identified in 1 RP23 family	Joubert syndrome 10	300804	X-linked recessive	3	Ofd1
+Xp22.2	X:13714504-13773737	"OFD1, CXorf5, SGBS2, JBTS10, RP23"	OFD1 centriole and centriolar satellite protein	300170	OFD1	8481	"ENSG00000046651,ENST00000380550.6"	mutation identified in 1 RP23 family	"Simpson-Golabi-Behmel syndrome, type 2"	300209	X-linked recessive	3	Ofd1
+Xq13.1	X:71533103-71575891	"OGT, XLID106"	O-linked N-acetylglucosamine transferase	300255	OGT	8473	"ENSG00000147162,ENST00000373719.8"		"Intellectual developmental disorder, X-linked 106"	300997	X-linked recessive	3	Ogt
+Xq12	X:68042343-68433840	"OPHN1, MRXSBL"	Oligophrenin-1	300127	OPHN1	4983	"ENSG00000079482,ENST00000355520.6"		"Intellectual developmental disorder, X-linked syndromic, Billuart type"	300486	X-linked recessive	3	Ophn1
+Xq28	X:154144242-154159031	"OPN1LW, RCP, CBP, CBBM"	"Red cone pigment (opsin 1, long-wave-sensitive)"	300822	OPN1LW	5956	"ENSG00000102076,ENST00000369951.9"	5' to CBD	Blue cone monochromacy	303700	X-linked recessive	3	Opn1mw
+Xq28	X:154182595-154196860	"OPN1MW, GCP, CBD, CBBM"	"Green cone pigment (opsin 1, medium-wave-sensitive)"	300821	OPN1MW	2652	"ENSG00000268221,ENST00000595290.6"	linked to G6PD; multiple genes	Blue cone monochromacy	303700	X-linked recessive	3	Opn1mw
+Xp11.23	X:48922023-48958380	"OTUD5, DUBA, MCAND"	OTU domain-containing protein 5	300713	OTUD5	55593	"ENSG00000068308,ENST00000376488.8"		"Multiple congenital anomalies-neurodevelopmental syndrome, X-linked"	301056	X-linked recessive	3	Otud5
+Xq23	X:110944396-111227360	"PAK3, MRX30, MRX47, XLID30"	p21-activated kinase-3	300142	PAK3	5063	"ENSG00000077264,ENST00000446737.5"		"Intellectual developmental disorder, X-linked 30"	300558	X-linked recessive	3	Pak3
+Xq21.1	X:78104247-78129294	"PGK1, PGKA"	Phosphoglycerate kinase-1	311800	PGK1	5230	"ENSG00000102144,ENST00000373316.5"	"?Xq13.3; pseudogenes PGK1P1 on Xq, PGK1P2 on chr. 6"	Phosphoglycerate kinase 1 deficiency	300653	X-linked recessive	3	Pgk1
+Xq26.2	X:134373311-134428789	"PHF6, BFLS"	PHD finger protein 6	300414	PHF6	84295	"ENSG00000156531,ENST00000370803.8"		Borjeson-Forssman-Lehmann syndrome	301900	X-linked recessive	3	Phf6
+Xp11.22	X:53936679-54048935	"PHF8, ZNF422, KIAA1111, MRXSSD"	PHD finger protein 8	300560	PHF8	23133	"ENSG00000172943,ENST00000357988.9"		"Intellectual developmental disorder, X-linked, syndromic, Siderius type"	300263	X-linked recessive	3	Phf8
+Xq13.1	X:72578813-72714305	PHKA1	"Phosphorylase kinase, muscle, alpha polypeptide"	311870	PHKA1	5255	"ENSG00000067177,ENST00000339490.7"	?proximal and close to PGKA;	Muscle glycogenosis	300559	X-linked recessive	3	Phka1
+Xp22.13	X:18892297-18984113	"PHKA2, PHK, XLG, PYKL, GSD9A"	"Phosphorylase kinase, liver, alpha-2 subunit"	300798	PHKA2	5256	"ENSG00000044446,ENST00000379942.5"		"Glycogen storage disease, type IXa1"	306000	X-linked recessive	3	Phka2
+Xp22.13	X:18892297-18984113	"PHKA2, PHK, XLG, PYKL, GSD9A"	"Phosphorylase kinase, liver, alpha-2 subunit"	300798	PHKA2	5256	"ENSG00000044446,ENST00000379942.5"		"Glycogen storage disease, type IXa2"	306000	X-linked recessive	3	Phka2
+Xp22.2	X:15319450-15335553	"PIGA, PNH1, MCAHS2, NEDEPH"	"Phosphatidylinositol glycan, class A"	311770	PIGA	5277	"ENSG00000165195,ENST00000333590.6"	pseudogene on chr.12	Multiple congenital anomalies-hypotonia-seizures syndrome 2	300868	X-linked recessive	3	Piga
+Xq22.2	X:103776505-103792618	"PLP1, PMD, HLD1, SPG2"	Proteolipid protein 1	300401	PLP1	5354	"ENSG00000123560,ENST00000621218.5"		Pelizaeus-Merzbacher disease	312080	X-linked recessive	3	Plp1
+Xq22.2	X:103776505-103792618	"PLP1, PMD, HLD1, SPG2"	Proteolipid protein 1	300401	PLP1	5354	"ENSG00000123560,ENST00000621218.5"		"Spastic paraplegia 2, X-linked"	312920	X-linked recessive	3	Plp1
+Xq21.1	X:85277395-85379664	"FLJ22792, POF1B, POF2B"	FLJ22792 gene	300603	POF1B	79983	"ENSG00000124429,ENST00000373145.3"	mutation identified in 1 POF2B family	?Premature ovarian failure 2B	300604	X-linked recessive	3	Pof1b
+Xp22.11-p21.3	X:24693917-24996985	"POLA1, VEODS"	"Polymerase, DNA, alpha-1"	312040	POLA1	5422	"ENSG00000101868,ENST00000379068.8"		"Pigmentary disorder, reticulate, with systemic manifestations, X-linked"	301220	X-linked recessive	3	Pola1
+Xp22.11-p21.3	X:24693917-24996985	"POLA1, VEODS"	"Polymerase, DNA, alpha-1"	312040	POLA1	5422	"ENSG00000101868,ENST00000379068.8"		Van Esch-O'Driscoll syndrome	301030	X-linked recessive	3	Pola1
+Xq21.1	X:83508289-83512126	"POU3F4, DFN3, DFNX2"	"POU domain, class 3, transcription factor 4"	300039	POU3F4	5456	"ENSG00000196767,ENST00000644024.2"		"Deafness, X-linked 2"	304400	X-linked recessive	3	Pou3f4
+Xp11.23	X:48897929-48903142	"PQBP1, NPW38, SHS, MRX55, MRXS3, RENS1, MRXS8"	Polyglutamine-binding protein 1	300463	PQBP1	10084	"ENSG00000102103,ENST00000376563.6"		Renpenning syndrome	309500	X-linked recessive	3	Pqbp1
+Xq22.3	X:107628509-107651025	"PRPS1, CMTX5, DFNX1, DFN2"	Phosphoribosyl pyrophosphate synthetase-1	311850	PRPS1	5631	"ENSG00000147224,ENST00000372435.10"		Arts syndrome	301835	X-linked recessive	3	Prps1
+Xq22.3	X:107628509-107651025	"PRPS1, CMTX5, DFNX1, DFN2"	Phosphoribosyl pyrophosphate synthetase-1	311850	PRPS1	5631	"ENSG00000147224,ENST00000372435.10"		"Charcot-Marie-Tooth disease, X-linked recessive, 5"	311070	X-linked recessive	3	Prps1
+Xq22.3	X:107628509-107651025	"PRPS1, CMTX5, DFNX1, DFN2"	Phosphoribosyl pyrophosphate synthetase-1	311850	PRPS1	5631	"ENSG00000147224,ENST00000372435.10"		"Gout, PRPS-related"	300661	X-linked recessive	3	Prps1
+Xq22.3	X:107628509-107651025	"PRPS1, CMTX5, DFNX1, DFN2"	Phosphoribosyl pyrophosphate synthetase-1	311850	PRPS1	5631	"ENSG00000147224,ENST00000372435.10"		Phosphoribosylpyrophosphate synthetase superactivity	300661	X-linked recessive	3	Prps1
+Xp22.11	X:23334395-23404373	"PTCHD1, AUTSX4"	Patched domain-containing protein 1	300828	PTCHD1	139411	"ENSG00000165186,ENST00000379361.5"		"{Autism, susceptibility to, X-linked 4}"	300830	X-linked recessive	3	Ptchd1
+Xq28	X:155258234-155264490	"RAB39B, XLID72, WSMN, MRX72"	"RAB39B, member Ras oncogene family"	300774	RAB39B	116442	"ENSG00000155961,ENST00000369454.4"		"Intellectual developmental disorder, X-linked 72"	300271	X-linked recessive	3	Rab39b
+Xq28	X:155258234-155264490	"RAB39B, XLID72, WSMN, MRX72"	"RAB39B, member Ras oncogene family"	300774	RAB39B	116442	"ENSG00000155961,ENST00000369454.4"		Waisman syndrome	311510	X-linked recessive	3	Rab39b
+Xp11.3	X:47145220-47186812	"RBM10, DXS8237E, KIAA0122, TARPS"	RNA-binding motif protein 10	300080	RBM10	8241	"ENSG00000182872,ENST00000345781.10"		TARP syndrome	311900	X-linked recessive	3	Rbm10
+Xq26.3	X:136869191-136880724	"RBMX, MRXS11"	"RNA-binding motif protein, X chromosome"	300199	RBMX	27316	"ENSG00000147274,ENST00000431446.7"	mutation identified in 1 MRXS11 family	"?Intellectual developmental disorder, X-linked, syndromic 11, Shashi type"	300238	X-linked recessive	3	Rbmx
+Xp11.4	X:38269162-38327508	"RPGR, RP3, CRD, RP15, COD1, CORDX1"	Retinitis pigmentosa GTPase regulator	312610	RPGR	6103	"ENSG00000156313,ENST00000642395.2"		"Cone-rod dystrophy, X-linked, 1"	304020	X-linked recessive	3	Rpgr
+Xp11.4	X:38269162-38327508	"RPGR, RP3, CRD, RP15, COD1, CORDX1"	Retinitis pigmentosa GTPase regulator	312610	RPGR	6103	"ENSG00000156313,ENST00000642395.2"		"Macular degeneration, X-linked atrophic"	300834	X-linked recessive	3	Rpgr
+Xq28	X:154398064-154402338	"RPL10, DXS648, QM, AUTSX5, MRXS35"	Ribosomal protein L10	312173	RPL10	6134	"ENSG00000147403,ENST00000458500.5"		"Intellectual developmental disorder, X-linked, syndromic, 35"	300998	X-linked recessive	3	"Rpl10,Rpl10-ps3"
+Xp22.13	X:18639687-18672107	"RS1, XLRS1"	Retinoschisin	300839	RS1	6247	"ENSG00000102104,ENST00000379984.4"	25cM from XG	Retinoschisis	312700	X-linked recessive	3	Rs1
+Xq25	X:124346562-124373159	"SH2D1A, LYP, IMD5, XLP, XLPD1"	SH2 domain protein 1A	300490	SH2D1A	4068	"ENSG00000183918,ENST00000360027.4"	1cM from DXS42; no recombination with DXS37	"Lymphoproliferative syndrome, X-linked, 1"	308240	X-linked recessive	3	Sh2d1a
+Xp22.12	X:19533976-19887599	"SH3KBP1, CIN85, IMD61, AGMX2"	SH3-domain kinase-binding protein 1	300374	SH3KBP1	30011	"ENSG00000147010,ENST00000379698.8"	mutation identified in 1 IMD61 family	?Immunodeficiency 61	300310	X-linked recessive	3	Sh3kbp1
+Xq28	X:153687925-153696592	"SLC6A8, CRTR, CCDS1"	"Solute carrier family 6 (neurotransmitter transporter, creatine), member 8"	300036	SLC6A8	6535	"ENSG00000130821,ENST00000430077.6"	distal to G6PD	Cerebral creatine deficiency syndrome 1	300352	X-linked recessive	3	Slc6a8
+Xp11.3	X:46599250-46759117	"SLC9A7, NHE7, MRX108"	"Solute carrier family 9 (sodium/hydrogen exchanger), member 7"	300368	SLC9A7	84679	"ENSG00000065923,ENST00000616978.5"		"Intellectual developmental disorder, X-linked 108"	301024	X-linked recessive	3	Slc9a7
+Xp22.12	X:21705977-21758115	"SMPX, DFNX4, MPD7"	"Small muscle protein, X-linked"	300226	SMPX	23676	"ENSG00000091482,ENST00000379494.4"		"Myopathy, distal, 7, adult-onset, X-linked"	301075	X-linked recessive	3	Smpx
+Xp22.11	X:21940708-21994836	"SMS, SRS, MRXSSR"	Spermine synthase	300105	SMS	6611	"ENSG00000102172,ENST00000379404.5"		"Intellectual developmental disorder, X-linked syndromic, Snyder-Robinson type"	309583	X-linked recessive	3	"Sms,Sms-ps"
+Xq28	X:153794158-153798511	"SSR4, TRAPD, CDG1Y"	"Signal sequence receptor, delta"	300090	SSR4	6748	"ENSG00000180879,ENST00000370086.8"		"Congenital disorder of glycosylation, type Iy"	300934	X-linked recessive	3	Ssr4
+Xp22.31	X:7147289-7354640	"STS, ARSC1, ARSC, SSDD, XLI"	"Steroid sulfatase, microsomal (arylsulfatase C, isozyme S)"	300747	STS	412	"ENSG00000101846,ENST00000217961.5"	nonlyonizing	"Ichthyosis, X-linked"	308100	X-linked recessive	3	
+Xp11.23	X:49187814-49200192	"SYP, XLID96"	Synaptophysin	313475	SYP	6855	"ENSG00000102003,ENST00000263233.9"		"Intellectual developmental disorder, X-linked 96"	300802	X-linked recessive	3	Syp
+Xq13.1	X:71366356-71530524	"TAF1, TAF2A, CCG1, BA2R, DYT3, MRXS33"	"TAF1 RNA polymerase II, TATA box-binding protein-associated factor, 250kD"	313650	TAF1	6872	"ENSG00000147133,ENST00000276072.9"	SVA retrotransposon insertion	"Dystonia-Parkinsonism, X-linked"	314250	X-linked recessive	3	Taf1
+Xq13.1	X:71366356-71530524	"TAF1, TAF2A, CCG1, BA2R, DYT3, MRXS33"	"TAF1 RNA polymerase II, TATA box-binding protein-associated factor, 250kD"	313650	TAF1	6872	"ENSG00000147133,ENST00000276072.9"	SVA retrotransposon insertion	"Intellectual developmental disorder, X-linked syndromic 33"	300966	X-linked recessive	3	Taf1
+Xq28	X:154411538-154421725	"TAFAZZIN, TAZ, EFE2, BTHS, CMD3A, LVNCX"	Tafazzin	300394	TAFAZZIN	6901	"ENSG00000102125,ENST00000601016.6"		Barth syndrome	302060	X-linked recessive	3	Tafazzin
+Xq13.1	X:70511226-70908710	"TEX11, SPGFX2"	Testis-expressed gene 11	300311	TEX11	56159	"ENSG00000120498,ENST00000395889.6"		"Spermatogenic failure, X-linked 2"	309120	X-linked recessive	3	Tex11
+Xq25	X:123600568-123733051	"THOC2, THO2, XLID12"	THO complex 2	300395	THOC2	57187	"ENSG00000125676,ENST00000245838.13"		"Intellectual developmental disorder, X-linked 12"	300957	X-linked recessive	3	"Thoc2,Thoc2l"
+Xq22.1	X:101345660-101348741	"TIMM8A, DFN1, DDP, MTS, DDP1"	Translocase of inner mitochondrial membrane 8A	300356	TIMM8A	1678	"ENSG00000126953,ENST00000644112.2"		Mohr-Tranebjaerg syndrome	304700	X-linked recessive	3	Timm8a1
+Xp22.2	X:12867071-12890360	"TLR7, IMD74, SLEB17"	Toll-like receptor 7	300365	TLR7	51284	"ENSG00000196664,ENST00000380659.4"	centromeric to TLR8	"Immunodeficiency 74, COVID19-related, X-linked"	301051	X-linked recessive	3	Tlr7
+Xq28	X:155489010-155612951	"TMLHE, BBOX2, TMLH, TMLHED, AUTSX6"	Epsilon-trimethyllysine hydroxylase	300777	TMLHE	55217	"ENSG00000185973,ENST00000369439.4"		"{Autism, susceptibility to, X-linked 6}"	300872	X-linked recessive	3	Tmlhe
+Xp22.2	X:13712244-13734619	"TRAPPC2, SEDL, SEDT"	Trafficking protein particle complex 2 (sedlin)	300202	TRAPPC2	6399	"ENSG00000196459,ENST00000380579.6"		Spondyloepiphyseal dysplasia tarda	313400	X-linked recessive	3	"0610009B22Rik,Trappc2"
+Xp11.4	X:38561541-38688917	"TSPAN7, TM4SF2, MXS1, A15, XLID58"	Tetraspanin 7	300096	TSPAN7	7102	"ENSG00000156298,ENST00000378482.7"		"Intellectual developmental disorder, X-linked 58"	300210	X-linked recessive	3	Tspan7
+Xp11.22	X:54440403-54448031	"TSR2, WGG1, DBA14"	"TSR2, 20S rRNA accumulation, S. cerevisiae, homolog of"	300945	TSR2	90121	"ENSG00000158526,ENST00000375151.5"	mutation identified in 1 DBA14 family	?Diamond-Blackfan anemia 14 with mandibulofacial dysostosis	300946	X-linked recessive	3	Tsr2
+Xp11.3	X:47190846-47215127	"UBA1, UBE1, GXP1, A1ST, SMAX2, AMCX1, VEXAS"	Ubiquitin-like modifier activating enzyme 1	314370	UBA1	7317	"ENSG00000130985,ENST00000335972.11"	escapes inactivation	"Spinal muscular atrophy, X-linked 2, infantile"	301830	X-linked recessive	3	Uba1
+Xq24	X:119574562-119584422	"UBE2A, RAD6A, MRXSN, MRXS30"	Ubiquitin-conjugating enzyme E2 A	312180	UBE2A	7319	"ENSG00000077721,ENST00000628549.1"		"Intellectual developmental disorder, X-linked, syndromic, Nascimento type"	300860	X-linked recessive	3	Ube2a
+Xq24	X:119805310-119852962	"UPF3B, RENT3B, MRXS14"	UPF3B regulator of nonsense-mediated mRNA decay	300298	UPF3B	65109	"ENSG00000125351,ENST00000345865.6"		"Intellectual developmental disorder, X-linked syndromic 14"	300676	X-linked recessive	3	Upf3b
+Xp11.23	X:49879483-49882557	"USP27X, USP22L, XLID105"	"Ubiquitin-specific protease 27, X-linked"	300975	USP27X	389856	"ENSG00000273820,ENST00000621775.2"		"Intellectual developmental disorder, X-linked 105"	300984	X-linked recessive	3	Usp27x
+Xp11.4	X:41085444-41236578	"USP9X, DFFRX, XLID99, MRXS99F"	"Ubiquitin-specific protease-9, X chromosome (Drosophila fat facets related, X-linked)"	300072	USP9X	8239	"ENSG00000124486,ENST00000324545.9"		"Intellectual developmental disorder, X-linked 99"	300919	X-linked recessive	3	Usp9x
+Xq28	X:151396594-151409363	"VMA21, XMEA"	"Vma21, S. cerevisiae, homolog of"	300913	VMA21	203547	"ENSG00000160131,ENST00000330374.7"		"Myopathy, X-linked, with excessive autophagy"	310440	X-linked recessive	3	Vma21
+Xp11.23	X:48676635-48691426	"WAS, IMD2, THC1, SCNX"	WASP actin nucleation promoting factor	300392	WAS	7454	"ENSG00000015285,ENST00000376701.5"	t(18;X)(q11.2;p11.2); distal to TIMP	"Neutropenia, severe congenital, X-linked"	300299	X-linked recessive	3	Was
+Xp11.23	X:48676635-48691426	"WAS, IMD2, THC1, SCNX"	WASP actin nucleation promoting factor	300392	WAS	7454	"ENSG00000015285,ENST00000376701.5"	t(18;X)(q11.2;p11.2); distal to TIMP	"Thrombocytopenia, X-linked"	313900	X-linked recessive	3	Was
+Xp11.23	X:48676635-48691426	"WAS, IMD2, THC1, SCNX"	WASP actin nucleation promoting factor	300392	WAS	7454	"ENSG00000015285,ENST00000376701.5"	t(18;X)(q11.2;p11.2); distal to TIMP	"Thrombocytopenia, X-linked, intermittent"	313900	X-linked recessive	3	Was
+Xp11.23	X:48676635-48691426	"WAS, IMD2, THC1, SCNX"	WASP actin nucleation promoting factor	300392	WAS	7454	"ENSG00000015285,ENST00000376701.5"	t(18;X)(q11.2;p11.2); distal to TIMP	Wiskott-Aldrich syndrome	301000	X-linked recessive	3	Was
+Xq25	X:123859707-123913971	"XIAP, BIRC4, API3, XLP2"	"Inhibitor of apoptosis, X-linked"	300079	XIAP	331	"ENSG00000101966,ENST00000371199.8"		"Lymphoproliferative syndrome, X-linked, 2"	300635	X-linked recessive	3	Xiap
+Xq11.2	X:64915806-65034740	"ZC4H2, KIAA1166, WRWF, MRXS4, WRWFFR"	Zinc finger C4H2 domain-containing protein	300897	ZC4H2	55906	"ENSG00000126970,ENST00000337990.2"		Wieacker-Wolff syndrome	314580	X-linked recessive	3	Zc4h2
+Xq26.3	X:137566126-137577690	"ZIC3, HTX1, HTX, VACTERLX"	"Zic family, member 3"	300265	ZIC3	7547	"ENSG00000156925,ENST00000370606.3"		"Congenital heart defects, nonsyndromic, 1, X-linked"	306955	X-linked recessive	3	Zic3
+Xq26.3	X:137566126-137577690	"ZIC3, HTX1, HTX, VACTERLX"	"Zic family, member 3"	300265	ZIC3	7547	"ENSG00000156925,ENST00000370606.3"		"Heterotaxy, visceral, 1, X-linked"	306955	X-linked recessive	3	Zic3
+Xq26.3	X:137566126-137577690	"ZIC3, HTX1, HTX, VACTERLX"	"Zic family, member 3"	300265	ZIC3	7547	"ENSG00000156925,ENST00000370606.3"		"VACTERL association, X-linked"	314390	X-linked recessive	3	Zic3
+Xp22.2	X:9600000-17400000	CMTX2	"Charcot-Marie-Tooth disease, X-linked recessive, 2"	302801		1253			"Charcot-Marie-Tooth neuropathy, X-linked recessive, 2"	302801	X-linked recessive	2	
+Xp22.2	X:9600000-17400000	"XLID73, MRX73"	"Intellectual developmental disorder, X-linked 73"	300355		23694		between DXS8019 and DXS365	"Intellectual developmental disorder, X-linked 73"	300355	X-linked recessive	2	
+Xp21.1-p11.23	X:31500000-50100000	MRXS17	"Intellectual developmental disorder, X-linked, syndromic 17"	300858		100739996		between rs2748314 and rs5906782	"Intellectual developmental disorder, X-linked, syndromic 17"	300858	X-linked recessive	2	
+Xp11.3	X:42500000-47600000	"DELXp11.3, CXDELp11.3"	Chromosome Xp11.3 deletion syndrome (X-linked mental retardation with retinitis pigmentosa)	300578					Chromosome Xp11.3 deletion syndrome	300578	X-linked recessive	4	
+Xp11.3-q22.3	X:42500000-109400000	"XLID84, MRX84"	"Intellectual developmental disorder, X-linked 84"	300505		378882		29 other MRX loci in same region	"Intellectual developmental disorder, X-linked 84"	300505	X-linked recessive	2	
+Xp11.3	X:42500000-47600000	"XLID92, MRX92"	"Intellectual developmental disorder, X-linked 92"	300851		102775565		previously associated with ZNF674	"Intellectual developmental disorder, X-linked 92"	300851	X-linked recessive	2	
+Xp11.2-q12	X:54800000-68500000	"XLID81, MRX81"	"Intellectual developmental disorder, X-linked 81"	300433		266678		between DXS1039 and DXS1216	"Intellectual developmental disorder, X-linked 81"	300433	X-linked recessive	2	
+Xp11-q21	X:58100000-99100000	"PRS, MRXS2"	Prieto syndrome	309610		5640			Prieto syndrome	309610	X-linked recessive	2	
+Xq11.2	X:63800000-65400000	SPG16	"Spastic paraplegia 16, X-linked, complicated"	300266		57760			"Spastic paraplegia 16, X-linked, complicated"	300266	X-linked recessive	2	
+Xq12-q21.3	X:65400000-99100000	"XLID77, MRX77"	"Intellectual developmental disorder, X-linked 77"	300454		93991			"Intellectual developmental disorder, X-linked 77"	300454	X-linked recessive	2	
+Xq13-q21	X:74700000-99100000	MRXSMP	Martin-Probst syndrome	300519		574047			Martin-Probst syndrome	300519	X-linked recessive	2	
+Xq21	X:94300000-99100000	"DELXq21, CXDELq21"	Chromosome Xq21 deletion syndrome	303110				at least CHM and POU3F4 deleted	Xq21 deletion syndrome	303110	X-linked recessive	4	
+Xq21.33-q23	X:94300000-117400000	MRXSCS	"Intellectual developmental disorder, X-linked, syndromic, Chudley-Schwartz type (2)"	300861		100820761		max lod at DXS1120	"Intellectual developmental disorder, X-linked, syndromic, Chudley-Schwartz type"	300861	X-linked recessive	2	
+Xq22.2-q26	X:103300000-138900000	"XLID53, MRX53"	"Intellectual developmental disorder, X-linked 53"	300324		4416			"Intellectual developmental disorder, X-linked 53"	300324	X-linked recessive	2	
+Xq24-q25	X:117400000-129500000	SPG34	"Spastic paraplegia 34, X-linked"	300750		724110		max lod at DXS8057	"Spastic paraplegia 34, X-linked"	300750	X-linked recessive	2	
+Xq24-q25	X:117400000-129500000	"XLID82, MRX82"	"Intellectual developmental disorder, X-linked 82"	300518		378484		between DXS6805 and DXS7346	"Intellectual developmental disorder, X-linked 82"	300518	X-linked recessive	2	
+Xq25-q27.1	X:121800000-141200000	SCAX5	"Spinocerebellar ataxia, X-linked 5"	300703		100188768		between DXS1047 and DXS1227	"Spinocerebellar ataxia, X-linked 5"	300703	X-linked recessive	2	
+Xq25-q26	X:121800000-138900000	"XLID46, MRX46"	"Intellectual developmental disorder, X-linked 56"	300436				between DXS8072 and DXS294	"Intellectual developmental disorder, X-linked 46"	300436	X-linked recessive	2	
+Xq26	X:134500000-138900000	CMTX3	"Charcot-Marie-Tooth neuropathy, X-linked recessive, 3"	302802				genomic rearrangement between 8q24.3 and Xq27.1	"Charcot-Marie-Tooth neuropathy, X-linked recessive, 3"	302802	X-linked recessive	4	
+Xq27.3-q28	X:143000000-156040895	"DUPXq27.3q28, CXDUPq27.3q28"	Chromosome Xq27.3-q28 duplication syndrome	300869					Chromosome Xq27.3-q28 duplication syndrome	300869	X-linked recessive	4	
+Xq28	X:148000000-156040895	BED	Bornholm eye disease	300843		100653365		linked to F8	Bornholm eye disease	300843	X-linked recessive	2	
+Xq28	X:148000000-156040895	"MYMY4, CXDELq38"	"Moyamoya disease 4 with short stature, hypergonadotropic hypogonadism and facial dysmorphism"	300845				contiguous gene deletion syndrome (3.4kb)	Moyamoya disease 4	300845	X-linked recessive	4	
+Xq28	X:148000000-156040895	MYP1	"Myopia 1, X-linked"	310460		4657			Myopia-1	310460	X-linked recessive	2	
+Chr.X		CCCSX	"Cerebral-cerebellar-coloboma syndrome, X-linked"	300864		100820758			"Cerebral-cerebellar-coloboma syndrome, X-linked"	300864	X-linked recessive	2	
+Chr.X		CVMRF	Cubitus valgus with mental retardation and unusual facies	300471		494028			Cubitus valgus with mental retardation and unusual facies	300471	X-linked recessive	2	
+Chr.X		DFCTRPS	"Deafness, cataract, retinitis pigmentosa, and sperm abnormalities"	300719		100188774			"Deafness, cataract, retinitis pigmentosa, and sperm abnormalities"	300719	X-linked recessive	2	
+Chr.X		OFD8	Orofaciodigital syndrome VIII	300484					Orofaciodigital syndrome VIII	300484	X-linked recessive	2	
+Xp22.2	X:15518196-15607210	"ACE2, ACEH"	Angiotensin I converting enzyme 2	300335	ACE2	59272	"ENSG00000130234,ENST00000252519.8"					Ace2	
+Xp22.11	X:23701054-23743275	"ACOT9, MTACT48"	Acyl-CoA thioesterase 9	300862	ACOT9	23597	"ENSG00000123130,ENST00000336430.11"					"Acot10,Acot9"	
+Xq25	X:128050961-128052402	"ACTRT1, ARPT1"	Actin-related protein T1	300487	ACTRT1	139741	"ENSG00000123165,ENST00000371124.5"					Actrt1	
+Xq23	X:116170743-116174973	AGTR2	Angiotensin receptor 2	300034	AGTR2	186	"ENSG00000180772,ENST00000371906.5"					Agtr2	
+Xq24	X:119895892-119920715	"AKAP14, AKAP28"	A-kinase anchor protein 14	300462	AKAP14	158798	"ENSG00000186471,ENST00000371425.8"					Akap14	
+Xp22.33	X:1591603-1602519	"AKAP17A, SFRS17A, DXYS155E, XE7"	A kinase (PRKA) anchor protein 17A	312095	AKAP17A	8227	"ENSG00000197976,ENST00000313871.9"	nonlyonizing				Akap17b	
+Xp11.22	X:50190776-50201006	"AKAP4, AKAP82, HI, FSC1"	"A-kinase anchor protein 4, 82kD"	300185	AKAP4	8852	"ENSG00000147081,ENST00000358526.7"					Akap4	
+Xq23	X:112774876-112840830	"AMOT, KIAA1071"	Angiomotin	300410	AMOT	154796	"ENSG00000126016,ENST00000371959.9"					Amot	
+Xp11.21	X:55000362-55009056	"APEX2, APE2, XTH2, APEXL2"	APEX nuclease (apurinic/apyrimidinic endonuclease) 2	300773	APEX2	27301	"ENSG00000169188,ENST00000374987.4"					Apex2	
+Xq26.1	X:129645258-129654955	APLN	Apelin	300297	APLN	8862	"ENSG00000171388,ENST00000429967.3"					Apln	
+Xp22.11	X:23833352-23907937	"APOO, MYO25, FAM121B"	Apolipoprotein O	300753	APOO	79135	"ENSG00000184831,ENST00000379226.9"					Apoo	
+Xq21.1	X:85003876-85093314	"APOOL, FAM121A, Cxorf33"	Apolipoprotein O-like	300955	APOOL	139322	"ENSG00000155008,ENST00000373173.7"					Apool	
+Xp11.3	X:47561204-47571907	"ARAF1, RAFA1, PKS2"	Oncogene ARAF1	311010	ARAF	369	"ENSG00000078061,ENST00000377039.2"					Araf	
+Xq26.1	X:131058345-131089884	ARHGAP36	Rho GTPase-activating protein 36	300937	ARHGAP36	158763	"ENSG00000147256,ENST00000370922.5"					Arhgap36	
+Xq28	X:153907377-153926263	RGC1	Rho-GAP hematopoietic protein C1	300023	ARHGAP4	393	"ENSG00000089820,ENST00000370028.7"					Arhgap4	
+Xp22.2	X:11137543-11665919	ARHGAP6	Rho GTPase-activating protein-6	300118	ARHGAP6	395	"ENSG00000047648,ENST00000380718.1"					Arhgap6	
+Xq26.3	X:136665549-136780931	"ARHGEF6, COOL2"	Rho guanine nucleotide exchange factor-6	300267	ARHGEF6	9459	"ENSG00000129675,ENST00000370620.5"					Arhgef6	
+Xq22.1	X:101550546-101554699	"ARMCX1, ALEX1"	"Armadillo repeat-containing protein, X-linked 1"	300362	ARMCX1	51309	"ENSG00000126947,ENST00000372829.8"					Armcx1	
+Xq22.1	X:101655280-101659849	"ARMCX2, ALEX2, KIAA0512"	"Armadillo repeat-containing protein, X-linked 2"	300363	ARMCX2	9823	"ENSG00000184867,ENST00000328766.9"					Armcx2	
+Xq22.1	X:101623150-101627842	"ARMCX3, ALEX3"	"Armadillo repeat-containing protein, X-linked 3"	300364	ARMCX3	51566	"ENSG00000102401,ENST00000341189.8"					Armcx3	
+Xq22.1	X:101418277-101535987	ARMCX4	"Armadillo repeat-containing protein, X-linked 4"	301046	ARMCX4	100131755	"ENSG00000196440,ENST00000423738.5"					Armcx4	
+Xq22.1	X:102599205-102604158	ARMCX5	"Armadilla repeat-containing protein, X-linked 5"	301047	ARMCX5	64860	"ENSG00000125962,ENST00000473968.7"					Armcx5	
+Xq22.1	X:101615124-101617999	ARMCX	"Armadillo repeat-containing protein, X-linked 6"	301048	ARMCX6	54470	"ENSG00000198960,ENST00000538627.5"					Armcx6	
+Xpter-p22.32		ARSC2	"Arylsulfatase C, f form"	301780	ARSC2	413		"probably close to STS = ARSC1, or s form"					
+Xp22.33	X:2903971-2929338	ARSD	Arylsulfatase D	300002	ARSD	414	"ENSG00000006756,ENST00000381154.6"						
+Xp22.33	X:3040233-3112726	ARSF	Arylsulfatase F	300003	ARSF	416	"ENSG00000062096,ENST00000381127.6"						
+Xp22.33	X:3006545-3034110	ARSH	Arylsulfatase H	300586	ARSH	347527	"ENSG00000205667,ENST00000381130.3"						
+Xp22.2	X:15281696-15315639	ASB11	Ankyrin repeat- and SOCS box-containing protein 11	300626	ASB11	140456	"ENSG00000165192,ENST00000344384.8"					Asb11	
+Xq11.2	X:64224193-64230606	ASB12	Ankyrin repeat- and SOCS box-containing protein 12	300891	ASB12	142689	"ENSG00000198881,ENST00000362002.3"					Asb12	
+Xp22.2	X:15243986-15270466	ASB9	Ankyrin repeat- and SOCS box-containing protein 9	300890	ASB9	140462	"ENSG00000102048,ENST00000380488.9"					Asb9	
+Xp22.33	X:1595454-1643080	"ASMT, HIOMT"	Acetylserotonin methyltransferase	300015	ASMT	438	"ENSG00000196433,ENST00000381241.9"	pseudoautosomal				Asmt	
+Xp22.33	X:1403138-1453755	"ASMTLX, ASTML"	Acetylserotonin methyltransferase-like	300162	ASMTL	8623	"ENSG00000169093,ENST00000534940.6"						
+Xq22.3	X:108088828-108154670	"ATG4A, APG4A, AUTL2"	Autophagy related 4A cysteine peptidase	300663	ATG4A	115201	"ENSG00000101844,ENST00000372232.8"					"Atg4a,Atg4a-ps"	
+Xq24	X:120362088-120383236	ATP1B4	"ATPase, NA+/K+ transporting family, member beta-4"	301073	ATP1B4	23439	"ENSG00000101892,ENST00000218008.8"					Atp1b4	
+Xq21.1	X:77504879-77786215	"ATRX, XH2, XNP, SHS, SFM1, MRXHF1"	ATRX chromatin remodeler	300032	ATRX	546	"ENSG00000085224,ENST00000373344.11"		"Alpha-thalassemia myelodysplasia syndrome, somatic"	300448		3	Atrx
+Xp22.2	X:13318646-13320052	ATXN3L	Ataxin 3-like	300920	ATXN3L	92552	"ENSG00000123594,ENST00000380622.5"						
+Xq13.1	X:70234654-70240658	"AWAT1, DGA2"	Acyl-CoA wax alcohol acyltransferase 1	300924	AWAT1	158833	"ENSG00000204195,ENST00000374521.4"					Awat1	
+Xq13.1	X:70040541-70049937	"AWAT2, DC4, MFAT"	Acyl-CoA wax alcohol acyltransferase 2	300925	AWAT2	158835	"ENSG00000147160,ENST00000276101.7"					Awat2	
+Xq22.1	X:103062650-103064170	BEX1	Brain-expressed X-linked gene 1	300690	BEX1	55859	"ENSG00000133169,ENST00000372728.4"					"Bex1,Bex2"	
+Xq22.2	X:103309345-103310989	BEX2	Brain-expressed X-linked gene 2	300691	BEX2	84707	"ENSG00000133134,ENST00000536889.1"					Bex1	
+Xq22.2	X:103376322-103378163	"NGFRAP1, BEX3, NADE, DXS6984E"	Nerve growth factor receptor (TNFRSF16) associated protein 1	300361	BEX3	27018	"ENSG00000166681,ENST00000372645.3"					Bex3	
+Xq22.1	X:103215091-103217245	BEX4	BEX family member 4	300692	BEX4	56271	"ENSG00000102409,ENST00000372695.6"					"Bex4,Bex6"	
+Xq22.1	X:102153711-102155976	"BEX5, NGFRAP1L1"	BEX family member 5	300693	BEX5	340542	"ENSG00000184515,ENST00000333643.4"						
+Xq22.1	X:102720742-102753539	"BHLHB9, P60TRP, KIAA1701"	"Basic helix-loop-helix domain-containing protein, class B, 9"	300921	BHLHB9	80823	"ENSG00000198908,ENST00000457056.6"					Bhlhb9	
+Xp22.2	X:15500806-15556518	BMX	BMX non-receptor tyrosine kinase	300101	BMX	660	"ENSG00000102010,ENST00000342014.6"					Bmx	
+Xq13.3	X:75582653-75585916	BRAFP1	BRAF pseudogene 1	300956	BRAFP1	286494	"ENSG00000224775,-"						
+Xq28	X:155071507-155123076	"BRCC3, BRCC36"	"BRCA1/BRCA2-containing complex, subunit 3"	300617	BRCC3	79184	"ENSG00000185515,ENST00000330045.12"					"Brcc3,Gm5136"	
+Xq26.3	X:136487946-136493779	BRS3	Bombesin-like receptor 3	300107	BRS3	680	"ENSG00000102239,ENST00000370648.4"					Brs3	
+Xq24	X:120625673-120630053	"C1GALT1C1, COSMC, C1GALT2, TNPS"	C1GALT1-specific chaperone 1	300611	C1GALT1C1	29071	"ENSG00000171155,ENST00000304661.6"		"Tn polyagglutination syndrome, somatic"	300622		3	C1galt1c1
+Xp22.2	X:15738269-15788410	CA5B	"Carbonic anhydrase VB, mitochondrial"	300230	CA5B	11238	"ENSG00000169239,ENST00000318636.8"					Car5b	
+Xq23	X:111245098-111270482	CAPN6	Calpain 6	300146	CAPN6	827	"ENSG00000077274,ENST00000324068.2"					Capn6	
+Xp11.4	X:41514933-41923553	"CASK, MICPCH, FGS4, CMG, MRXSNA"	Calcium/calmodulin-dependent serine protein kinase	300172	CASK	8573	"ENSG00000147044,ENST00000646120.2"		FG syndrome 4	300422		3	Cask
+Xp11.4	X:41514933-41923553	"CASK, MICPCH, FGS4, CMG, MRXSNA"	Calcium/calmodulin-dependent serine protein kinase	300172	CASK	8573	"ENSG00000147044,ENST00000646120.2"		"Intellectual developmental disorder, with or without nystagmus"	300422		3	Cask
+Xp11.23	X:49053571-49069857	CCDC120	Coiled-coil domain-containing protein 120	300947	CCDC120	90060	"ENSG00000147144,ENST00000603986.6"					Ccdc120	
+Xp11.22	X:50202712-50351913	CCNB3	Cyclin B3	300456	CCNB3	85417	"ENSG00000147082,ENST00000376042.6"					Ccnb3	
+Xp22.33	X:2691294-2741308	"CD99, MIC2, MIC2X"	CD99 antigen (MIC2 (monoclonal antibody 12E7))	313470	CD99	4267	"ENSG00000002586,ENST00000381187.8"	distal to STS				Cd99	
+Xq28	X:150766335-150898667	"CD99L2, CD99B"	CD99 antigen-like 2	300846	CD99L2	83692	"ENSG00000102181,ENST00000437787.6"					Cd99l2	
+Xp11.3	X:47218302-47229996	"CDK16, PCTK1, PCTAIRE1"	Cyclin-dependent kinase 16	311550	CDK16	5127	"ENSG00000102225,ENST00000276052.10"					Cdk16	
+Xq27.1	X:140772082-140793211	"CDR1, CDR62A"	"Cerebellar degeneration-related protein-1, 34kD"	302650	CDR1	1038		between HPRT and F9				Cdr1	
+Xq27.1	X:138900000-141200000	"CDR1AS, CIRS7"	CD$1 antisense RNA	300898	CDR1-AS	103611090							
+Xq13.2	X:73447052-73455170	CDX4	Caudal type homeobox transcription factor 4	300025	CDX4	1046	"ENSG00000131264,ENST00000373514.3"					Cdx4	
+Xq22.1	X:101098203-101181858	"FSHPRH1, LRPR1"	"FSH primary response, rat, homolog of, 1"	300065	CENPI	2491	"ENSG00000102384,ENST00000423383.3"					Cenpi	
+Xq28	X:152826993-152830756	"CETN2, CALT"	"Centrin, EF-hand protein, 2 (caltractin)"	300006	CETN2	1069	"ENSG00000147400,ENST00000370277.5"					Cetn2	
+Xq13.2	X:73563147-73687110	"CHIC1, BRX"	Cystein-rich hydrophobic domain protein 1	300922	CHIC1	53344	"ENSG00000204116,ENST00000373502.10"					Chic1	
+Xp11.3	X:46573764-46598495	"CHST7, C6ST2"	Carbohydrate sulfotransferase 7	300375	CHST7	56548	"ENSG00000147119,ENST00000276055.4"					Chst7	
+Xq13.1	X:72301645-72307156	MSG1	Melanocyte-specific gene 1	300149	CITED1	4435	"ENSG00000125931,ENST00000431381.5"					Cited1	
+Xp22.2	X:15627317-15675643	"CLTRN, TMEM27, NX17"	"Collectrin, amino acid transport regulator"	300631	CLTRN	57393	"ENSG00000147003,ENST00000380342.4"					Cltrn	
+Xq28	X:151734745-151745563	"CNGA2, CNG2, OCNC1"	"Cyclic nucleotide-gated channel, alpha-2"	300338	CNGA2	1260	"ENSG00000183862,ENST00000329903.5"					Cnga2	
+Xq21.31	X:88747224-88754780	CPXCR1	"CPX chromosome region, candidate gene 1"	301055	CPXCR1	53336	"ENSG00000147183,ENST00000373111.5"					Cpxcr1	
+Xp22.33	X:1190489-1212648	"CRLF2, CRL2"	Cytokine receptor-like factor 2	300357	CRLF2	64109	"ENSG00000205755,ENST00000381567.8"	pseudoautosomal					
+Xq28	X:152727483-152733720	"CSAG1, CSAGE"	"CSAG family, member 1 `"	300944	CSAG1	158511	"ENSG00000198930,ENST00000452779.3"						
+Xp22.33	X:1268813-1325217	"CSF2RA, SMDP4"	"Colony-stimulating factor-2 receptor, alpha, low-affinity, granulocyte-macrophage"	306250	CSF2RA	1438	"ENSG00000198223,ENST00000432318.8"	order in PAR: pter-CSF2RA-IL3RA-ANT3-ASMT-MIC2-cen	"Surfactant metabolism dysfunction, pulmonary, 4"	300770		3	
+Xq22.1	X:100820390-100841519	CSTF64	"Cleavage stimulation factor, 3-prime pre-RNA, subunit 2, 64kD"	300907	CSTF2	1478	"ENSG00000101811,ENST00000415585.6"					Cstf2	
+Xq26.3	X:135708397-135723227	"CT45A1, CT45"	"Cancer/testis antigen family 45, member A1"	300648	CT45A1	541466	"ENSG00000268940,ENST00000594565.6"					Gm648	
+Xq26.3	X:135811667-135820065	"CT45A2, CT45.2"	"Cancer/testis antigen family 45, member A2"	300793	CT45A2	728911	"ENSG00000271449,ENST00000612907.2"					Gm648	
+Xq26.3	X:135760043-135768190	"CT45A3, CT45.3"	"Cancer/testis antigen family 45, member A3"	300794	CT45A3	441519	"ENSG00000269096,ENST00000598716.3"					Gm648	
+Xq26.3	X:135775851-135785502	"CT45A5, CT45.5"	"Cancer/testis antigen family 45, member A5"	300796	CT45A5	441521	"ENSG00000228836,ENST00000487941.6"					Gm648	
+Xq26.3	X:135794684-135802786	"CT45A6, CT45.6"	"Cancer/testis antigen family 45, member A6"	300797	CT45A6	541465	"ENSG00000278289,ENST00000620654.2"					Gm648	
+Xq24	X:120982475-120985759	CT47A1	"Cancer/testis antigen family 45, member A1"	300780	CT47A1	728096	"ENSG00000236371,ENST00000433030.4"					Gm6268	
+Xq24	X:120938700-120942022	CT47A10	"Cancer/testis antigen family 47, member A10"	300789	CT47A10	728036	"ENSG00000224089,ENST00000430448.3"					Gm6268	
+Xq24	X:120933839-120937157	"CT47A11, LOC255313"	"Cancer/testis antigen family 47, member A11"	300592	CT47A11	255313	"ENSG00000226929,ENST00000457020.3"					Gm6268	
+Xq24	X:120977605-120980927	CT47A2	"Cancer/testis antigen family 47, member A2"	300781	CT47A2	728090	"ENSG00000242362,ENST00000458218.3"					Gm6268	
+Xq24	X:120972745-120976067	CT47A3	"Cancer/testis antigen family 47, member A3"	300782	CT47A3	728082	"ENSG00000236126,ENST00000441330.3"					Gm6268	
+Xq24	X:120967885-120971207	CT47A4	"Cancer/testis antigen family 47, member A4"	300783	CT47A4	728075	"ENSG00000230594,ENST00000415858.3"					Gm6268	
+Xq24	X:120963025-120966347	CT47A5	"Cancer/testis antigen family 47, member A5"	300784	CT47A5	728072	"ENSG00000237957,ENST00000439466.3"					Gm6268	
+Xq24	X:120958164-120961486	CT47A6	"Cancer/testis antigen family 47, member A6"	300785	CT47A6	728062	"ENSG00000226023,ENST00000419194.3"					Gm6268	
+Xq24	X:120953281-120956599	CT47A7	"Cancer/testis antigen family 47, member A7"	300786	CT47A7	653282	"ENSG00000228517,ENST00000434883.3"					Gm6268	
+Xq24	X:120948421-120951743	CT47A8	"Cancer/testis antigen family 47, member A8"	300787	CT47A8	728049	"ENSG00000230347,ENST00000457977.3"					Gm6268	
+Xq24	X:120943560-120946882	CT47A9	"Cancer/testis antigen family 47, member A9"	300788	CT47A9	728042	"ENSG00000226600,ENST00000417256.3"					Gm6268	
+Xq24	X:120872606-120875865	"CT47B1, CT47A13"	"Cancer/testis antigen family 47, member B1"	300790	CT47B1	643311	"ENSG00000236446,ENST00000371311.5"					Gm6268	
+Xq23	X:116461685-116462975	"CT83, KKLC1, CXorf61"	Cancer/testis antigen 83	300625	CT83	203413	"ENSG00000204019,ENST00000371894.5"						
+Xq28	X:154585132-154586815	"CTAG1A, LAGE2A"	Cancer/testis antigen 1A	300657	CTAG1A	246100	"ENSG00000268651,ENST00000599837.3"					Ctag2l1	
+Xq28	X:154617608-154619281	"CTAG1B, CTAG1"	Cancer/testis antigen 1B	300156	CTAG1B	1485	"ENSG00000184033,ENST00000328435.3"					Ctag2l1	
+Xq28	X:154651976-154653578	"CTAG2, LAGE1, CAMEL"	Cancer/testis antigen 2	300396	CTAG2	30848	"ENSG00000126890,ENST00000247306.4"						
+Xp22.2	X:16587998-16712909	CTPS2	Cytidine 5-prime triphosphate synthetase 2	300380	CTPS2	56474	"ENSG00000047230,ENST00000443824.5"					Ctps2	
+Xq13.1	X:71615918-71618510	"CXCR3, GPR9, CD182"	"Chemokine, C-X-C motif, receptor 3 (G protein-coupled receptor-9)"	300574	CXCR3	2833	"ENSG00000186810,ENST00000373691.4"	previously assigned to chr.8				Cxcr3	
+Xq21.1	X:83861145-83886697	CYLC1	Cylicin 1	300768	CYLC1	1538	"ENSG00000183035,ENST00000621735.4"					Cylc1	
+Xq21.1	X:78271467-78327610	"CYSLTR1, CYSLT1"	Cysteinyl leukotriene receptor 1	300201	CYSLTR1	10800	"ENSG00000173198,ENST00000614798.1"					Cysltr1	
+Xq21.2	X:86148450-86832601	DACH2	Dachshund family transcription factor 2	300608	DACH2	117154	"ENSG00000126733,ENST00000373131.5"					Dach2	
+Xq23	X:115840963-115905526	DANT1	"DXZ4-associated noncoding transcript 1, proximal"	301001	DANT1	106029310							
+Xq23	X:115840395-115969110	DANT2	"DXZ4-associated noncoding transcript 2, distal"	301004	DANT2	642776	"ENSG00000235244,ENST00000430756.2"						
+Xp22.11	X:22999959-23003588	"DDX53, CAGE"	DEAD-box helicase 53	301079	DDX53	168400	"ENSG00000184735,ENST00000327968.7"						
+Xq13.1	X:70177482-70205703	"DGAT2L6, DC3"	Diacylglycerol O-acyltransferase 2-like 6	300926	DGAT2L6	347516	"ENSG00000184210,ENST00000333026.4"					Dgat2l6	
+Xp11.22	X:50365408-50470824	DGKK	"Diacylglycerol kinase, kappa, 142kD"	300837	DGKK	139189	"ENSG00000274588,ENST00000611977.2"					Dgkk	
+Xp22.33	X:2219505-2500975	DHRSX	"Dehydrogenase/reductase, X-linked"	301034	DHRSX	207063	"ENSG00000169084,ENST00000334651.11"					Dhrsx	
+Xq21.33	X:97528363-97564534	EPAG	Early lymphoid activation gene	300347	DIAPH2-AS1	10824	"ENSG00000236256,ENST00000579945.1"						
+Xp11.3	X:45148372-45200875	"DIPK2B, CXorf36, DIA1R"	Divergent protein kinase domain 2B	300959	DIPK2B	79742	"ENSG00000147113,ENST00000377934.4"					Dipk2b	
+Xq13.1	X:72872024-72943836	DMRTC1	Doublesex- and MAB3-related transcription factor C1	300878	DMRTC1	63947	"ENSG00000269502,ENST00000615063.2"					Dmrtc1a	
+Xq28	X:154401235-154412100	"DNASE1L1, DNL1L"	Deoxyribonuclease I-like 1	300081	DNASE1L1	1774	"ENSG00000013563,ENST00000369809.5"	between QM and DXS1010E				Dnase1l1	
+Xq24	X:118495814-118686146	"DOCK11, ACG, ZIZ2"	Dedicator of cytokinesis 11	300681	DOCK11	139818	"ENSG00000147251,ENST00000276202.9"					Dock11	
+Xq22.1	X:101219785-101264501	DRP2	Dystrophin-related protein 2	300052	DRP2	1821	"ENSG00000102385,ENST00000541709.5"					Drp2	
+Xp11.3	X:44844020-44844887	"DUSP21, LMWDSP21"	Dual-specificity phosphatase 21	300678	DUSP21	63904	"ENSG00000189037,ENST00000339042.6"					Dusp21	
+Xq28	X:153642440-153651325	"DUSP9, MKP4"	Dual-specificity phosphatase 9	300134	DUSP9	1852	"ENSG00000130829,ENST00000342782.4"					Dusp9	
+Xp11.4	X:37838835-37847570	TCTE1L	T complex-associated testis-expressed 1-like	300302	DYNLT3	6990	"ENSG00000165169,ENST00000378578.9"					Dynlt3	
+Xq12	X:66595636-66639268	"EDAR2, XEDAR, EDAA2R"	Ectodysplasin A2 receptor	300276	EDA2R	60401	"ENSG00000131080,ENST00000451436.6"					Eda2r	
+Xp11.3	X:44147871-44343671	EFHC2	EF-hand domain (C-terminal)-containing protein 2	300817	EFHC2	80258	"ENSG00000183690,ENST00000420999.2"					Efhc2	
+Xp22.2	X:13569600-13633574	EGFL6	Epidermal growth factor-like 6	300239	EGFL6	25975	"ENSG00000198759,ENST00000380602.3"					Egfl6	
+Xp22.12	X:20124524-20141837	"EIF1A, EIF4C, EIF1AX"	Eukaryotic translation initiation factor 1A	300186	EIF1AX	1964	"ENSG00000173674,ENST00000379607.10"					"Eif1a,Eif1ax"	
+Xp11.23	X:47635519-47650603	ELK1	"ELK1, member of ETS oncogene family"	311040	ELK1	2002	"ENSG00000126767,ENST00000376983.8"	distal to OATL1				Elk1	
+Xq26.1	X:130622324-130903208	ENOX2	ECTO-NOX disulfide-thiol exchanger 2	300282	ENOX2	10495	"ENSG00000165675,ENST00000370935.5"					Enox2	
+Xq28	X:149540600-149555344	"EOLA1, CXorf40A"	Endothelium- and lymphocyte-associated ASCH domain 1	300954	EOLA1	91966	"ENSG00000197620,ENST00000393985.8"					Eola1	
+Xp11.23	X:48826512-48829868	"HRAS2, HRASP"	v-Ha-ras harvey rat sarcoma viral oncogene homolog 2	300437	ERAS	3266	"ENSG00000187682,ENST00000636362.1"					Eras	
+Xq13.1	X:72204664-72239026	"ERCC6L, PICH"	"ERCC excision repair 6-like, spindle assembly checkpoint helicase"	300687	ERCC6L	54821	"ENSG00000186871,ENST00000373657.2"					Ercc6l	
+Xq22.2	X:104250037-104254932	"ESX1L, ESXR1"	ESX1-like protein	300154	ESX1	80712	"ENSG00000123576,ENST00000372588.4"					Esx1	
+Xp11.22	X:51406947-51408842	"EZHIP, CATACOMB, CXorf67"	EZH inhibitory protein	301036	EZHIP	340602	"ENSG00000187690,ENST00000342995.4"					Ezhip	
+Xq28	X:154835791-155022722	"F8, F8C, HEMA, THPH13"	"Coagulation factor VIII, procoagulant component"	300841	F8	2157	"ENSG00000185010,ENST00000360256.9"	cen-G6PD-3' end of F8C-5'-ter; 1.1Mb from telomere	"Thrombophilia 13, X-linked, due to factor VIII defect"	301071		3	F8
+Xq28	X:154886354-154888060	"F8A1, DXS522E, HAP40"	Coagulation factor VIII associated 1	305423	F8A1	8263	"ENSG00000288722,ENST00000610495.2"	"3 copies, 1 in intron 22 of F8C"				F8a	
+Xp11.21	X:57121590-57489195	FAAH2	Fatty acid amide hydrolase 2	300654	FAAH2	158584	"ENSG00000165591,ENST00000374900.5"						
+Xp11.22	X:54068323-54183253	"FAM120C, CXorf17"	"Family with sequence similarity 120, member C"	300741	FAM120C	54954	"ENSG00000184083,ENST00000328235.4"					Fam120c	
+Xq28	X:154506170-154516231	FAM3A	"Family with sequence similarity 3, member A"	300492	FAM3A	60343	"ENSG00000071889,ENST00000359889.9"					Fam3a	
+Xp21.1	X:37008365-37011663	FAM47C	"Family with sequence similarity 47, member C"	301067	FAM47C	442444	"ENSG00000198173,ENST00000358047.5"					Fam47c	
+Xp22.31	X:8790794-8801382	FAM9A	"Family with sequence similarity 9, member A"	300477	FAM9A	171482	"ENSG00000183304,ENST00000543214.1"	"pseudogene on Xq28, Yp11.31, 1p36.12, 8p11.1"					
+Xp22.31	X:9024231-9034126	FAM9B	"Family with sequence similarity 9, member B"	300478	FAM9B	171483	"ENSG00000177138,ENST00000327220.10"						
+Xp22.2	X:13035616-13044619	FAM9C	"Family with sequence similarity 9, member C"	300479	FAM9C	171484	"ENSG00000187268,ENST00000380625.8"						
+Xq28	X:151716034-151723193	FATE1	Fetal and adult testis-expressed gene 1	300450	FATE1	89885	"ENSG00000147378,ENST00000370350.7"					Fate1	
+Xq26.2	X:131691524-131830642	"FIRRE, LINC01200"	Functional intergenic repeating RNA element	300999	FIRRE	286467	"ENSG00000213468,ENST00000427391.2"					Firre	
+Xq27.3	X:147909430-147911816	"FMR1AS1, ASFMR1"	FMR1 antisense RNA 1	300805	FMR1-AS1	100126270	"ENSG00000268066,ENST00000601841.1"						
+Xq13.1	X:71095850-71103531	"FOXO4, MLLT7, AFX1"	Forkhead box O4	300033	FOXO4	4303	"ENSG00000184481,ENST00000341558.3"					Foxo4	
+Xp11.21	X:55623399-55626191	"FOXR2, FOXN6"	Forkhead box R2	300949	FOXR2	139628	"ENSG00000189299,ENST00000339140.5"					Foxr2	
+Xq22.3	X:107449651-107605250	"FRMPD3, KIAA1817"	FERM- and PDZ domain-containing protein 3	301005	FRMPD3	84443	"ENSG00000147234,ENST00000683843.1"					Frmpd3	
+Xp21.2	X:31071232-31072040	FTHL17	Ferritin heavy polypeptide-like 17	300308	FTHL17	53940	"ENSG00000132446,ENST00000359202.5"					"Fthl17a,Fthl17b,Fthl17c,Fthl17d,Fthl17e,Fthl17f"	
+Xq13.2	X:74028135-74293573	"FTX, LINC00182"	"FTX transcript, XIST regulator, noncoding"	300936	FTX	100302692	"ENSG00000230590,ENST00000602812.6"					Ftx	
+Xp11.3	X:44523638-44542858	FUNDC1	FUN14 domain-containing protein 1	300871	FUNDC1	139341	"ENSG00000069509,ENST00000378045.5"					Fundc1	
+Xq28	X:155026843-155060303	"FUNDC2, HCBP6, HCC3"	FUN14 domain-containing protein 2	301042	FUNDC2	65991	"ENSG00000165775,ENST00000369498.8"					"1700034I23Rik,Fundc2"	
+Xq28	X:154531389-154547568	"G6PD, G6PD1"	Glucose-6-phosphate dehydrogenase	305900	G6PD	2539	"ENSG00000160211,ENST00000393564.7"		{Resistance to malaria due to G6PD deficiency}	611162		3	"G6pd2,G6pdx"
+Xq28	X:154675248-154751565	GAB3	GRB2-associated binding protein 3	300482	GAB3	139716	"ENSG00000160219,ENST00000424127.3"					Gab3	
+Xq28	X:152166233-152451314	GABRA3	"Gamma-aminobutyric acid (GABA) A receptor, alpha-3"	305660	GABRA3	2556	"ENSG00000011677,ENST00000370314.9"	4Mb from telomere				Gabra3	
+Xq28	X:151953123-151974675	GABRE	"Gamma-aminobutyric acid (GABA) A receptor, epsilon"	300093	GABRE	2564	"ENSG00000102287,ENST00000370328.4"					Gabre	
+Xq28	X:152637894-152658964	GABRQ	"Gamma-aminobutyric acid receptor, theta"	300349	GABRQ	55879	"ENSG00000268089,ENST00000598523.3"					Gabrq	
+Xp11.23	X:49599012-49608537	GAGE1	G antigen 1	300594	GAGE1	2543	"ENSG00000205777,ENST00000381700.11"						
+Xp11.23	X:49303645-49319843	GAGE10	G antigen 10	300737	GAGE10	102724473	"ENSG00000215274,ENST00000407599.4"						
+Xp11.23	X:49532176-49539537	GAGE12C	G antigen 12C	300727	GAGE12C	729422	"ENSG00000237671,ENST00000420398.3"						
+Xp11.23	X:49541732-49549093	GAGE12D	G antigen 12D	300728	GAGE12D	100132399	"ENSG00000227488,ENST00000405679.4"						
+Xp11.23	X:49551288-49558644	GAGE12E	G antigen 12E	300729	GAGE12E	729431	"ENSG00000216649,ENST00000381698.5"						
+Xp11.23	X:49560841-49568204	GAGE12F	G antigen 12F	300730	GAGE12F	100008586	"ENSG00000236362,ENST00000440137.2"						
+Xp11.23	X:49570396-49577756	GAGE12G	G antigen 12G	300731	GAGE12G	645073	"ENSG00000215269,ENST00000445148.2"						
+Xp11.23	X:49579948-49587300	GAGE12H	G antigen 12H	300732	GAGE12H	729442	"ENSG00000224902,ENST00000381722.2"						
+Xp11.23	X:47600000-50100000	GAGE7B	G antigen 7B	300637	GAGE12I	26748							
+Xp11.23	X:49322036-49329383	GAGE12J	G antigen 12J	300733	GAGE12J	729396	"ENSG00000224659,ENST00000442437.3"						
+Xp11.23	X:49331581-49338948	GAGE13	G antigen 13	300734	GAGE13	645051	"ENSG00000274274,ENST00000612958.2"						
+Xp11.23	X:49589495-49596823	GAGE2A	G antigen 2A	300720	GAGE2A	729447	"ENSG00000189064,ENST00000362097.2"						
+Xp11.23	X:47600000-50100000	GAGE2B	G antigen 2B	300726	GAGE2B	645037							
+Xp11.23	X:47600000-50100000	"GAGE2C, GAGE2"	G antigen 2C	300595	GAGE2C	2574							
+Xp11.23	X:47600000-50100000	GAGE2D	G antigen 2D	300735	GAGE2D	729408							
+Xp11.23	X:47600000-50100000	GAGE2E	G antigen 2E	300736	GAGE2E	26749							
+Xp11.23	X:47600000-50100000	GAGE4	G antigen 4	300597	GAGE4	2576							
+Xp11.23	X:47600000-50100000	GAGE5	G antigen 5	300598	GAGE5	2577							
+Xp11.23	X:47600000-50100000	GAGE6	G antigen 6	300599	GAGE6	2578							
+Xp11.23	X:47600000-50100000	GAGE7	G antigen 7	300601	GAGE7	2579							
+Xp11.4-p11.2	X:37800000-58100000	GAGE8	G antigen 8	300638	GAGE8	100101629							
+Xp11.23	X:48786589-48794310	"GATA1, GF1, ERYF1, NFE1, XLTDA, XLTT, XLANP"	GATA-binding protein-1 (globin transcription factor-1)	305371	GATA1	2623	"ENSG00000102145,ENST00000376670.9"		"Leukemia, megakaryoblastic, with or without Down syndrome, somatic"	190685		3	Gata1
+Xq13.1	X:70423313-70433380	"GDPD2, GDE3"	Glycerophosphodiester phosphodiesterase domain-containing protein 2	300940	GDPD2	54857	"ENSG00000130055,ENST00000538649.5"					Gdpd2	
+Xp22.2	X:13984184-14029891	"GEMIN8, FAM51A1"	GEM nuclear organelle-associated protein 8	300962	GEMIN8	54960	"ENSG00000046647,ENST00000680255.1"					Gemin8	
+Xp11.22	X:54530218-54645853	GNL3L	Guanine nucleotide binding protein-like 3-like protein	300873	GNL3L	54552	"ENSG00000130119,ENST00000360845.3"					Gnl3l	
+Xq26.2	X:133535744-133985593	"GPC3, SDYS, SGBS1"	Glypican 3	300037	GPC3	2719	"ENSG00000147257,ENST00000394299.7"		"Wilms tumor, somatic"	194070		3	Gpc3
+Xp11.23	X:49113406-49123734	"GPKOW, GPATCH5"	G-patch domain and KO@ motifs	301003	GPKOW	27238	"ENSG00000068394,ENST00000156109.7"					Gpkow	
+Xp22.2	X:13770938-13938637	"GPM6B, M6B"	Glycoprotein M6B	300051	GPM6B	2824	"ENSG00000046653,ENST00000454189.6"					Gpm6b	
+Xq26.1	X:130379448-130385673	"GPR119, GPCR2"	G protein-coupled receptor 119	300513	GPR119	139760	"ENSG00000147262,ENST00000682440.1"					Gpr119	
+Xp11.22	X:53048788-53080614	"GPR173, SREB3"	G protein-coupled receptor 173	300253	GPR173	54328	"ENSG00000184194,ENST00000332582.5"					Gpr173	
+Xq21.1	X:79144687-79175317	"GPR174, GPCR17"	G protein-coupled receptor 174	300903	GPR174	84636	"ENSG00000147138,ENST00000645147.2"					Gpr174	
+Xp11.4	X:41688972-41697274	GPR34	G protein-coupled receptor 34	300241	GPR34	2857	"ENSG00000171659,ENST00000378142.9"					Gpr34	
+Xq28	X:151176583-151182855	GPR50	G protein-coupled receptor 50	300207	GPR50	9248	"ENSG00000102195,ENST00000218316.4"					Gpr50	
+Xp11.4	X:41724180-41730129	GPR82	G protein-coupled receptor 82	300748	GPR82	27197	"ENSG00000171657,ENST00000302548.5"					Gpr82	
+Xq22.1	X:102651482-102659082	"GPRASP1, GASP, KIAA0443"	G protein-coupled receptor-associated sorting protein 1	300417	GPRASP1	9737	"ENSG00000198932,ENST00000415986.5"	conflicting assignment to chr.9				Gprasp1	
+Xp11.23	X:48973722-49002263	"GRIPAP1, GRASP1, KIAA1167"	GRIP1-associated protein 1	300408	GRIPAP1	56850	"ENSG00000068400,ENST00000376423.8"					Gripap1	
+Xp22.2	X:16123564-16153517	GRPR	Gastrin-releasing peptide receptor	305670	GRPR	2925	"ENSG00000126010,ENST00000380289.3"					Grpr	
+Xp11.22	X:51743441-51746231	"GSPT2, GST2, ERF3B"	G1- to S-phase transition 2	300418	GSPT2	23708	"ENSG00000189369,ENST00000340438.6"					Gspt2	
+Xp22.33	X:304758-318795	"GTPBP6, PGPL"	GTP-binding protein 6	300124	GTPBP6	8225	"ENSG00000178605,ENST00000326153.9"					Gtpbp6	
+Xq22.3-q23	X:109372905-109482085	"GUCY2F, GUC2F"	Guanylate cyclase 2F	300041	GUCY2F	2986	"ENSG00000101890,ENST00000218006.3"					Gucy2f	
+Xp22.33	X:2828929-2882817	"GYG2, GN2"	Glycogenin 2	300198	GYG2	8908	"ENSG00000056998,ENST00000398806.8"						
+Xq28	X:154884971-154885557	"H2AB1, H2AFB1"	H2A.B variant histone 1	301037	H2AB1	474382	"ENSG00000274183,ENST00000620016.2"					"H2ab1,H2ab2,H2ab3"	
+Xq28	X:155380708-155381298	"H2AB2, H2AFB2"	H2A.B variant histone 2	301038	H2AB2	474381	"ENSG00000277858,ENST00000354514.6"					"H2ab1,H2ab2,H2ab3"	
+Xq28	X:155459414-155460004	"H2AB3, H2AFB, H2ABBD"	H2A.B variant histone 3	300445	H2AB3	83740	"ENSG00000277745,ENST00000615853.1"					"H2ab1,H2ab2,H2ab3"	
+Xq22.2	X:104011146-104013707	"H2BW1, H2BFWT"	H2B.W histone 1	300507	H2BW1	158983	"ENSG00000123569,ENST00000217926.7"					H2bw2	
+Xq28	X:153447667-153495464	"HAUS7, UCHL5IP, UIP1"	"HAUS augmin-like complex, subunit 7"	300540	HAUS7	55559	"ENSG00000213397,ENST00000370211.10"					Haus7	
+Xq21.1	X:84317877-84502452	"HDX, CXorf43"	Highly divergent homeobox	300994	HDX	139324	"ENSG00000165259,ENST00000506585.6"					Hdx	
+Xq12	X:66162670-66268862	HEPH	Hephaestin	300167	HEPH	9843	"ENSG00000089472,ENST00000441993.7"					Heph	
+Xq21.1	X:81113698-81201912	NSBP1	Nucleosomal binding protein 1	300385	HMGN5	79366	"ENSG00000198157,ENST00000358130.7"					Hmgn5	
+Xq26.3	X:136497228-136512345	"HTATSF1, TATSF1"	HIV-1 TAT stimulatory factor 1	300346	HTATSF1	27336	"ENSG00000102241,ENST00000535601.5"					Htatsf1	
+Xq23	X:114584085-114910060	HTR2C	5-hydroxytryptamine (serotonin) receptor-2C	312861	HTR2C	3358	"ENSG00000147246,ENST00000276198.6"	formerly HTR1C				Htr2c	
+Xq28	X:153785767-153794374	IDH3G	"Isocitrate dehydrogenase 3 (NAD+), gamma"	300089	IDH3G	3421	"ENSG00000067829,ENST00000217901.10"					Idh3g	
+Xq28	X:154541237-154565045	"IKBKG, NEMO, FIP3, IP, EDAID1, IMD33, SAIDX"	"Inhibitor of nuclear factor kappa B kinase, regulatory subunit gamma"	300248	IKBKG	8517	"ENSG00000269335,ENST00000618670.4"		"Autoinflammatory disease, systemic, X-linked"	301081		3	Ikbkg
+Xq24	X:118727605-118805227	IL13RA1	"Interleukin-13 receptor, alpha-1"	300119	IL13RA1	3597	"ENSG00000131724,ENST00000371666.8"					Il13ra1	
+Xq23	X:115003981-115017615	IL13RA2	"Interleukin-13 receptor, alpha-2"	300130	IL13RA2	3598	"ENSG00000123496,ENST00000243213.2"					Il13ra2	
+Xq22.3	X:104566198-105767828	IL1RAPL2	Interleukin 1 receptor accessory protein-like 2	300277	IL1RAPL2	26280	"ENSG00000189108,ENST00000372582.6"					Il1rapl2	
+Xp22.33	X:1336784-1382688	IL3RA	"Interleukin-3 receptor, alpha subunit"	308385	IL3RA	3563	"ENSG00000185291,ENST00000381469.7"	same 190kb segment as CSF2RA					
+Xq28	X:155997695-156013019	IL9R	Interleukin-9 receptor	300007	IL9R	3581	"ENSG00000124334,ENST00000244174.11"	in PAR2 pseudoautosomal region				Il9r	
+Xp11.3	X:47204847-47205860	INE1	Inactivation escape 1	300164	INE1	8552	"ENSG00000224975,ENST00000456273.1"						
+Xp22.2	X:15785715-15787588	INE2	Inactivation escape 2	300165	INE2	8551	"ENSG00000281371,ENST00000630399.1"						
+Xq13.1	X:71491680-71492448	"INGX, ING2"	"Inhibitor of growth, X-linked"	300452	INGX	27160	"ENSG00000243468,ENST00000489074.2"						
+Xq28	X:154010506-154019901	IRAK1	Interleukin 1 receptor-associated kinase 1	300283	IRAK1	3654	"ENSG00000184216,ENST00000393687.6"					Irak1	
+Xq13.1	X:71301749-71305370	ITGB1BP2	"Integrin, beta-1, binding protein of, 2"	300332	ITGB1BP2	26548	"ENSG00000147166,ENST00000373829.8"					Itgb1bp2	
+Xq21.1	X:79360383-79367333	"ITM2A, E25A"	Integral membrane protein 2A	300222	ITM2A	9452	"ENSG00000078596,ENST00000434584.2"					Itm2a	
+Xp11.3	X:46912300-47061241	"PHF16, JADE3, KIAA0215"	PHD finger protein 16	300618	JADE3	9767	"ENSG00000102221,ENST00000611250.4"					Jade3	
+Xq13.2	X:73944323-74070383	"NCRNA00183, JPX, ENOX"	Noncoding RNA 183	300832	JPX	554203	"ENSG00000225470,ENST00000602772.5"					Jpx	
+Xp11.22	X:53094141-53147920	"KANTR, LINC01155"	"KDM5C adjacent transcript, noncoding"	301019	KANTR	102723508	"ENSG00000232593,ENST00000604062.6"					Kantr	
+Xp11.23	X:48961379-48971843	KCND1	"Potassium voltage-gated channel, SHAL-related subfamily, member 1"	300281	KCND1	3750	"ENSG00000102057,ENST00000218176.4"					Kcnd1	
+Xq23	X:109623699-109625171	KCNE1L	"Potassium voltage-gated channel, Isk-related family, member 1-like"	300328	KCNE5	23630	"ENSG00000176076,ENST00000372101.3"					Kcne1l	
+Xq24	X:119078634-119151129	KIAA1210	Kiaa1210 gene	300995	KIAA1210	57481	"ENSG00000250423,ENST00000691062.1"					Gm14569	
+Xp11.21	X:55908122-56291530	"KLF8, ZNF741, BKLF3"	Kruppel-like factor 8	300286	KLF8	11279	"ENSG00000102349,ENST00000374928.7"					Klf8	
+Xq24	X:117897812-118131049	"KLHL13, KIAA1309"	Kelch-like 13	300655	KLHL13	90293	"ENSG00000003096,ENST00000469946.5"					Klhl13	
+Xq21.31	X:87517801-87670049	KLHL4	Kelch-like 4	300348	KLHL4	56062	"ENSG00000102271,ENST00000373119.9"					Klhl4	
+Xp11.3	X:46447296-46474638	"ZNF673, FLJ20344"	Zinc finger protein 673	300585	KRBOX4	55634	"ENSG00000147121,ENST00000344302.9"						
+Xq27.1	X:141173234-141177128	LDOC1	Leucine zipper downregulated in cancer 1	300402	LDOC1	23641	"ENSG00000182195,ENST00000370526.5"					Ldoc1	
+Xq23	X:112630647-112679937	LHFPL1	"LHFP tetraspan subfamily, member 1"	300566	LHFPL1	340596	"ENSG00000182508,ENST00000371968.8"					Lhfpl1	
+Xq28	X:149825707-149879798	"LINC00850, KUCG1"	Long intergenic noncoding RNA 850	300892	LINC00850	101241891	"ENSG00000280752,ENST00000629221.1"						
+Xq21.1	X:78747719-78758713	"LPAR4, LPA4, P2RY9, P2Y9, GPR23"	Lysophosphatidic acid receptor 4	300086	LPAR4	2846	"ENSG00000147145,ENST00000614823.5"					Lpar4	
+Xq23	X:115289714-115307562	LUZP4	Leucine zipper protein 4	300616	LUZP4	51213	"ENSG00000102021,ENST00000371920.4"						
+Xq28	X:153179283-153183879	MAGE1	Melanoma antigen 1 (directs expression of antigen MZ2-E)	300016	MAGEA1	4100	"ENSG00000198681,ENST00000356661.7"	cluster of 12 genes				"Magea14,Magea3,Magea5,Magea8,Magea9"	
+Xq28	X:152133309-152138576	"MAGEA10, MAGE10"	"Melanoma antigen, family A, 10"	300343	MAGEA10	4109	"ENSG00000124260,ENST00000244096.7"					"Magea1,Magea10,Magea14,Magea2,Magea3,Magea4,Magea5,Magea6,Magea8,Magea9"	
+Xq28	X:149688192-149717267	"MAGEA11, MAGE11"	"Melanoma antigen, family A, 11"	300344	MAGEA11	4110	"ENSG00000185247,ENST00000333104.8"					"Magea3,Magea4,Magea5,Magea8"	
+Xq28	X:152733756-152737668	"MAGEA12, MAGE12"	"Melanoma antigen, family A, 12"	300177	MAGEA12	4111	"ENSG00000213401,ENST00000393900.4"					"Magea10,Magea2,Magea3,Magea4,Magea5"	
+Xq28	X:152749862-152753883	"MAGEA2, MAGE2"	"Melanoma antigen, family A, 2"	300173	MAGEA2	4101	"ENSG00000268606,ENST00000620710.4"					"Magea10,Magea2,Magea3,Magea4,Magea5"	
+Xq28	X:152714585-152718606	MAGEA2B	"Melanoma antigen, family A, 2B"	300549	MAGEA2B	266740	"ENSG00000183305,ENST00000331220.6"					"Magea10,Magea2,Magea3,Magea4,Magea5"	
+Xq28	X:152698793-152702346	"MAGEA3, MAGE3"	"Melanoma antigen, family A, 3"	300174	MAGEA3	4102	"ENSG00000221867,ENST00000370278.4"					"Magea3,Magea5,Magea8,Magea9"	
+Xq28	X:151912473-151925169	"MAGEA4, MAGE4A, MAGE4B"	"Melanoma antigen, family A, 4"	300175	MAGEA4	4103	"ENSG00000147381,ENST00000276344.6"					"Magea1,Magea10,Magea2,Magea3,Magea4,Magea5,Magea6,Magea8"	
+Xq28	X:152114048-152117938	"MAGEA5, MAGE5"	"Melanoma antigen, family A, 5"	300340	MAGEA5P	4104							
+Xq28	X:152766135-152769688	"MAGEA6, MAGE6"	"Melanoma antigen, family A, 6"	300176	MAGEA6	4105	"ENSG00000197172,ENST00000329342.10"					"Magea3,Magea5,Magea8,Magea9"	
+Xq28	X:149881182-149885824	"MAGEA8, MAGE8"	"Melanoma antigen, family A, 8"	300341	MAGEA8	4107	"ENSG00000156009,ENST00000535454.5"					"Magea10,Magea2,Magea3,Magea4,Magea5"	
+Xq28	X:149781876-149787736	"MAGEA9, MAGE9"	"Melanoma antigen, family A, 9"	300342	MAGEA9	4108	"ENSG00000123584,ENST00000243314.5"					"Magea3,Magea5,Magea8,Magea9"	
+Xq28	X:149581652-149587510	MAGEA9B	"Melanoma antigen, family A, 9B"	300764	MAGEA9B	728269	"ENSG00000267978,ENST00000595065.6"					"Magea3,Magea5,Magea8,Magea9"	
+Xp21.2	X:30243730-30252039	"MAGEB1, MAGEL1, DAM10"	"Melanoma antigen, family B, 1"	300097	MAGEB1	4112	"ENSG00000214107,ENST00000378981.8"					"Mageb1,Mageb2,Mageb3,Mageb4"	
+Xp21.3	X:27807989-27823013	MAGEB10	"Melanoma antigen, family B, 10"	300761	MAGEB10	139422	"ENSG00000177689,ENST00000356790.2"						
+Xp21.1	X:35798341-35803771	MAGEB16	"Melanoma antigen, family B, 16"	300762	MAGEB16	139604	"ENSG00000189023,ENST00000399989.5"					Mageb16	
+Xp22.2	X:16167480-16171463	MAGEB17	"Melanoma antigen, family B, 17"	300763	MAGEB17	645864	"ENSG00000182798,ENST00000400004.6"					"Gm5071,Mageb6b1"	
+Xp21.3	X:26138342-26140735	MAGEB18	"Melanoma antigen, family B, 18"	301064	MAGEB18	286514	"ENSG00000176774,ENST00000325250.2"					Mageb18	
+Xp21.2	X:30215562-30220088	"MAGEB2, DAM6"	"Melanoma antigen, family B, 2"	300098	MAGEB2	4113	"ENSG00000099399,ENST00000378988.5"					Mageb4	
+Xp21.2	X:30230656-30237494	MAGEB3	"Melanoma antigen, family B, 3"	300152	MAGEB3	4114	"ENSG00000198798,ENST00000620842.1"						
+Xp21.2	X:30241999-30244186	MAGEB4	"Melanoma antigen, family B, 4"	300153	MAGEB4	4115	"ENSG00000120289,ENST00000378982.4"					Mageb4	
+Xp21.3	X:26216168-26218269	MAGEB5	"Melanoma antigen, family B, 5"	300466	MAGEB5	347541	"ENSG00000188408,ENST00000602297.1"					"Mageb11,Mageb5,Mageb5b"	
+Xp21.3	X:26192439-26195645	MAGEB6	"Melanoma antigen, family B, 6"	300467	MAGEB6	158809	"ENSG00000176746,ENST00000379034.1"					"Mageb2,Mageb3,Mageb6b1,Mageb6b2"	
+Xq27.2	X:141903893-141909373	MAGEC1	"Melanoma antigen, family C, 1"	300223	MAGEC1	9947	"ENSG00000155495,ENST00000285879.5"					Magec2	
+Xq27.2	X:142202341-142205289	"MAGEC2, MAGEE1, CT10, HCA587"	"Melanoma antigen, family C, 2"	300468	MAGEC2	51438	"ENSG00000046774,ENST00000247452.4"					Magec2	
+Xq27.2	X:141838315-141897831	MAGEC3	"Melanoma antigen, family C, 3"	300469	MAGEC3	139081	"ENSG00000165509,ENST00000298296.1"						
+Xp11.22	X:51803075-51902353	MAGED1	"Melanoma antigen, family D, 1"	300224	MAGED1	9500	"ENSG00000179222,ENST00000375772.7"					Maged1	
+Xp11.22	X:52184887-52192267	"MAGED4, MAGEE1, KIAA1859"	"Melanoma antigen, family D, 4"	300702	MAGED4	728239	"ENSG00000154545,ENST00000375626.7"						
+Xp11.22	X:52061826-52069271	MAGED4B	"Melanoma antigen, family D, 4B"	300765	MAGED4B	81557	"ENSG00000187243,ENST00000485287.5"						
+Xq13.3	X:76427709-76431341	"MAGEE1, DAMAGE, KIAA1587"	"Melanoma antigen, family E, 1"	300759	MAGEE1	57692	"ENSG00000198934,ENST00000361470.4"					Magee1	
+Xq13.3	X:75782986-75785253	MAGEE2	"Melanoma antigen, family E, 2"	300760	MAGEE2	139599	"ENSG00000186675,ENST00000373359.4"					Magee2	
+Xp11.21	X:55452126-55453565	"MAGEH1, MAGEH"	"Melanoma antigen, family H, 1"	300548	MAGEH1	28986	"ENSG00000187601,ENST00000342972.3"					Mageh1	
+Xp11.3	X:43766609-43882449	MAOB	Monoamine oxidase B	309860	MAOB	4129	"ENSG00000069535,ENST00000378069.5"					Maob	
+Xp22.12	X:19360058-19515507	"MAP3K15, ASK3"	Mitogen-activated protein kinase kinase kinase 15	300820	MAP3K15	389840	"ENSG00000180815,ENST00000338883.9"					Map3k15	
+Xq26.3	X:136213219-136256481	"MAP7D3, MDP3"	MAP7 domain-containing protein 3	300930	MAP7D3	79649	"ENSG00000129680,ENST00000370663.9"					Map7d3	
+Xq26.2	X:132369319-132490034	"MBNL3, MBXL"	Muscleblind-like protein 3	300413	MBNL3	55796	"ENSG00000076770,ENST00000370849.7"					Mbnl3	
+Xq27.1	X:139581769-139708166	"MCF2, DBL"	Oncogene MCF2 (oncogene DBL)	311030	MCF2	4168	"ENSG00000101977,ENST00000414978.5"	~60kb telomeric to F9; 5' replacement by chr.15 segment				Mcf2	
+Xq24	X:120604100-120621158	"MCTS1, MCT1"	Malignant T-cell amplified sequence 1	300587	MCTS1	28985	"ENSG00000232119,ENST00000371315.3"					Mcts1	
+Xp11.4	X:40648304-40736158	"MED14, CRSP2, CXorf4, TRAP170, EXLM1"	Mediator complex subunit 14	300182	MED14	9282	"ENSG00000180182,ENST00000324817.6"					Med14	
+Xp11.4	X:38801458-38806531	"MID1IP1, MIG12"	MID1-interacting protein 1	300961	MID1IP1	58526	"ENSG00000165175,ENST00000378474.3"					Mid1ip1	
+Xq28	X:152392218-152392298	"MIR105-1, MIRN105-1"	Micro RNA 105-1	300811	MIR105-1	406897	"ENSG00000207957,ENST00000385222.1"					Mir105	
+Xq28	X:152394411-152394491	"MIR105-2, MIRN105-2"	Micro RNA 105-2	300812	MIR105-2	406898	"ENSG00000207818,ENST00000385083.1"					Mir105	
+Xq26.2	X:134170197-134170277	"MIR106A, MIRN106A"	Micro RNA 106A	300792	MIR106A	406899	"ENSG00000284157,ENST00000384870.1"					Mir106a	
+Xq26.2	X:134169670-134169765	"MIR19B2, MIRN19B2"	Micro RNA 19B2	300722	MIR19B2	406981	"ENSG00000284107,ENST00000385077.3"					Mir19b-2	
+Xq26.2	X:134169808-134169876	MIR20B	Micro RNA 20B	300950	MIR20B	574032	"ENSG00000284043,ENST00000384977.1"					Mir20b	
+Xp11.3	X:45746156-45746265	"MIR221, MIRN221"	Micro RNA 221	300568	MIR221	407006	"ENSG00000207870,ENST00000385135.1"	near MIRN222				Mir221	
+Xp11.3	X:45747014-45747123	"MIR222, MIRN222"	Micro RNA 222	300569	MIR222	407007	"ENSG00000207725,ENST00000384992.3"	near MIRN221				Mir222	
+Xq12	X:66018869-66018978	"MIR223, MIRN223"	Micro RNA 223	300694	MIR223	407008	"ENSG00000284567,ENST00000385204.1"					Mir223	
+Xq28	X:151958577-151958657	"MIR224, MIRN224"	Micro RNA 224	300769	MIR224	407009	"ENSG00000284363,ENST00000384889.1"					Mir224	
+Xq26.3	X:134546613-134546710	"MIR424, MIRN424, MIR322"	Micro RNA 424	300682	MIR424	494336	"ENSG00000284231,ENST00000362227.3"					Mir322	
+Xq23	X:114823453-114823563	"MIR448, MIRN448"	Micro RNA 448	300686	MIR448	554212	"ENSG00000199001,ENST00000362131.1"					Mir448	
+Xp11.23	X:50014597-50014682	MIR502	Micro RNA 502	300893	MIR502	574504	"ENSG00000272080,ENST00000606349.1"						
+Xq26.3	X:134546327-134546397	MIR503	Micro RNA 503	300865	MIR503	574506	"ENSG00000208005,ENST00000385270.1"					Mir503	
+Xq27.1	X:139924147-139924230	MIR505	Micro RNA 505	301053	MIR505	574508	"ENSG00000207633,ENST00000384901.3"					Mir505	
+Xq27.3	X:147230719-147230842	MIR506	Micro RNA 506	300877	MIR506	574511	"ENSG00000207731,ENST00000384998.1"						
+Xq27.3	X:147236912-147237026	MIR508	Micro RNA 508	300874	MIR508	574513	"ENSG00000207589,ENST00000384857.1"						
+Xq27.3	X:147260531-147260624	MIR509-1	Micro RNA 509-2	300875	MIR509-1	574514	"ENSG00000208000,ENST00000385265.1"						
+Xq27.3	X:147259651-147259725	MIR509-3	Micro RNA 509-3	300876	MIR509-3	100126337	"ENSG00000212014,ENST00000390725.1"						
+Xq27.3	X:147272334-147272407	MIR510	Micro RNA 510	300866	MIR510	574515	"ENSG00000207641,ENST00000384909.1"						
+Xp11.23	X:50003147-50003237	MIR532	Micro RNA 532	301023	MIR532	693124	"ENSG00000207758,ENST00000385025.1"					Mir532	
+Xq28	X:154019919-154019988	MIR718	Micro RNA 718	300929	MIR718	100313781	"ENSG00000284286,ENST00000390190.4"					Mir718	
+Xq24	X:119646737-119646847	MIR766	Micro RNA 766	301062	MIR766	768218	"ENSG00000211578,ENST00000390223.3"	located in intron of SEPT6					
+Xp11.22	X:53556222-53556340	"MIR98, MIRN98"	Micro RNA 98	300810	MIR98	407054	"ENSG00000271886,ENST00000606724.1"					Mir98	
+Xp11.22	X:53557191-53557273	"MIRLET7F2, LET7F2, MIRNLET7F2"	Micro RNA Let7f2	300721	MIRLET7F2	406889	"ENSG00000208012,ENST00000385277.1"					Mirlet7f-2	
+Xq22.3	X:106940737-107000211	"MORC4, ZCW4, ZCWCC2"	MORC family CW-type zinc finger protein 4	300970	MORC4	79710	"ENSG00000133131,ENST00000255495.7"					Morc4	
+Xq22.2	X:103675497-103688046	"MORFL2, MRGX, KIAA0026"	Mortality factor 4-like 2	300409	MORF4L2	9643	"ENSG00000123562,ENST00000433176.6"					Morf4l2	
+Xq26.3	X:134887631-134915256	MOSPD1	Motile sperm domain-containing protein 1	300674	MOSPD1	56180	"ENSG00000101928,ENST00000370779.8"					Mospd1	
+Xq28	X:154778683-154805484	"MPP1, PEMP, EMP55"	"Membrane protein, palmitoylated-1, 55kD"	305360	MPP1	4354	"ENSG00000130830,ENST00000393531.5"	~30kb 3' and centromeric to F8				Mpp1	
+Xq28	X:155064033-155071135	MTCP1	Mature T-cell proliferation 1	300116	MTCP1	4515	"ENSG00000214827,ENST00000369476.8"					Mtcp1	
+Xq28	X:150692961-150765107	MTMR1	Myotubularin-related protein-1	300171	MTMR1	8776	"ENSG00000063601,ENST00000445323.7"					Mtmr1	
+Xq11.2	X:64268080-64395451	MTMR8	Myotubularin-related protein 8	301061	MTMR8	55613	"ENSG00000102043,ENST00000374852.4"						
+Xp22.33	X:3308564-3346651	MXRA5	Matrix remodeling-associated protein 5	300938	MXRA5	25878	"ENSG00000101825,ENST00000217939.7"						
+Xq22.3	X:107272463-107276555	MYCL2	MYCL-related processed gene	310310	MYCLP1	4611		pseudogene on Xq27.3					
+Xq13.2	X:73212298-73214850	"NAP1L2, BPX"	Nucleosome assembly protein 1-like 2	300026	NAP1L2	4674	"ENSG00000186462,ENST00000373517.4"					Nap1l2	
+Xq21.32	X:93670929-93673577	NAP1L3	Nucleosome assembly protein 1-like 3	300117	NAP1L3	4675	"ENSG00000186310,ENST00000373079.4"					Nap1l3	
+Xp11.21	X:56729242-56819178	"NBDY, LINC01420, NOBODY"	Negative regulator of P-body association	300992	NBDY	550643	"ENSG00000204272,ENST00000374922.9"					Nbdy	
+Xq24	X:119588336-119606423	"NKRF, NRF"	NFKB-repressing factor	300440	NKRF	55922	"ENSG00000186416,ENST00000688521.1"					Nkrf	
+Xq22.1	X:100843323-100874358	"NOX1, MOX1, NOH1"	NADPH oxidase 1	300225	NOX1	27035	"ENSG00000007952,ENST00000372960.8"					Nox1	
+Xq22.3	X:105821785-105958609	"NRK, NESK"	NIK-related kinase	300791	NRK	203447	"ENSG00000123572,ENST00000243300.14"					Nrk	
+Xp11.22	X:51332230-51337524	"NUDT10, DIPP3A, APS2"	Nudix hydrolase 10	300527	NUDT10	170685	"ENSG00000122824,ENST00000356450.3"					"Nudt10,Nudt11"	
+Xp11.22	X:51490010-51496591	"NUDT11, DIPP3B, APS1"	Nudix hydrolase 11	300528	NUDT11	55190	"ENSG00000196368,ENST00000375992.4"					"Nudt10,Nudt11"	
+Xq22.1	X:102247166-102326721	NXF2	Nuclear RNA export factor 2	300315	NXF2	56001	"ENSG00000269405,ENST00000625106.4"					"Nxf2,Nxf7"	
+Xq22.1	X:103075809-103093142	NXF3	Nuclear RNA export factor 3	300316	NXF3	56000	"ENSG00000147206,ENST00000395065.8"					Nxf3	
+Xq22.1	X:102549964-102571692	NXF4	Nuclear RNA export factor 4	300318	NXF4	55999	"ENSG00000196970,ENST00000360035.6"						
+Xq22.1	X:101832111-101857576	NXF5	Nuclear RNA export factor 5	300319	NXF5	55998	"ENSG00000126952,ENST00000263032.5"					Nxf2	
+Xq23	X:109535823-109544697	NXT2	NTF2-related export protein 2	300320	NXT2	55916	"ENSG00000101888,ENST00000372106.6"					Nxt2	
+Xq13.1	X:70062456-70064178	"OTUD6A, DUBA2"	OTU domain-containing protein 6A	300714	OTUD6A	139562	"ENSG00000189401,ENST00000338352.3"					Otud6a	
+Xq21.1	X:78945390-78963726	"P2RY10, P2Y10"	"Purinergic receptor P2Y, G protein-coupled, 10"	300529	P2RY10	27334	"ENSG00000078589,ENST00000171757.3"					P2ry10	
+Xq13.1	X:70258165-70260203	"P2RY4, NRU, P2Y4"	"Pyrimidinergic receptor P2Y, G-protein coupled, 4"	300038	P2RY4	5030	"ENSG00000186912,ENST00000374519.4"					P2ry4	
+Xp22.33	X:1462580-1537184	"P2RY8, P2Y8"	"Pyrimidinergic receptor P2Y, G protein-coupled, 8"	300525	P2RY8	286530	"ENSG00000182162,ENST00000381297.10"						
+Xq21.31	X:91434838-91438583	"PABPC5, PABP5"	"Polyadenylate-binding protein, cytoplasmic, 5"	300407	PABPC5	140886	"ENSG00000174740,ENST00000312600.4"					Pabpc5	
+Xp11.23	X:49687446-49695983	"GAGEB1, PAGE1"	"P antigen family, member 1"	300288	PAGE1	8712	"ENSG00000068985,ENST00000376150.4"						
+Xp11.21	X:55089017-55092841	"PAGE2, GAGEC2"	"P antigen family, member 2"	300738	PAGE2	203569	"ENSG00000234068,ENST00000374968.9"						
+Xp11.21	X:55258414-55264915	"PAGE3, GAGEC1"	"P antigen family, member 3"	300739	PAGE3	139793	"ENSG00000204279,ENST00000374951.6"						
+Xp11.23	X:49829259-49834263	"PAGE4, GAGEC1"	"P antigen family, member 4"	300287	PAGE4	9506	"ENSG00000101951,ENST00000376141.5"						
+Xp11.21	X:55220345-55224107	"PAGE5, CT16, GAGEE1"	"P antigen family, member 5"	301009	PAGE5	90737	"ENSG00000158639,ENST00000374955.8"						
+Xq28	X:151563674-151676738	"PASD1, CT64, OXTES1"	PAS domain-containing repressor 1	300993	PASD1	139135	"ENSG00000166049,ENST00000370357.5"					Gm1141	
+Xq21.31	X:91779374-92623229	"PCDH11X, PCDH11, PCDHX"	"Protocadherin 11, X-linked"	300246	PCDH11X	27328	"ENSG00000102290,ENST00000406881.3"					Pcdh11x	
+Xp11.23	X:48831095-48835609	"PCSK1N, PROSAAS"	"Proprotein convertase, subtilisin/kexin-type, 1, inhibitor of"	300399	PCSK1N	27344	"ENSG00000102109,ENST00000218230.6"					Pcsk1n	
+Xp22.11	X:24558086-24672886	PCYT1B	"Phosphate cytidylyltransferase 1, choline, beta isoform"	300948	PCYT1B	9468	"ENSG00000102230,ENST00000379145.5"					Pcyt1b	
+Xq13.1	X:70286594-70289926	"PDZD11, AIPP1, PISP"	PDZ domain-containing 11	300632	PDZD11	51248	"ENSG00000120509,ENST00000374454.1"					Pdzd11	
+Xq28	X:153802165-153830543	"PDZD4, PDZK4, PDZRN4L, KIAA1444, LU1"	PDZ domain-containing 4	300634	PDZD4	57595	"ENSG00000067840,ENST00000393758.7"					Pdzd4	
+Xp11.21	X:54932960-54998788	"PFKFB1, PFRX"	"Fructose-2,6-bisphosphatase"	311790	PFKFB1	5207	"ENSG00000158571,ENST00000545676.5"	?Xq27-q25; ?Xcen-q13				Pfkfb1	
+Xq21.1	X:77967948-77969637	"PGAM4, PGAM3"	Phosphoglycerate mutase family member 4	300567	PGAM4	441531	"ENSG00000226784,ENST00000458128.3"					Pgam1	
+Xq24	X:119236284-119244465	PGRMC1	Progesterone receptor membrane component 1	300435	PGRMC1	10857	"ENSG00000101856,ENST00000535419.2"					Pgrmc1	
+Xp22.2	X:15319450-15335553	"PIGA, PNH1, MCAHS2, NEDEPH"	"Phosphatidylinositol glycan, class A"	311770	PIGA	5277	"ENSG00000165195,ENST00000333590.6"	pseudogene on chr.12	Neurodevelopmental disorder with epilepsy and hemochromatosis	301072		3	Piga
+Xp22.2	X:15319450-15335553	"PIGA, PNH1, MCAHS2, NEDEPH"	"Phosphatidylinositol glycan, class A"	311770	PIGA	5277	"ENSG00000165195,ENST00000333590.6"	pseudogene on chr.12	"Paroxysmal nocturnal hemoglobinuria, somatic"	300818		3	Piga
+Xp11.23	X:48913181-48919023	PIM2	Oncogene PIM2	300295	PIM2	11040	"ENSG00000102096,ENST00000376509.4"					Pim2	
+Xq13.1	X:72181675-72263963	"PIN4, PAR14, EPVH"	"Peptidyl-prolyl cis/trans isomerase, nima-interacting, 4"	300252	PIN4	5303	"ENSG00000102309,ENST00000423432.6"					Pin4	
+Xp22.2	X:15384798-15493332	PIR	Pirin	300931	PIR	8544	"ENSG00000087842,ENST00000380420.10"					Pir	
+Xq13.1	X:69160745-69165452	PJA1	Praja RING finger ubiquitin ligase 1	300420	PJA1	64219	"ENSG00000181191,ENST00000374571.5"					Pja1	
+Xq26.3	X:134565837-134764321	PLAC1	Placenta-specific gene 1	300296	PLAC1	10761	"ENSG00000170965,ENST00000476971.5"					Plac1	
+Xp22.33	X:276355-303355	PLCXD1	"Phospholipase C, phosphatidylinositol-specific, X domain-containing protein 1"	300974	PLCXD1	55344	"ENSG00000182378,ENST00000399012.6"	in pseudoautosomal region				Plcxd1	
+Xp11.23	X:49171897-49175234	PLP2	Proteolipid protein 2	300112	PLP2	5355	"ENSG00000102007,ENST00000376327.6"					"Gm6169,Plp2"	
+Xq28	X:154458280-154477778	SEX	Sex chromosome X transmembrane protein of HGF receptor family 3	300022	PLXNA3	55558	"ENSG00000130827,ENST00000369682.4"					Plxna3	
+Xq28	X:153764248-153779340	"PLXNB3, PLXN6"	Plexin B3	300214	PLXNB3	5365	"ENSG00000198753,ENST00000538966.5"					Plxnb3	
+Xq28	X:153669732-153687770	"PNCK, CAMK1B, BSTK3"	"Pregnancy-upregulated, nonubiquitous, CAM kinase"	300680	PNCK	139728	"ENSG00000130822,ENST00000447676.6"					Pnck	
+Xq28	X:153056469-153060461	"PNMA3, MA3"	Paraneoplastic MA antigen 3	300675	PNMA3	29944	"ENSG00000183837,ENST00000619635.1"					Pnma3	
+Xq28	X:152988823-152994115	"PNMA5, KIAA1934"	"Paraneoplastic MA antigen family, member 5"	300916	PNMA5	114824	"ENSG00000198883,ENST00000439251.3"					Pnma5	
+Xq28	X:153072453-153075018	"PNMA6A, PNMA6"	"Paraneoplastic MA antigen family, member 6A"	300917	PNMA6A	84968	"ENSG00000235961,ENST00000421798.5"						
+Xp22.31	X:7898246-7927723	DXS1283E	GS2 gene	300102	PNPLA4	8228	"ENSG00000006757,ENST00000444736.5"						
+Xp22.13	X:18675066-18827916	PPEF1	"Protein phosphatase, EF hand calcium-binding domain 1"	300109	PPEF1	5475	"ENSG00000086717,ENST00000692488.1"					Ppef1	
+Xp11.3	X:42777365-42778162	PPP1R2C	"Protein phosphatase 1, regulatory subunit 2C"	301017	PPP1R2C	80316	"ENSG00000102055,ENST00000378131.4"						
+Xp22.33	X:333932-386906	"PPP2R3B, PR48"	"Protein phosphatase 2, regulatory subunit B-double prime, beta"	300339	PPP2R3B	28227	"ENSG00000167393,ENST00000390665.9"					Ppp2r3d	
+Xp11.23	X:49071160-49074001	"PRAF2, JM4"	"PRA1 domain family, member 2"	300840	PRAF2	11230	"ENSG00000243279,ENST00000553851.3"					Praf2	
+Xp22.11	X:23667492-23686396	"PRDX4, AOE372"	Peroxiredoxin 4	300927	PRDX4	10549	"ENSG00000123131,ENST00000379341.9"					Prdx4	
+Xp22.33	X:3604339-3713648	PRKX	"Protein kinase, X-linked"	300083	PRKX	5613	"ENSG00000183943,ENST00000262848.6"					Prkx	
+Xp22.2	X:12791411-12824221	PRPS2	Phosphoribosyl pyrophosphate synthetase-2	311860	PRPS2	5634	"ENSG00000101911,ENST00000398491.6"	between STS and ZFX				Prps2	
+Xp21.1	X:37349363-37457290	"PRRG1, PRGP1"	Proline-rich gamma-carboxyglutamic acid protein 1	300935	PRRG1	5638	"ENSG00000130962,ENST00000449135.6"					Prrg1	
+Xq28	X:151694606-151705923	"PRRG3, PRGP3, TMG3"	Proline-rich gamma-carboxyglutamic acid protein 3	300685	PRRG3	79057	"ENSG00000130032,ENST00000674457.1"					Prrg3	
+Xq22.3	X:108084206-108091541	"PSMD10, p28"	"Proteasome 26S subunit, non-ATPase, 10"	300880	PSMD10	5716	"ENSG00000101843,ENST00000217958.8"					Psmd10	
+Xp22.31	X:6705837-7148152	"HDHD1A, DXF68S1E, GS1"	Haloacid dehalogenase-like hydrolase domain-containing 1A	306480	PUDP	8226	"ENSG00000130021,ENST00000424830.6"	escapes X-inactivation; 100kb telomeric to STS				Pudp	
+Xq26.1	X:130110622-130184869	RAB33A	Ras-associated protein RAB33A	300333	RAB33A	9363	"ENSG00000134594,ENST00000257017.5"					Rab33a	
+Xq22.2	X:103493265-103519488	RAB40A	"RAB40A, member Ras oncogene family"	301065	RAB40A	142684	"ENSG00000172476,ENST00000304236.2"					Rab40b	
+Xq22.1	X:102937271-102938299	"RAB40AL, RLGP"	"Ras-associated protein, RAB40A-like"	300405	RAB40AL	282808	"ENSG00000102128,ENST00000218249.7"					Rab40b	
+Xp22.2	X:13689127-13710503	RAB9	RAS-associated protein RAB9	300284	RAB9A	9367	"ENSG00000123595,ENST00000618931.2"					Rab9	
+Xq22.2	X:103776323-103832256	"RAB9B, RAB9L"	RAS-associated protein RAB9B	300285	RAB9B	51209	"ENSG00000123570,ENST00000243298.3"					Rab9b	
+Xp22.13	X:17800048-17861297	RAI2	Retinoic acid-induced 2	300217	RAI2	10742	"ENSG00000131831,ENST00000415486.7"					Rai2	
+Xq26.2	X:132203024-132219446	RAP2C	Ras-related protein 2C	301016	RAP2C	57826	"ENSG00000123728,ENST00000370874.2"					Rap2c	
+Xp22.2	X:16844340-16870361	RBBP7	Retinoblastoma-binding protein 7	300825	RBBP7	5931	"ENSG00000102054,ENST00000380084.8"					Rbbp7	
+Xp11.23	X:48574483-48581161	RBM3	RNA binding motif protein 3	300027	RBM3	5935	"ENSG00000102317,ENST00000376759.8"					"Rbm3,Rbm3-ps"	
+Xq28	X:153935268-153944642	RENBP	Renin-binding protein	312420	RENBP	5973	"ENSG00000102032,ENST00000393700.8"					Renbp	
+Xp22.2	X:16946657-17196654	"REPS2, POB1"	RALBP1-associated EPS domain-containing protein 2	300317	REPS2	9185	"ENSG00000169891,ENST00000303843.7"					Reps2	
+Xp11.3	X:47078442-47093312	"RGN, SMP30"	Regucalcin	300212	RGN	9104	"ENSG00000130988,ENST00000457380.5"					Rgn	
+Xq24	X:120109050-120120437	"RHOXF1, OTEX, PEPP1"	"RHOX homeobox family, member 1"	300446	RHOXF1	158800	"ENSG00000101883,ENST00000217999.3"					Rhox13	
+Xq24	X:120010716-120015550	RHOXF1P1	"RHOX homeobox family member 1, pseudogene 1"	300973	RHOXF1P1	101928941	"ENSG00000234493,ENST00000454625.2"						
+Xq24	X:120158612-120165629	"RHOXF2, PEPP2"	"RHOX homeobox family, member 2"	300447	RHOXF2	84528	"ENSG00000131721,ENST00000371388.5"					Rhox6	
+Xq22.3	X:106900062-106903340	RIPPLY1	Ripply transcriptional repressor 1	300575	RIPPLY1	92129	"ENSG00000147223,ENST00000411805.1"					Ripply1	
+Xq22.3	X:106693837-106797015	"RNF128, GRAIL"	Ring finger protein 128	300439	RNF128	79589	"ENSG00000133135,ENST00000324342.7"					Rnf128	
+Xq21.33	X:96883907-96885466	RPA4	Replication protein A4	300767	RPA4	29935	"ENSG00000204086,ENST00000373040.4"						
+Xp11.4	X:38269162-38327508	"RPGR, RP3, CRD, RP15, COD1, CORDX1"	Retinitis pigmentosa GTPase regulator	312610	RPGR	6103	"ENSG00000156313,ENST00000642395.2"		Retinitis pigmentosa 3	300029		3	Rpgr
+Xp11.4	X:38269162-38327508	"RPGR, RP3, CRD, RP15, COD1, CORDX1"	Retinitis pigmentosa GTPase regulator	312610	RPGR	6103	"ENSG00000156313,ENST00000642395.2"		"Retinitis pigmentosa, X-linked, and sinorespiratory infections, with or without deafness"	300455		3	Rpgr
+Xq28	X:154398064-154402338	"RPL10, DXS648, QM, AUTSX5, MRXS35"	Ribosomal protein L10	312173	RPL10	6134	"ENSG00000147403,ENST00000458500.5"		"{Autism, susceptibility to, X-linked 5}"	300847		3	"Rpl10,Rpl10-ps3"
+Xq22.1	X:101391010-101396154	"RPL36A, RPL44"	Ribosomal protein L36A	300902	RPL36A	6173	"ENSG00000241343,ENST00000553110.8"					"Rpl36a,Rpl36al"	
+Xq24	X:119786503-119791629	RPL39	Ribosomal protein L39	300899	RPL39	6170	"ENSG00000198918,ENST00000361575.4"					Rpl39	
+Xq13.1	X:72272041-72277247	"RPS4X, CCG2, SCAR"	"Ribosomal protein S4, X-linked"	312760	RPS4X	6191	"ENSG00000198034,ENST00000316084.10"	cen-RPS4X-PHKA1-XIST-qter in 2.6Mb				Rps4x	
+Xq21.1	X:84058345-84188498	"RPS6KA6, RSK4"	Ribosomal protein S6 kinase A6	300303	RPS6KA6	27330	"ENSG00000072133,ENST00000262752.5"					Rps6ka6	
+Xp11.21	X:55717748-55758773	"RRAGB, RAGB"	Ras-related GTP-binding protein B	300725	RRAGB	10325	"ENSG00000083750,ENST00000374941.9"					Rragb	
+Xq26.3	X:135032354-135033545	CXX1	CAAX box protein 1	300213	RTL8C	8933	"ENSG00000134590,ENST00000257013.9"					"Rtl8a,Rtl8b,Rtl8c"	
+Xq23	X:110358847-110456333	"RGAG1, MAR9, KIAA1318"	Retrotransposon GAG domain-containing protein 1	300965	RTL9	57529	"ENSG00000243978,ENST00000520821.6"					Rtl9	
+Xp22.2	X:16650157-16654669	"CALB3, CABP9K"	Calbindin 3 (vitamin D-dependent calcium-binding protein)	302020	S100G	795	"ENSG00000169906,ENST00000380200.3"					S100g	
+Xq26.3	X:135893715-135913061	SAGE	Sarcoma antigen	300359	SAGE1	55511	"ENSG00000181433,ENST00000370709.4"						
+Xq26.1	X:129779948-129795200	"SASH3, HACS2, CXorf9, SLY"	SAM and SH3 domain containing 3	300441	SASH3	54440	"ENSG00000122122,ENST00000356892.4"					Sash3	
+Xp22.11	X:23783172-23786209	"SAT1, SSAT"	Spermidine/spermine N1-acetyltransferase 1	313020	SAT1	6303	"ENSG00000130066,ENST00000379270.5"					Sat1	
+Xp22.13	X:17737127-17754984	SCML1	SCM polycomb group protein-like 1	300227	SCML1	6322	"ENSG00000047634,ENST00000398080.5"						
+Xp22.13	X:18239312-18355117	SCML2	SCM polycomb group protein-like 2	300208	SCML2	10389	"ENSG00000102098,ENST00000251900.9"					Scml2	
+Xq24	X:119615723-119693167	"SEPT6, SEP2, KIAA0128"	Septin 6	300683	SEPTIN6	23157	"ENSG00000125354,ENST00000343984.5"					Septin6	
+Xq21.1	X:81202101-81298546	SH3BGR	SH3-binding domain glutamic acid-rich protein-like	300190	SH3BGRL	6451	"ENSG00000131171,ENST00000373212.6"					Sh3bgrl	
+Xp22.33	X:624343-659410	"SHOX, GCFX, SS, PHOG"	Short stature homeobox	312865	SHOX	6473	"ENSG00000185960,ENST00000686671.1"	pseudoautosomal; ?gene causing short stature in Turner syndrome	"Short stature, idiopathic familial"	300582		3	
+Xp22.2	X:9786428-9949442	"SHROOM2, APXL"	Shroom family member 2	300103	SHROOM2	357	"ENSG00000146950,ENST00000418909.6"					Shroom2	
+Xq28	X:154487310-154490628	"SLC10A3, P3"	Solute carrier family 10 (sodium/bile acid cotransporter family) member 3 (protein p3)	312090	SLC10A3	8273	"ENSG00000126903,ENST00000369649.8"	order: G6PD-3'-(7kb)-5'-P3-3'-(0.5kb)-5'-GDX				Slc10a3	
+Xq26.1	X:130339918-130373356	"SLC25A14, BMCP1"	"Solute carrier family 25 (mitochondrial carrier), member 14"	300242	SLC25A14	9016	"ENSG00000102078,ENST00000545805.6"					Slc25a14	
+Xq24	X:119399335-119454477	SLC25A43	"Solute carrier family 25, member 43"	300641	SLC25A43	203427	"ENSG00000077713,ENST00000217909.8"					Slc25a43	
+Xq24	X:119468443-119471395	"SLC25A5, ANT2, T3"	"Solute carrier family 25 (mitochondrial carrier), member 5 (adenine nucleotide translocator-2, fibroblast)"	300150	SLC25A5	292	"ENSG00000005022,ENST00000317881.9"					Slc25a5	
+Xq22.2	X:104099213-104157008	SLC25A53	"Solute carrier family 25, member 53"	300941	SLC25A53	401612	"ENSG00000269743,ENST00000594199.3"					Slc25a53	
+Xp22.33	X:1386151-1392112	"SLC25A6, ANT3"	"Solute carrier family 25 (mitochondrial carrier), member 6 (adenine nucleotide translocator-3, liver)"	300151	SLC25A6	293	"ENSG00000169100,ENST00000381401.11"	1st intron ~1.3Mb from Xqter; nonlyonized					
+Xp11.23	X:48458543-48470259	"SLC38A5, SN2"	"Solute carrier family 38 (amino acid transporter), member 5"	300649	SLC38A5	92745	"ENSG00000017483,ENST00000620913.5"					Slc38a5	
+Xq23	X:116436605-116461457	SLC6A14	"Solute carrier family 6 (neurotransmitter transporter), member 14"	300444	SLC6A14	11254	"ENSG00000268104,ENST00000598581.3"					Slc6a14	
+Xq13.1	X:70925578-70931095	"SLC7A3, CAT3"	"Solute carrier family 7 (cationic amino acid transporter, y+ system), member 3"	300443	SLC7A3	84889	"ENSG00000165349,ENST00000298085.4"					Slc7a3	
+Xq27.3	X:145817828-145829855	"SLITRK2, KIAA1854, CXorf1, CXorf2"	"SLIT- and NTRK-like family, member 2"	300561	SLITRK2	84631	"ENSG00000185985,ENST00000335565.6"					Slitrk2	
+Xq27.3	X:143622789-143636100	SLITRK4	"SLIT- and NTRK-like family, member 4"	300562	SLITRK4	139065	"ENSG00000179542,ENST00000356928.2"					Slitrk4	
+Xq25-q26.1	X:129446505-129523489	"SMARCA1, SNF2L1"	"SWI/SNF related, matrix associated, actin dependent regulator of chromatin, subfamily a, member 1"	300012	SMARCA1	6594	"ENSG00000102038,ENST00000371121.5"					Smarca1	
+Xp11.21	X:54814369-54814499	SNORA11	"Small nucleolar RNA, H/ACA box, 11"	300662	SNORA11	677799	"ENSG00000221716,ENST00000408789.1"	in intron 1 of MAGED2					
+Xq13.1	X:71059246-71073425	SNX12	Sorting nexin 12	300883	SNX12	29934	"ENSG00000147164,ENST00000622277.4"					Snx12	
+Xq27.1	X:140502984-140505068	"SOX3, MRGH"	SRY (sex determining region Y)-box 3	313430	SOX3	6658	"ENSG00000134595,ENST00000370536.5"	P mutant in BFLS	"Intellectual developmental disorder, X-linked, with isolated growth hormone deficiency"	300123		3	Sox3
+Xp11.23	X:48004335-48009732	"SPACA5, LOC389852"	Sperm acrosome associated 5	300593	SPACA5	389852	"ENSG00000171489,ENST00000376940.4"					Spaca5	
+Xq27.2	X:141583673-141584737	"SPANXA1, SPANX"	"Sperm protein associated with the nucleus, X chromosome, family member A1"	300305	SPANXA1	30014	"ENSG00000198021,ENST00000370519.3"						
+Xq27.2	X:141589707-141590761	SPANXA2	"Sperm protein associated with the nucleus, X chromosome, family member A2"	300493	SPANXA2	728712	"ENSG00000203926,ENST00000370518.4"						
+Xq27.1	X:141002593-141003705	"SPANXB1, SPANXB"	"SPANX family, member B1"	300669	SPANXB1	728695	"ENSG00000227234,ENST00000449283.2"						
+Xq27.2	X:141241462-141242516	"SPANXC, CTP11"	"Sperm protein associated with the nucleus, X chromosome, family member C"	300330	SPANXC	64663	"ENSG00000198573,ENST00000358993.3"						
+Xq27.2	X:141697410-141698738	SPANXD	"SPANX family, member D"	300670	SPANXD	64648	"ENSG00000196406,ENST00000370515.3"						
+Xq27.3	X:145247502-145256207	SPANXN1	"SPANX family, member N1"	300664	SPANXN1	494118	"ENSG00000203923,ENST00000370493.4"						
+Xq27.3	X:143711954-143720751	SPANXN2	"SPANX family, member N2"	300665	SPANXN2	494119	"ENSG00000268988,ENST00000598475.1"						
+Xq27.3	X:143508734-143517474	SPANXN3	"SPANX family, member N3"	300666	SPANXN3	139067	"ENSG00000189252,ENST00000370503.2"						
+Xq27.3	X:143025927-143038636	SPANXN4	"SPANX family, member N4"	300667	SPANXN4	441525	"ENSG00000189326,ENST00000446864.1"						
+Xp11.22	X:52796143-52797426	SPANXN5	"SPANX family, member N5"	300668	SPANXN5	494197	"ENSG00000204363,ENST00000375511.4"						
+Xp11.21	X:57134264-57147179	DSF34	DXF34 gene	300621	SPIN2A	54466	"ENSG00000147059,ENST00000374906.4"					"Gm21466,Gm21637,Gm2854,Gm2892,Gm3757,Gm5923,Gm5926,Spin2-ps1,Spin2-ps2,Spin2-ps3,Spin2-ps4,Spin2c,Spin2d,Spin2e"	
+Xp11.21	X:57119681-57121547	SPIN2	"Spindlin family, member 2"	300517	SPIN2B	474343	"ENSG00000186787,ENST00000434397.3"					"Gm21466,Gm21637,Gm2854,Gm2892,Gm3757,Gm5923,Gm5926,Spin2-ps1,Spin2-ps2,Spin2-ps3,Spin2-ps4,Spin2c,Spin2d,Spin2e"	
+Xq28	X:155612585-155782458	SPRY3	Sprouty RTK signaling antagonist 3	300531	SPRY3	10251	"ENSG00000168939,ENST00000695325.1"	in pseudoautosomal region PAR2				Spry3	
+Xq28	X:153781040-153785729	"SRPK3, STK23, MSSK1"	SRSF protein kinase 3	301002	SRPK3	26576	"ENSG00000184343,ENST00000370104.5"					Srpk3	
+Xp11.4	X:38149338-38220870	"SRPX, ETX1"	"Sushi-repeat-containing protein, X chromosome"	300187	SRPX	8406	"ENSG00000101955,ENST00000544439.5"	probably between OTC and CGD				Srpx	
+Xq22.1	X:100644198-100675787	"SRPX2, SRPUL, RESDX"	"SUSHI repeat-containing protein, X-linked, 2"	300642	SRPX2	27286	"ENSG00000102359,ENST00000373004.5"	mutation identified in 1 RESDX family	"?Rolandic epilepsy, impaired intellectual development, and speech dyspraxia"	300643		3	Srpx2
+Xp11.23	X:48255391-48267443	"SSX1, SSRC"	"Synovial sarcoma, X breakpoint 1"	312820	SSX1	6756	"ENSG00000126752,ENST00000376919.4"	fused with SYT in synovial sarcoma	"?Sarcoma, synovial"	300813		3	"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb3,Ssxb5,Ssxb6,Ssxb8"
+Xp11.22	X:52696895-52707226	SSX2	"Sarcoma, synovial, X breakpoint 2"	300192	SSX2	6757	"ENSG00000241476,ENST00000336777.9"		"?Sarcoma, synovial"	300813		3	"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb3,Ssxb5,Ssxb8,Ssxb9"
+Xp11.23	X:48346426-48356702	SSX3	"Synovial sarcoma, X breakpoint 3"	300325	SSX3	10214	"ENSG00000165584,ENST00000298396.7"					"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb3,Ssxb6,Ssxb8,Ssxb9"	
+Xp11.23	X:48383538-48393346	SSX4	"Synovial sarcoma, X breakpoint 4"	300326	SSX4	6759	"ENSG00000268009,ENST00000595689.3"					"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb2,Ssxb3,Ssxb5,Ssxb8,Ssxb9"	
+Xp11.23	X:48186219-48196794	SSX5	"Synovial sarcoma, X breakpoint 5"	300327	SSX5	6758	"ENSG00000165583,ENST00000311798.5"					"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb3,Ssxb5,Ssxb8,Ssxb9"	
+Xp11.23	X:48107981-48120685	SSX6	"Synovial sarcoma, X breakpoint 6"	300541	SSX6P	280657							
+Xp11.22	X:52644060-52654899	SSX7	"Sarcoma, synovial, X breakpoint 7"	300542	SSX7	280658	"ENSG00000187754,ENST00000298181.6"					"Gm14459,Gm5751,Gm6592,Ssx9,Ssxa1,Ssxb1,Ssxb10,Ssxb3,Ssxb5,Ssxb8,Ssxb9"	
+Xp11.22	X:52622934-52633947	SSX8	"Sarcoma, synovial, X breakpoint 8"	300543	SSX8P	280659	"ENSG00000157965,ENST00000675258.1"						
+Xp11.23	X:48301549-48306178	SSX9	"Sarcoma, synovial, X breakpoint 9"	300544	SSX9P	280660	"ENSG00000204648,ENST00000608568.1"						
+Xq13.1	X:68647665-68725835	"STARD8, DLC3, STARTGAP3, KIAA0189"	START domain-containing protein 8	300689	STARD8	9754	"ENSG00000130052,ENST00000374599.8"					Stard8	
+Xq26.2	X:132023301-132075942	"STK26, MASK, MST4"	Serine/threonine kinase 26	300547	STK26	51765	"ENSG00000134602,ENST00000496850.1"					Stk26	
+Xp11.23	X:48695553-48709015	SUV39H1	"Suppressor of variegation 3-9, Drosophila, homolog of, 1"	300254	SUV39H1	6839	"ENSG00000101945,ENST00000337852.10"					Suv39h1	
+Xq22.1	X:100674490-100732120	SYTL4	Synaptotagmin-like 4	300723	SYTL4	94121	"ENSG00000102362,ENST00000276141.10"					Sytl4	
+Xp21.2	X:30827441-30889253	TAB3	Tak1 (MAP3K7) binding protein 3	300480	TAB3	257397	"ENSG00000157625,ENST00000378932.6"					Tab3	
+Xq22.1	X:101268256-101293082	"TAF7L, TAF2Q"	TATA-box binding protein-associated factor 7-like	300314	TAF7L	54457	"ENSG00000102387,ENST00000356784.2"					"Taf7l,Taf7l2"	
+Xq21.1	X:78129747-78139649	"TAF9B, TAF9L, TAFII31L"	"TAF9B RNA polymerase II, TATA box-binding protein-associated factor, 31kD"	300754	TAF9B	51616	"ENSG00000187325,ENST00000341864.6"					Taf9b	
+Xp21.2	X:30558808-30577765	"TASL, CXorf21"	TLR adaptor interacting with endolysosomal SLC15A4	301049	TASL	80231	"ENSG00000120280,ENST00000378962.4"					Tasl	
+Xp11.23	X:48539713-48562608	"TBC1D25, OATL1"	"TBC1 domain family, member 25"	311240	TBC1D25	4943	"ENSG00000068354,ENST00000376771.9"					Tbc1d25	
+Xq22.2	X:103628715-103630952	"TCEAL1, P21, SIIR"	Transcription elongation factor A-like 1	300237	TCEAL1	9338	"ENSG00000172465,ENST00000372624.3"					Tceal1	
+Xq22.2	X:103330238-103332325	TCEAL7	Transcription elongation factor A-like 7	300771	TCEAL7	56849	"ENSG00000182916,ENST00000372666.1"					Tceal7	
+Xq25	X:124375902-125204311	"TENM1, ODZ1, TNM1"	Teneurin transmembrane protein 1	300588	TENM1	10178	"ENSG00000009694,ENST00000422452.2"					Tenm1	
+Xq21.1	X:80335503-80445308	FAM46D	"Family with sequence similarity 46, member D"	300976	TENT5D	169966	"ENSG00000174016,ENST00000538312.5"					Tent5d	
+Xq22.3	X:105218928-105220693	TEX13A	Testis-expressed gene 13A	300312	TEX13A	56157	"ENSG00000268629,ENST00000609007.3"					Tex13a	
+Xq22.3	X:107980863-107982369	TEX13B	Testis-expressed gene 13B	300313	TEX13B	56156	"ENSG00000170925,ENST00000302917.1"					"Tex13a,Tex13b"	
+Xq28	X:154271264-154295210	TEX28	Testis-expressed gene on Xq28	300092	TEX28	1527	"ENSG00000278057,ENST00000619903.4"					Tex28	
+Xq26.2	X:133216661-133218353	"TFDP3, HCA661, CT30, DP4"	"Transcription factor DP family, member 3"	300772	TFDP3	51270	"ENSG00000183434,ENST00000310125.5"					Tfdp1	
+Xp11.23	X:49028725-49043356	"TFE3, RCCX1, MRXSPF"	Transcription factor for IgH enhancer	314310	TFE3	7030	"ENSG00000068323,ENST00000315869.8"	fuses with PRCC in RCCP	"Renal cell carcinoma, papillary, 1"	300854		3	Tfe3
+Xq21.31	X:89921907-89922882	"TGIF2LX, TGIFLX"	"Transforming growth factor-beta-induced factor 2-like, X-linked"	300411	TGIF2LX	90316	"ENSG00000153779,ENST00000283891.6"					"Tgif2lx1,Tgif2lx2"	
+Xp11.23	X:48893446-48898142	"TIMM17B, TIM17B"	Translocase of inner mitochondrial membrane 17B	300249	TIMM17B	10245	"ENSG00000126768,ENST00000396779.7"					Timm17b	
+Xp11.3	X:47582435-47586788	"TIMP1, TIMP, EPA"	Erythroid-potentiating activity (tissue inhibitor of metalloproteinases)	305370	TIMP1	7076	"ENSG00000102265,ENST00000218388.9"	in intron of SYN1				Timp1	
+Xq28	X:154295794-154330349	"TKTL1, TKT2, TKR"	Transketolase-like 1	300044	TKTL1	8277	"ENSG00000007350,ENST00000369912.2"	between GCP and FLN1				Tktl1	
+Xq28	X:149596555-149631791	"FAM11A, FRAXF"	"Family with sequence similarity 11, member A"	300031	TMEM185A	84548	"ENSG00000269556,ENST00000611119.4"					Tmem185a	
+Xq28	X:153972753-153983193	"TMEM187, CXorf12, DXS9878E, ITBA1 gene"	Transmembrane protein 187	300059	TMEM187	8269	"ENSG00000177854,ENST00000369982.5"						
+Xp21.1	X:34627074-34657284	"TMEM47, BCMP1"	Transmembrane protein 47	300698	TMEM47	83604	"ENSG00000147027,ENST00000275954.4"					Tmem47	
+Xq22.1	X:102513681-102516738	"TMSB15A, TMSB15, TMSNB"	"Thymosin, beta-15A"	300939	TMSB15A	11013	"ENSG00000158164,ENST00000289373.5"					"Tmsb15a,Tmsb15b1,Tmsb15b2"	
+Xq22.2	X:103919154-103974425	TMSB15B	"Thymosin, beta-15B"	301011	TMSB15B	286527	"ENSG00000158427,ENST00000419165.5"	opposite strand relative to TMSB15A				"Tmsb15b1,Tmsb15b2"	
+Xp22.2	X:12975109-12977222	"TMSB4X, TMSB4, TB4X, PTMB4"	"Thymosin, beta-4, X chromosome"	300159	TMSB4X	7114	"ENSG00000205542,ENST00000451311.7"					Tmsb4x	
+Xq22.1	X:100584935-100599884	"TNMD, TEM, CHM1L"	Tenomodulin	300459	TNMD	64102	"ENSG00000000005,ENST00000373031.5"					Tnmd	
+Xq28	X:153444472-153446055	TREX2	3-prime repair exonuclease 2	300370	TREX2	11219	"ENSG00000183479,ENST00000370231.3"					Trex2	
+Xp11.21	X:54920823-54931430	TRO	Trophinin	300132	TRO	7216	"ENSG00000067445,ENST00000173898.12"					Tro	
+Xq23	X:111768010-112082775	"TRPC5, TRP5"	Transient receptor potential channel 5	300334	TRPC5	7224	"ENSG00000072315,ENST00000262839.3"					Trpc5	
+Xq22.3	X:107713220-107777085	"TSC22D3, DSIPI, GILZ"	"TSC22 domain family, member 3"	300506	TSC22D3	1831	"ENSG00000157514,ENST00000372390.8"					Tsc22d3	
+Xq13.2	X:73792204-73829230	TSIX	X-inactivation-specific transcript-antisense	300181	TSIX	9383	"ENSG00000270641,ENST00000604411.1"					Tsix	
+Xq22.1	X:100627107-100637103	"TSPAN6, TM4SF6"	Tetraspanin 6	300191	TSPAN6	7105	"ENSG00000000003,ENST00000614008.4"					Tspan6	
+Xp11.22	X:53082366-53088539	"TSPYL2, CDA1, DENTT, CINAP"	TSPY-like 2	300564	TSPYL2	64061	"ENSG00000184205,ENST00000375442.8"					Tspyl2	
+Xp22.2	X:16786465-16844518	"TXLNG, CXorf15, FIAT"	"Taxilin, gamma"	300677	TXLNG	55787	"ENSG00000086712,ENST00000398155.4"					Txlng	
+Xp11.3	X:47190846-47215127	"UBA1, UBE1, GXP1, A1ST, SMAX2, AMCX1, VEXAS"	Ubiquitin-like modifier activating enzyme 1	314370	UBA1	7317	"ENSG00000130985,ENST00000335972.11"	escapes inactivation	"VEXAS syndrome, somatic"	301054		3	Uba1
+Xq28	X:154483716-154486614	"UBL4A, GDX, UBL4, DX254E"	Ubiquitin-like 4A	312070	UBL4A	8266	"ENSG00000102178,ENST00000369660.9"	40kb 3' to G6PD				"Gm44504,Ubl4a"	
+Xq13.3	X:75156368-75304896	UPRT	"Uracil phosphoribosyltransferase, S. cerevisiae, homolog of"	300656	UPRT	139596	"ENSG00000094841,ENST00000373379.5"					Uprt	
+Xp11.3	X:47233008-47248327	"USP11, UHX1"	Ubiquitin-specific protease-11 (ubiquitin carboxyl-terminal hydrolase)	300050	USP11	8237	"ENSG00000102226,ENST00000377107.7"					Usp11	
+Xq26.2	X:133023167-133097108	USP26	Ubiquitin-specific protease 26	300309	USP26	83844	"ENSG00000134588,ENST00000511190.6"					Usp26	
+Xq26.1	X:129906163-129929751	UTP14A	UTP14 small subunit processome component	300508	UTP14A	10813	"ENSG00000156697,ENST00000425117.6"					"Utp14a,Utp14b"	
+Xp11.23	X:47651795-47659179	UXT	Ubiquitously expressed transcript	300234	UXT	8409	"ENSG00000126756,ENST00000333119.7"					Uxt	
+Xq28	X:155881344-155943768	"VAMP7, SYBL1, TIVAMP"	Vesicle-associated membrane protein 7	300053	VAMP7	6845	"ENSG00000124333,ENST00000460621.6"					Vamp7	
+Xq28	X:155197006-155239840	VBP1	Von Hippel-Lindau binding protein-1	300133	VBP1	7411	"ENSG00000155959,ENST00000535916.5"					Vbp1	
+Xp22.31	X:7842261-7844142	"VCX, VCXB1, VCX10R"	"Variably charged, X chromosome"	300229	VCX	26609	"ENSG00000182583,ENST00000688183.1"						
+Xp22.31	X:8169943-8171266	"VCX2, VCX2R, VCXB"	"Variably charged, X chromosome, 2"	300532	VCX2	51480	"ENSG00000177504,ENST00000317103.5"						
+Xp22.31	X:6533617-6535117	"VCX3A, VCX8R, VCXA"	"Variably charged, X chromosome, 3A"	300533	VCX3A	51481	"ENSG00000169059,ENST00000381089.7"						
+Xp22.31	X:8464829-8466509	"VCS3B, VCXC"	"Variably charged, X chromosome, 3B"	300981	VCX3B	425054	"ENSG00000205642,ENST00000381032.6"						
+Xp22.2	X:15345595-15384412	"FIGF, VEGFD"	c-fos induced growth factor (vascular endothelial growth factor D)	300091	VEGFD	2277	"ENSG00000165197,ENST00000297904.4"					Vegfd	
+Xq26.3	X:136532214-136556798	"VGLL1, VGL1, TDU"	Vestigial-like 1	300583	VGLL1	51442	"ENSG00000102243,ENST00000370634.8"					Vgll1	
+Xq22.3	X:108018878-108079183	"VSIG1, GPA34"	V-set and immunoglobulin domains-containing protein 1	300620	VSIG1	340547	"ENSG00000101842,ENST00000415430.7"					Vsig1	
+Xq12	X:66021737-66040079	Z39IG	Immunoglobulin superfamily protein Z39IG	300353	VSIG4	11326	"ENSG00000155659,ENST00000412866.2"					Vsig4	
+Xp11.23	X:48590032-48608868	WDR13	WD repeat-containing protein 13	300512	WDR13	64743	"ENSG00000101940,ENST00000376729.10"					Wdr13	
+Xq24	X:118346072-118449960	"WDR44, RAB11BP, RPH11"	WD repeat domain-containing protein 44	301070	WDR44	54521	"ENSG00000131725,ENST00000371825.7"					Wdr44	
+Xp11.22	X:54192822-54358899	"WNK3, PRKWNK3, KIAA1566"	WNK lysine deficient protein kinase 3	300358	WNK3	65267	"ENSG00000196632,ENST00000375169.7"					Wnk3	
+Xq23	X:113616299-113618152	XACT	"Active X chromosome-coating transcript, noncoding"	300901	XACT	105463123							
+Xp11.22	X:52495807-52500811	"XAGE1A, XAGE1B"	"X antigen family, member 1A"	300742	XAGE1A	653220	"ENSG00000204379,ENST00000375602.2"						
+Xp11.22	X:52512076-52517067	"XAGE1B, XAGE1C, XAGE1D, XAGE1E"	"X antigen family, member 1B"	300289	XAGE1B	653067	"ENSG00000204382,ENST00000375616.6"						
+Xp11.22	X:52369020-52375679	"XAGE2, GAGED3"	"X antigen family, member 2"	300416	XAGE2	9502	"ENSG00000155622,ENST00000286049.3"						
+Xp11.22	X:52862527-52868082	"XAGE3, PLAC6"	"X antigen family, member 3"	300740	XAGE3	170626	"ENSG00000171402,ENST00000375491.7"						
+Xq13	X:74700000-76800000	"XCE, XITE"	X chromosome-controlling element	300074	XCE	7497							
+Xp22.33	X:2752039-2816499	"XG, PBDX"	XG glycoprotein	300879	XG	7499	"ENSG00000124343,ENST00000644266.2"	nonlyonizing; spans pseudoautosomal boundary					
+Xq13.2	X:73820650-73852752	"XIC, XCE, XIST, SXI1"	X chromosome controlling element (X-inactivation center)	314670	XIST	7503	"ENSG00000229807,ENST00000429829.6"	"q13-q21; metaphase bend, or fold, at q13.3-q21.1"	"X-inactivation, familial skewed"	300087		3	Xist
+Xq22.1	X:100886915-100959342	"XKRX, XPLAC, XKR2, XRG2"	"X Kell blood group precursor-related, X-linked"	300684	XKRX	402415	"ENSG00000182489,ENST00000372956.3"					Xkrx	
+Xq26.1	X:129738978-129769535	"XPNPEP2, AEACEI"	X-prolyl aminopeptidase 2 (aminopeptidase P)	300145	XPNPEP2	7512	"ENSG00000122121,ENST00000371106.4"		"{Angioedema induced by ACE inhibitors, susceptibility to}"	300909		3	Xpnpep2
+Xq12-q13.1	X:68499050-68537281	YIPF6	"YIP1 domain family, member 6"	300996	YIPF6	286451	"ENSG00000181704,ENST00000374622.3"					Yipf6	
+Xp22.12	X:21855986-21858739	"YY2, ZNF631"	Transcription factor YY2	300570	YY2	404281	"ENSG00000230797,ENST00000429584.3"					Yy2	
+Xp22.33	X:2486434-2500975	"ZBED1, ALTE, KIAA0785, TRAMP"	Zinc finger BED domain-containing protein 1	300178	ZBED1	9189	"ENSG00000214717,ENST00000381218.8"						
+Xq24	X:120250811-120258397	"ZBTB33, KAISO"	Zinc finger- and BTB domain-containing protein 33	300329	ZBTB33	10009	"ENSG00000177485,ENST00000557385.2"					Zbtb33	
+Xq11.2-q12	X:65034825-65507886	"ZC3H12B, MCPIP2"	Zinc finger CCCH domain-containing protein 12B	300889	ZC3H12B	340554	"ENSG00000102053,ENST00000338957.5"					Zc3h12b	
+Xq24	X:118823823-118826967	"ZCCHC12, SIZN1"	Zinc finger CCHC domain-containing protein 12	300701	ZCCHC12	170261	"ENSG00000174460,ENST00000310164.3"					Zcchc12	
+Xq13.3	X:75368426-75523036	ZDHHC15	Zinc finger DHHC domain-containing protein 15	300576	ZDHHC15	158866	"ENSG00000102383,ENST00000541184.1"					Zdhhc15	
+Xp22.11	X:24148981-24216254	ZFX	"Zinc finger protein, X-linked"	314980	ZFX	7543	"ENSG00000005889,ENST00000379177.5"	nonlyonizing				"Zfa-ps,Zfx"	
+Xq22.1	X:101882289-101932026	"ZMAT1, KIAA1789"	"Zinc finger, matrin-type 1"	301007	ZMAT1	84460	"ENSG00000166432,ENST00000372782.4"					Zmat1	
+Xq13.1	X:71239623-71255289	"ZMYM3, ZNF261, DXS6673E"	"Zinc finger, MYM-type 3"	300061	ZMYM3	9203	"ENSG00000147130,ENST00000373998.5"					Zmym3	
+Xp11.3	X:47370577-47414497	ZNF157	Zinc finger protein-157 (HZF22)	300024	ZNF157	7712	"ENSG00000147117,ENST00000377073.4"					Gm14412	
+Xp11.23	X:47974850-48003988	ZNF21	Zinc finger protein-12	314993	ZNF182	7569	"ENSG00000147118,ENST00000376943.8"					Zfp182	
+Xq28	X:152898066-152973480	ZNF185	Zinc finger protein 185	300381	ZNF185	7739	"ENSG00000147394,ENST00000535861.6"					Zfp185	
+Xp11.3	X:47445177-47483221	ZNF41	Zinc finger protein-41	314995	ZNF41	7592	"ENSG00000147124,ENST00000684689.1"						
+Xq26.3	X:135344795-135363412	"ZNF449, ZSCAN19"	Zinc finger protein 449	300627	ZNF449	203523	"ENSG00000173275,ENST00000339249.5"					Zfp449	
+Xp11.23	X:48057515-48071639	ZNF630	Zinc finger protein 630	300819	ZNF630	57232	"ENSG00000221994,ENST00000409324.7"					Zfp119b	
+Xp11.3	X:46497724-46545420	ZNF674	Zinc finger protein 674	300573	ZNF674	641339	"ENSG00000251192,ENST00000523374.5"						
+Xq26.3	X:135248588-135344108	"ZNF75D, ZNF75"	Zinc finger protein-75D	314997	ZNF75D	7626	"ENSG00000186376,ENST00000370764.1"	1Mb distal to HPRT					
+Xp11.23	X:47836901-47925626	ZNF81	Zinc finger protein-81 (HFZ20)	314998	ZNF81	347344	"ENSG00000197779,ENST00000338637.13"						
+Xp22.2	X:15790483-15823259	"ZRSR2, U2AF1RS2"	"Zinc finger-, CCCH domain-, and RNA-binding motif-containing serine/arginine-rich protein 2"	300028	ZRSR2	8233	"ENSG00000169249,ENST00000307771.8"					"Zrsr1,Zrsr2"	
+Xp11.21	X:57905429-57910457	ZXDA	"Zinc finger-encoding gene, X-linked, duplicated, A"	300235	ZXDA	7789	"ENSG00000198205,ENST00000358697.6"					Zxdb	
+Xp11.21	X:57592010-57597476	ZXDB	"Zinc finger-encoding gene, X-linked, duplicated, B"	300236	ZXDB	158586	"ENSG00000198455,ENST00000374888.3"					Zxdb	
+Xpter-p22.32		HDPA	"Hodgkin disease, susceptibility, pseudoautosomal"	300221		50829			"{Hodgkin disease susceptibility, pseudoautosomal}"	300221		2	
+Xp22.32	X:4400000-6100000	"XGR, XG"	XG/MIC2 regulator	314705					"[XG blood group system, Xg(a-) phenotype"	314700		3	
+Xp22.3	X:6100000-9600000	EMWX	"Episodic muscle weakness, X-linked"	300211		10118			"Episodic muscle weakness, X-linked"	300211		2	
+Xp22.3	X:6100000-9600000	FGS3	FG syndrome 3	300406		93985			FG syndrome 3	300406		2	
+Xp22	X:21900000-24900000	ANIB5	"Aneurysm, intracranial berry, 5"	300870					"Aneurysm, intracranial berry, 5"	300870		2	
+Xp21.2-q21.1	X:29300000-85400000	"XS, LUXS"	"Lutheran suppressor, X-linked"	309050		7523							
+Xp21	X:31500000-37800000	"DELXp21, CXDELp21"	Chromosome Xp21 deletion syndrome	300679				contiguous gene deletion syndrome	Chromosome Xp21 deletion syndrome	300679		4	
+Xp11.23	X:47600000-50100000	GAGE3	G antigen 3	300596									
+Xp11.22	X:50100000-54800000	"DUPXp11.22, MRX17, MRX31"	Xp11.22 microduplication syndrome	300705				minimal duplicated region 228 kb overlapping HUWE1 and HSD17B10	Xp11.22 microduplication syndrome	300705		4	
+Xp11.22	X:50100000-54800000	HPCX2	"Prostate cancer, hereditary, X-linked 2"	300704		100188769		associated with rs5945572	"{Prostate cancer, hereditary, X-linked 2}"	300704		2	
+Xp11.22	X:50100000-54800000	HYSP4	"Hypospadias 4, X-linked, susceptibility to"	300856		100689214		associated with rs1934179 and rs7063116	"{Hypospadias 4, X-linked, susceptibility to}"	300856		2	
+Xp11	X:58100000-61000000	"GRDX, GD3"	"Graves disease, susceptibility to, X-linked"	300351		117189			"{Graves disease, susceptibility to, X-linked}"	300351		2	
+Xp11	X:58100000-61000000	IDDMX	"Diabetes mellitus, insulin-dependent, X-linked, susceptibility to"	300136		8245		only with DR3	"{Diabetes mellitus, insulin-dependent, X-linked}"	300136		2	
+Xq	X:61000000-156040895	"DXS435E, A11"	A-11 gene	300010									
+Xq	X:61000000-156040895	MTBSX	"Mycobacterium tuberculosis, susceptibility to, X-linked"	300259		57789			"{Mycobacterium tuberculosis, susceptibility, X-linked}"	300259		2	
+Xq11-q12	X:63800000-68500000	AGA2	"Alopecia, androgenetic, 2"	300710		100188771		associated with rs6152	"Alopecia, androgenetic, 2"	300710		2	
+Xq12-q21.31	X:65400000-92700000	MRXS9	"Intellectual developmental disorder, X-linked, syndromic 9"	300709				between DXS1111 and DXS1197	"Intellectual developmental disorder, X-linked, syndromic 9"	300709		2	
+Xq13.2-q13.3	X:73000000-76800000	DUPXq13	Chromosome Xq13 duplication syndrome	301069					Chromosome Xq13 duplication syndrome	301069		4	
+Xq21.3	X:94300000-99100000	AD16	Alzheimer disease 16	300756		100271718		associated with rs5984894	{Alzheimer disease 16}	300756		2	
+Xq21-q25	X:94300000-129500000	PARK12	Parkinson disease-12	300557		677662		"max lod with DXS1106, DXS8055, DXS1001"	{Parkinson disease 12}	300557		2	
+Xq22.3	X:104500000-109400000	"AMMEC, DELXq22.3, CXDELq22.3"	"Alport syndrome, mental retardation, midface hypoplasia, and elliptocytosis (AMME complex)"	300194				contiguous gene deletion syndrome	AMME complex	300194		4	
+Xq22.3	X:104500000-109400000	FGS5	FG syndrome 5	300581		780900			FG syndrome 5	300581		2	
+Xq23-q26	X:109400000-138900000	CHDS3	"Coronary heart disease, susceptibility to, 3"	300464		387573			"{Coronary heart disease, susceptibility to, 3}"	300464		2	
+Xq23	X:109400000-117400000	IHPS4	"Pyloric stenosis, infantile hypertrophic, 4"	300711		100188772		max lod at rs3027802	"Pyloric stenosis, infantile hypertrophic, 4"	300711		2	
+Xq23-q27.2	X:109400000-143000000	MYP13	Myopia 13	300613		677764		between DXS1210 and DXS1227	Myopia 13	300613		2	
+Xq24	X:117400000-121800000	BMIQ11	Body Mass Index quantitative trait locus 11	300306					"{Obesity, susceptibility to, BMIQ11}"	300306		2	
+Xq24	X:117400000-121800000	MRXSS	"Intellectual developmental disorder, X-linked, with short stature"	300360					"Intellectual developmental disorder, X-linked, with short stature"	300360		2	
+Xq24-q25	X:117400000-129500000	RRDX	Radial ray deficiency	300378		266719			Radial ray deficiency	300378		2	
+Xq24-q25	X:117400000-129500000	STQTL6	Stature quantitative trait locus 6	300591		100037264		max lod at DXS8067	{Stature QTL 6}	300591		2	
+Xq25-q26	X:121800000-138900000	SXI2	"X inactivation, familial skewed, 2"	300179		117237			"X inactivation, familial skewed, 2"	300179		2	
+Xq26.3	X:134500000-138900000	"CT45A4, CT45.4"	"Cancer/testis antigen family 45, member A4"	300795									
+Xq26-q27	X:134500000-148000000	RP24	Retinitis pigmentosa-24	300155		6116			Retinitis pigmentosa 24	300155		2	
+Xq26	X:134500000-138900000	"XLID42, MRX42"	"Intellectual developmental disorder, X-linked 42"	300372		4406		?pericentromeric region	"Intellectual developmental disorder, X-linked 42"	300372		2	
+Xq27	X:143000000-148000000	BMND4	Bone mineral density QTL 4	300536		554316			[Bone mineral density QTL 4]	300536		2	
+Xq27.3	X:143000000-148000000	DYX9	"Dyslexia, susceptibility to, 9"	300509		474159		max lod at DXS8043	"{Dyslexia, susceptibility to, 9}"	300509		2	
+Xq27.3-qter	X:143000000-156040895	EBM	"Epidermolysis bullosa, macular type"	302000		1881							
+Xq27-q28	X:143000000-156040895	HPCX1	"Prostate cancer, hereditary, X-linked 1"	300147		9566		between D3S2390 and bG82i1.0	"{Prostate cancer, hereditary, X-linked 1}"	300147		2	
+Xq27	X:143000000-148000000	TGCT1	Testicular germ cell tumor 1	300228		50830			Testicular germ cell tumor	300228		2	
+Xq28	X:148000000-156040895	"DUPXq28, CXq28"	Chromosome Xq28 duplication syndrome	300815					Chromosome Xq28 duplication syndrome	300815		4	
+Xq28	X:148000000-156040895	"F8B, DXS522E"	Factor VIII F8B	305424				alternative F8 transcript					
+Xq28	X:148000000-156040895	MRXSA	"Intellectual developmental disorder, X-linked, syndromic, Armfield type"	300261					"Intellectual developmental disorder, X-linked, syndromic, Armfield type"			3	
+Xq28	X:148000000-156040895	RP34	Retinitis pigmentosa 34	300605		777642			Retinitis pigmentosa 34	300605		2	
+Xq28	X:148000000-156040895	SLEB15	"Systemic lupus erythematosus, susceptibility to, 15"	300809		100379200		associated with rs17435	"{Systemic lupus erythematosus, susceptibility to, 15}"	300809		2	
+Xq28	X:148000000-156040895	XM	Xm	314900		7506		"linked to DCB, PCB"					
+Xq28	X:154137726-154144285	OPN1C	"OPN1LW and OPN1MW genes, controller of"	300824		107604627							
+Chr.X		MCOPCB1	"Microphthalmia, isolated, with coloboma 1"	300345		85503			Microphthalmia with coloboma 1	300345		2	
+													
+													
+													
+Phenotype Mapping Key													
+"1 - The disorder is placed on the map due to its association with a gene, but the underlying defect is not known."													
+2 - The disorder was placed on the map by statistical methods.													
+3 - The molecular basis of the disorder is known.													
+4 - A contiguous gene duplication or deletion syndrome in which multiple genes are involved.													
