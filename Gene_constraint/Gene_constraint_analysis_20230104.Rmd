@@ -1,0 +1,858 @@
+---
+title: "Gene constraint analysis"
+output: html_notebook
+---
+
+#Setup
+
+```{r}
+myPath <- #ADD PATH TO GITHUB FOLDER
+library("ggplot2")
+library("ggrepel")
+library("reshape2")
+
+data_summary <- function(x){
+  m <- median(x, na.rm=TRUE)
+  ymin <- quantile(x, na.rm=TRUE)[2]
+  ymax <- quantile(x, na.rm=TRUE)[4]
+  test <- c("y"=m,"ymin"=ymin,"ymax"=ymax)
+  names(test) <- c("y","ymin","ymax")
+  return(test)
+}
+```
+
+# Bring in annotations
+
+```{r}
+geneAnno <- read.delim(file=paste0(myPath,"Annotations/geneAnno_proteinCoding_all_20210503.txt"), stringsAsFactors = FALSE)
+colnames(geneAnno)[1] <- "Gene"
+geneAnno_x <- geneAnno[geneAnno$chr == "chrX",]
+geneAnno_y <- geneAnno[geneAnno$chr == "chrY",]
+X_genes_all <-as.character(geneAnno_x$Gene)
+Y_genes_all <-as.character(geneAnno_y$Gene)
+sexChrom_genes <- c(X_genes_all,Y_genes_all)
+PAR1_genes <- geneAnno_x[geneAnno_x$start < 2691188,]$Gene
+PAR2_genes <- c("SPRY3","VAMP7","IL9R","WASH6P")
+PAR_genes_all <- c(PAR1_genes,PAR2_genes)
+NPX_genes <- X_genes_all[! X_genes_all %in% PAR_genes_all]
+NPY_genes <- Y_genes_all[! Y_genes_all %in% PAR_genes_all]
+autosome_genes <- geneAnno[! geneAnno$chr %in% c("chrX","chrY"),"Gene"]
+
+# NPX-NPY pair annotations
+XY_pair_anno <- read.delim(file=paste0(myPath,"Annotations/human_XY_pair_annotations.txt"), stringsAsFactors = FALSE)
+NPX_NPY_genes <- XY_pair_anno[XY_pair_anno$Human_NPY == "TRUE", "Gene"]
+
+#Colors for figures
+myOrange <- "#d95f0290"
+myGreen <- "#1B9E7790"
+
+#bring in deltaEx data
+lcl_fib_dEx <- read.delim(file=paste0(myPath,"Linear_regressions/table_s2_npx_par_response.txt"), stringsAsFactors = FALSE)
+
+#Bring in X annotations
+chrX_annotations <- read.delim(file=paste0(myPath,"Annotations/chrX_table_for_gene_constraint.txt"), stringsAsFactors = FALSE)
+
+chrX_annotations <- chrX_annotations[! duplicated(chrX_annotations$Gene),]
+rownames(chrX_annotations) <- chrX_annotations$Gene
+chrX_annotations["SPRY3","x_class"] <- "PAR"
+
+#Select NPX genes that are not ampliconic because they can't be properly estimated
+PAR_annotation <- chrX_annotations[chrX_annotations$x_class %in% c("PAR"),]
+
+#OMIM
+omim_anno <- read.delim(file=paste0(myPath,"Gene_constraint/OMIM-Gene-Map-List-X.txt"), stringsAsFactors = FALSE)
+omim_anno <- omim_anno[,c("Approved.Symbol","Phenotype","Inheritance","Phenotype.MIM.number")]
+colnames(omim_anno) <- c("Gene","Phenotype","Inheritance","MIM_num")
+omim_anno <- omim_anno[!omim_anno$Gene == "",]
+omim_anno <- omim_anno[! is.na(omim_anno$MIM_num),]
+omim_anno_unique <-omim_anno[! duplicated(omim_anno$Gene),]
+omim_anno_dup <-omim_anno[duplicated(omim_anno$Gene),]
+omim_anno_unique2 <- omim_anno_dup[! duplicated(omim_anno_dup$Gene),]
+omim_anno_dup2 <-omim_anno_dup[duplicated(omim_anno_dup$Gene),]
+omim_anno_unique3 <- omim_anno_dup2[! duplicated(omim_anno_dup2$Gene),]
+omim_anno_dup3 <-omim_anno_dup2[duplicated(omim_anno_dup2$Gene),]
+omim_anno_unique4 <- omim_anno_dup3[! duplicated(omim_anno_dup3$Gene),]
+omim_anno_dup4 <-omim_anno_dup3[duplicated(omim_anno_dup3$Gene),]
+omim_anno_unique5 <- omim_anno_dup4[! duplicated(omim_anno_dup4$Gene),]
+omim_anno_dup5 <-omim_anno_dup4[duplicated(omim_anno_dup4$Gene),]
+omim_anno_unique6 <- omim_anno_dup5[! duplicated(omim_anno_dup5$Gene),]
+omim_anno_dup6 <-omim_anno_dup5[duplicated(omim_anno_dup5$Gene),]
+omim_anno_unique7 <- omim_anno_dup6[! duplicated(omim_anno_dup6$Gene),]
+omim_anno_dup7 <-omim_anno_dup6[duplicated(omim_anno_dup6$Gene),]
+omim_anno_unique8 <- omim_anno_dup7[! duplicated(omim_anno_dup7$Gene),]
+omim_anno_dup8 <-omim_anno_dup7[duplicated(omim_anno_dup7$Gene),]
+omim_anno_unique9 <- omim_anno_dup8[! duplicated(omim_anno_dup8$Gene),]
+omim_anno_dup9 <-omim_anno_dup8[duplicated(omim_anno_dup8$Gene),]
+omim_anno_unique10 <- omim_anno_dup9[! duplicated(omim_anno_dup9$Gene),]
+```
+
+#PAR genes and autosomal genes: Bring in constraint metrics
+
+```{r}
+constraint_metrics <- read.delim(file=paste0(myPath,"Gene_constraint/gene_constraint_metrics.txt"), stringsAsFactors = FALSE)
+constraint_metrics <- constraint_metrics[! duplicated(constraint_metrics$Gene),]
+row.names(constraint_metrics) <- constraint_metrics$Gene
+constraint_metrics[constraint_metrics$Gene %in% PAR_genes_all,"Category"] <- "PAR"
+constraint_metrics[constraint_metrics$Gene %in% autosome_genes,"Category"] <- "Autosome"
+constraint_metrics[constraint_metrics$Gene %in% NPX_genes,"Category"] <- "NPX"
+constraint_metrics[constraint_metrics$Gene %in% NPX_NPY_genes,"Category"] <- "NPX_NPY"
+constraint_metrics[constraint_metrics$Gene %in% NPY_genes,"Category"] <- "NPY"
+
+
+#For LOEUF, need to set anything with <10 observations as "NA"
+constraint_metrics[! is.na(constraint_metrics$exp_lof) & (constraint_metrics$exp_lof < 10), "LOEUF"] <- NA
+
+constraint_metrics_auto_par <- constraint_metrics[constraint_metrics$Category %in% c("Autosome","PAR"),]
+constraint_metrics_auto_only <- constraint_metrics[constraint_metrics$Category == "Autosome",]
+constraint_metrics_par_only <- constraint_metrics[constraint_metrics$Category == "PAR",]
+
+```
+
+##Calculate percentile rankings for autosomes and PAR genes
+
+```{r}
+get_rank_pct <- function(x,constrained = "highest"){
+  if(constrained == "highest"){
+      myRank <- rank(x=x, na.last = "keep", ties.method = "average")
+      rank_pct <- 100*( myRank / sum(! is.na(x)) )
+
+  } else if(constrained == "lowest"){
+    myRank <- rank(x=-x, na.last = "keep", ties.method = "average")
+      rank_pct <- 100*( myRank / sum(! is.na(x)) )
+  }
+  return(rank_pct)
+}
+
+
+#for the following, lower values = more constrained
+constraint_metrics_auto_par$LOEUF_rank <- get_rank_pct(constraint_metrics_auto_par$LOEUF, constrained = "lowest")
+constraint_metrics_auto_par$RVIS_rank <- get_rank_pct(constraint_metrics_auto_par$RVIS, constrained = "lowest")
+
+#for the following, higher values = more constrained
+constraint_metrics_auto_par$pHI_rank <- get_rank_pct(constraint_metrics_auto_par$Huang_pHI, constrained = "highest")
+constraint_metrics_auto_par$Pct_rank <- get_rank_pct(constraint_metrics_auto_par$Gene_Avg_PCT, constrained = "highest")
+
+myFun <- function(x){
+  result <- mean(x = x, na.rm=TRUE)
+  return(result)
+}
+constraint_metrics_auto_par$avg_Rank <- apply(X= constraint_metrics_auto_par[,c("LOEUF_rank", "pHI_rank", "RVIS_rank", "Pct_rank")], MARGIN = 1, FUN = myFun)
+
+# write.table(x=constraint_metrics_auto_par, file="Gene_constraint_auto_PAR_ranks.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names=TRUE)
+
+#only include genes if they have at least 2 metrics
+constraint_metrics_auto_par$num.Metrics <- 4 - rowSums(is.na(constraint_metrics_auto_par[,c("LOEUF_rank", "pHI_rank", "Pct_rank", "RVIS_rank")]))
+
+constraint_metrics_auto_par <- constraint_metrics_auto_par[constraint_metrics_auto_par$num.Metrics > 1,]
+
+#get list for autosomal genes (noPAR)
+auto_fullAnno_ranks <- constraint_metrics_auto_par[!constraint_metrics_auto_par$Gene %in% c(PAR_genes_all),c("Gene","LOEUF_rank", "pHI_rank", "RVIS_rank", "Pct_rank","avg_Rank")]
+
+#make a violin plot for PAR genes
+#individual plots for each 
+par_fullAnno_ranks <- constraint_metrics_auto_par[constraint_metrics_auto_par$Gene %in% PAR1_genes,c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank")]
+
+par_fullAnno_ranks_output <- constraint_metrics_auto_par[constraint_metrics_auto_par$Gene %in% PAR1_genes,]
+par_fullAnno_ranks_output_2 <- merge(x=par_fullAnno_ranks_output[,c(1,12,14:18,20:24)],y=lcl_fib_dEx[,c(44,15,7,36,28,52:53)], by="Gene",all.x=TRUE)
+par_fullAnno_ranks_output_3 <- merge(x=par_fullAnno_ranks_output_2, y=PAR_annotation[,c(1,7,10:11)], by="Gene", all.x=TRUE)
+write.table(x=par_fullAnno_ranks_output_3, file="par_constraint_ranks.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names = FALSE)
+
+
+
+#get number of observations for each column
+mySum <- function(x) {
+  theSum <- sum(! is.na(x))
+  return(theSum)
+}
+per_col <- apply(X=par_fullAnno_ranks, MARGIN = 2, FUN = mySum)[2:8]
+
+par_plot <- rbind(data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$LOEUF_rank,"cat" = rep("LOEUF")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$pHI_rank,"cat" = rep("pHI")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$RVIS_rank,"cat" = rep("RVIS")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$Pct_rank,"cat" = rep("Pct")),
+                  data.frame("Gene" = par_fullAnno_ranks$Gene,"value" = par_fullAnno_ranks$avg_Rank,"cat" = rep("avg_Rank")))
+
+par_plot$cat <- factor(x=par_plot$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_Rank"))
+
+pdf(file="par_ranks_plot.pdf", width=3, height=2)
+ggplot(data=par_plot, mapping = aes(x=cat, y=value)) + 
+  geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+    geom_violin(fill="#00000000",color=myGreen, scale="width") + 
+    stat_summary(fun.data=data_summary, size=0.25) +
+  geom_jitter(color="#00000090", position=position_jitter(0.2), size=1, stroke=0) +
+    # geom_point(color="#00000090", size=1, stroke=0) +
+  geom_text_repel(data = par_plot[par_plot$value > 50 , ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+  geom_text_repel(data = par_plot[par_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_Rank", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+  scale_x_discrete(limits=c("LOEUF","RVIS","pHI", "Pct","avg_Rank")) +
+  theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) +
+  labs(
+    y = "Percentile ranking"
+  )  + ylim(0,100)
+
+dev.off()
+
+#Get stats for average constraint
+wilcox.test(x=par_fullAnno_ranks$avg_Rank, y=auto_fullAnno_ranks$avg_Rank)
+
+library(corrplot)
+#Get correlations for the 4 metrics for PAR genes:
+for_cor_par_rank <- par_fullAnno_ranks_output_3[,c("LOEUF_rank", "RVIS_rank","pHI_rank","Pct_rank")]
+res <- cor(x = for_cor_par_rank, use = "pairwise.complete.obs")
+corrplot(res, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+
+```
+
+## DeltaEx scatterplot PAR
+
+```{r}
+
+par_fullAnno_ranks_dEx <- merge(x=par_fullAnno_ranks, y=lcl_fib_dEx, by = "Gene", all.x=TRUE)
+
+#Scatterplots
+pdf(file="PAR_ranking_lcl.pdf", width=3.6, height=2.25)
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_LCL) & par_fullAnno_ranks_dEx$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=avg_Rank), col="#00000080",  stroke=0) +
+  geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_LCL) & par_fullAnno_ranks_dEx$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col=myGreen,  stroke=0) +
+  geom_text_repel(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_LCL) & par_fullAnno_ranks_dEx$x_adj_pval_LCL < 0.05 & abs(par_fullAnno_ranks_dEx$deltaEx_LCL) >= 0.1 & par_fullAnno_ranks_dEx$avg_Rank >= 50,], mapping = aes(x=deltaEx_LCL, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) +
+  labs(x="LCL deltaEx", y="Average constraint percentile ranking") + ylim(0,100)
+dev.off()
+
+pdf(file="PAR_ranking_Fib.pdf", width=3.6, height=2.25)
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_Fib) & par_fullAnno_ranks_dEx$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=avg_Rank), col="#00000080", stroke=0) +
+  geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_Fib) & par_fullAnno_ranks_dEx$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col=myGreen, stroke=0) +
+  geom_text_repel(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_Fib) & par_fullAnno_ranks_dEx$x_adj_pval_Fib < 0.05 & abs(par_fullAnno_ranks_dEx$deltaEx_Fib) >= 0.1 & par_fullAnno_ranks_dEx$avg_Rank >= 50,], mapping = aes(x=deltaEx_Fib, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) + 
+  theme(
+      axis.text = element_text(color = "black"), 
+      axis.ticks = element_line(color = "black", size = 0.25), 
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) +
+  labs(x="Fib deltaEx", y="Average constraint percentile ranking") + ylim(-0.05,100)
+dev.off()
+```
+
+#NPX genes constraint metrics
+
+```{r}
+#Select NPX genes that are not ampliconic because they can't be properly estimated
+NPX_annotation <- chrX_annotations[! chrX_annotations$x_class %in% c("Ampliconic","PAR"),]
+
+#Restrict the constraint_metrics to these genes
+constraint_metrics_NPX <- constraint_metrics[NPX_annotation$Gene,]
+
+NPX_fullAnno_final_1 <- merge(x=constraint_metrics_NPX[,c(1,10:19)], y=lcl_fib_dEx[,c(44,15,7,36,28,53)], by = "Gene", all.x=TRUE)
+NPX_fullAnno_final <- merge(x=NPX_fullAnno_final_1, y=NPX_annotation[,c(1,7,10:11)], by = "Gene", all.x=TRUE)
+```
+
+##Do percentile rankings for NPX genes
+
+```{r}
+#for the following, lower values = more constrained
+NPX_fullAnno_final$LOEUF_rank <- get_rank_pct(NPX_fullAnno_final$LOEUF, constrained = "lowest")
+NPX_fullAnno_final$RVIS_rank <- get_rank_pct(NPX_fullAnno_final$RVIS, constrained = "lowest")
+
+#for the following, higher values = more constrained
+NPX_fullAnno_final$pHI_rank <- get_rank_pct(NPX_fullAnno_final$Huang_pHI, constrained = "highest")
+NPX_fullAnno_final$Pct_rank <- get_rank_pct(NPX_fullAnno_final$Gene_Avg_PCT, constrained = "highest")
+
+myFun <- function(x){
+  result <- mean(x = x, na.rm=TRUE)
+  return(result)
+}
+NPX_fullAnno_final$avg_Rank <- apply(X= NPX_fullAnno_final[,c("LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank"  )], MARGIN = 1, FUN = myFun)
+
+#only include genes if they have at least 2 metrics
+NPX_fullAnno_final$num.Metrics <- 4 - rowSums(is.na(NPX_fullAnno_final[,c("LOEUF_rank", "pHI_rank", "Pct_rank", "RVIS_rank")]))
+
+NPX_fullAnno_final[NPX_fullAnno_final$num.Metrics < 2,"avg_Rank"] <- NA
+# write.table(x=NPX_fullAnno_final, file="NPX_noAmpliconic_ranks_atLeast2metrics.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names=TRUE)
+
+NPX_fullAnno_final_XYpair <- NPX_fullAnno_final[NPX_fullAnno_final$Category == "NPX_NPY",]
+
+
+
+# 
+# #make a violin plot for sigGenes genes
+# #individual plots for each 
+# lcl_sig_ranks <- NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05 , c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank")]
+# 
+# lcl_sig_ranks_expanded <- NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05 , c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank", "homozygous_lof")]
+# 
+# lcl_not_sig_ranks <- NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05 , c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank")]
+# 
+# lcl_sig_ranks_UP <- NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05 & NPX_fullAnno_final$deltaEx_LCL > 0, c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank")]
+# lcl_sig_ranks_down <- NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05 & NPX_fullAnno_final$deltaEx_LCL < 0, c("Gene","LOEUF_rank","RVIS_rank", "pHI_rank", "Pct_rank","avg_Rank")]
+# 
+# 
+# #get number of observations for each column
+# mySum <- function(x) {
+#   theSum <- sum(! is.na(x))
+#   return(theSum)
+# }
+# per_col <- apply(X=lcl_sig_ranks, MARGIN = 2, FUN = mySum)[2:6]
+# per_col_up <- apply(X=lcl_sig_ranks_UP, MARGIN = 2, FUN = mySum)[2:6]
+# per_col_down <- apply(X=lcl_sig_ranks_down, MARGIN = 2, FUN = mySum)[2:6]
+# 
+# NPX_plot <- rbind(data.frame("Gene" = lcl_sig_ranks$Gene,"value" = lcl_sig_ranks$LOEUF_rank,"cat" = rep("LOEUF")),
+#                   data.frame("Gene" = lcl_sig_ranks$Gene,"value" = lcl_sig_ranks$pHI_rank,"cat" = rep("pHI")),
+#                   data.frame("Gene" = lcl_sig_ranks$Gene,"value" = lcl_sig_ranks$RVIS_rank,"cat" = rep("RVIS")),
+#                   data.frame("Gene" = lcl_sig_ranks$Gene,"value" = lcl_sig_ranks$Pct_rank,"cat" = rep("Pct")),
+#                   data.frame("Gene" = lcl_sig_ranks$Gene,"value" = lcl_sig_ranks$avg_Rank,"cat" = rep("avg_Rank")))
+# 
+# NPX_plot_up <- rbind(data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$LOEUF_rank,"cat" = rep("LOEUF")),
+#                   data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$pHI_rank,"cat" = rep("pHI")),
+#                   data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$RVIS_rank,"cat" = rep("RVIS")),
+#                   data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$Pct_rank,"cat" = rep("Pct")),
+#                   data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$avg_Rank,"cat" = rep("avg_Rank")))
+# 
+# NPX_plot_down <- rbind(data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$LOEUF_rank,"cat" = rep("LOEUF")),
+#                   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$pHI_rank,"cat" = rep("pHI")),
+#                   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$RVIS_rank,"cat" = rep("RVIS")),
+#                   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$Pct_rank,"cat" = rep("Pct")),
+#                   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$avg_Rank,"cat" = rep("avg_Rank")))
+# 
+# 
+# NPX_plot_up_down <- rbind(
+#   data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$LOEUF_rank,"cat" = rep("LOEUF_up")),
+#   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$LOEUF_rank,"cat" = rep("LOEUF_down")),
+#     data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$pHI_rank,"cat" = rep("pHI_up")),
+#   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$pHI_rank,"cat" = rep("pHI_down")),
+#     data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$RVIS_rank,"cat" = rep("RVIS_up")),
+#   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$RVIS_rank,"cat" = rep("RVIS_down")),
+#     data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$Pct_rank,"cat" = rep("Pct_up")),
+#   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$Pct_rank,"cat" = rep("Pct_down")),
+#     data.frame("Gene" = lcl_sig_ranks_UP$Gene,"value" = lcl_sig_ranks_UP$avg_Rank,"cat" = rep("avg_Rank_up")),
+#   data.frame("Gene" = lcl_sig_ranks_down$Gene,"value" = lcl_sig_ranks_down$avg_Rank,"cat" = rep("avg_Rank_down"))
+#   )
+# 
+# 
+# NPX_plot$cat <- factor(x=NPX_plot$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_Rank"))
+# NPX_plot_up$cat <- factor(x=NPX_plot_up$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_Rank"))
+# NPX_plot_down$cat <- factor(x=NPX_plot_down$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_Rank"))
+# NPX_plot_up_down$cat <- factor(x=NPX_plot_up_down$cat, levels = c("LOEUF_up","LOEUF_down","RVIS_up","RVIS_down","pHI_up","pHI_down","Pct_up", "Pct_down","avg_Rank_up","avg_Rank_down"))
+# 
+# NPX_NPY_plot <- rbind(data.frame("Gene" = NPX_fullAnno_final_XYpair$Gene,"value" = NPX_fullAnno_final_XYpair$LOEUF_rank,"cat" = rep("LOEUF")),
+#                   data.frame("Gene" = NPX_fullAnno_final_XYpair$Gene,"value" = NPX_fullAnno_final_XYpair$pHI_rank,"cat" = rep("pHI")),
+#                   data.frame("Gene" = NPX_fullAnno_final_XYpair$Gene,"value" = NPX_fullAnno_final_XYpair$RVIS_rank,"cat" = rep("RVIS")),
+#                   data.frame("Gene" = NPX_fullAnno_final_XYpair$Gene,"value" = NPX_fullAnno_final_XYpair$Pct_rank,"cat" = rep("Pct")),
+#                   data.frame("Gene" = NPX_fullAnno_final_XYpair$Gene,"value" = NPX_fullAnno_final_XYpair$avg_Rank,"cat" = rep("avg_Rank")))
+# NPX_NPY_plot$cat <- factor(x=NPX_NPY_plot$cat, levels = c("LOEUF","RVIS","pHI", "Pct","avg_Rank"))
+# 
+# 
+# pdf(file="NPX_LCL_sig_ranks_plot.pdf", width=3, height=2)
+#   ggplot(data=NPX_plot, mapping = aes(x=cat, y=value)) + 
+#   geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+#     geom_violin(fill="#00000000",color=myOrange, scale="width") + 
+#     stat_summary(fun.data=data_summary, size=0.25) +
+#         geom_jitter(data=NPX_plot_down[! NPX_plot_up$Gene %in% NPX_NPY_genes,], color="#fddc2280", position=position_jitter(0.2), size=1, stroke=0) +
+#   geom_jitter(data=NPX_plot_up[! NPX_plot_up$Gene %in% NPX_NPY_genes,], color="#fc730780", position=position_jitter(0.2), size=1, stroke=0) +
+#     geom_jitter(data=NPX_plot_down[NPX_plot_up$Gene %in% NPX_NPY_genes,], fill="#fddc2280",col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#     geom_jitter(data=NPX_plot_up[NPX_plot_up$Gene %in% NPX_NPY_genes,], fill="#fc730780", col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#         # geom_text_repel(data = NPX_plot[NPX_plot$Gene %in% NPX_NPY_genes,], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+#   # geom_text_repel(data = par_plot[NPX_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_Rank", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+#   scale_x_discrete(limits=c("LOEUF","RVIS","pHI", "Pct","avg_Rank")) +
+#   theme_classic(base_size = 8) + 
+#   theme(
+#       axis.text = element_text(color = "black"), 
+#       # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+#       axis.ticks = element_line(color = "black", size = 0.25), 
+#       axis.line = element_line(size = 0.25),
+#       plot.title = element_text(hjust = 0.5),
+#       axis.title.x = element_blank(),
+#       legend.position="none"
+#       ) +
+#   labs(
+#     y = "Percentile ranking"
+#   )  + ylim(0,100)
+#   
+#   #Plot up and down in separate violin plots
+#   ggplot(data=NPX_plot_up_down, mapping = aes(x=cat, y=value)) + 
+#   geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+#     geom_violin(fill="#00000000",color=myOrange, scale="width") + 
+#     stat_summary(fun.data=data_summary, size=0.25) +
+#         geom_jitter(data=NPX_plot_up_down[(NPX_plot_up_down$Gene %in% NPX_plot_down$Gene) & ! (NPX_plot_up_down$Gene %in% NPX_NPY_genes),], color="#fddc2280", position=position_jitter(0.2), size=1, stroke=0) +
+#   geom_jitter(data=NPX_plot_up_down[(NPX_plot_up_down$Gene %in% NPX_plot_up$Gene) & ! (NPX_plot_up_down$Gene %in% NPX_NPY_genes),], color="#fc730780", position=position_jitter(0.2), size=1, stroke=0) +
+#     geom_jitter(data=NPX_plot_up_down[(NPX_plot_up_down$Gene %in% NPX_plot_down$Gene) & (NPX_plot_up_down$Gene %in% NPX_NPY_genes),], fill="#fddc2280",col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#     geom_jitter(data=NPX_plot_up_down[(NPX_plot_up_down$Gene %in% NPX_plot_up$Gene) & (NPX_plot_up_down$Gene %in% NPX_NPY_genes),], fill="#fc730780", col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#         # geom_text_repel(data = NPX_plot[NPX_plot$Gene %in% NPX_NPY_genes,], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+#   # geom_text_repel(data = par_plot[NPX_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_Rank", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+#   scale_x_discrete(limits=c("LOEUF_up","LOEUF_down","RVIS_up","RVIS_down","pHI_up","pHI_down", "Pct_up","Pct_down","avg_Rank_up","avg_Rank_down")) +
+#   theme_classic(base_size = 8) + 
+#   theme(
+#       axis.text = element_text(color = "black"), 
+#       # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+#       axis.ticks = element_line(color = "black", size = 0.25), 
+#       axis.line = element_line(size = 0.25),
+#       plot.title = element_text(hjust = 0.5),
+#       axis.title.x = element_blank(),
+#       legend.position="none"
+#       ) +
+#   labs(
+#     y = "Percentile ranking"
+#   )  + ylim(0,100)
+# dev.off()
+# 
+# #Get stats for average constraint
+# wilcox.test(x=lcl_sig_ranks$avg_Rank, y=lcl_not_sig_ranks$avg_Rank)
+# 
+# wilcox.test(x=lcl_sig_ranks_UP$LOEUF_rank, y=lcl_not_sig_ranks$LOEUF_rank)
+# wilcox.test(x=lcl_sig_ranks_down$LOEUF_rank, y=lcl_not_sig_ranks$LOEUF_rank)
+# wilcox.test(x=lcl_sig_ranks_UP$LOEUF_rank, y=lcl_sig_ranks_down$LOEUF_rank)
+# 
+# wilcox.test(x=lcl_sig_ranks_UP$pHI_rank, y=lcl_not_sig_ranks$pHI_rank)
+# wilcox.test(x=lcl_sig_ranks_down$pHI_rank, y=lcl_not_sig_ranks$pHI_rank)
+# wilcox.test(x=lcl_sig_ranks_down$pHI_rank, y=lcl_sig_ranks_UP$pHI_rank)
+# 
+# wilcox.test(x=lcl_sig_ranks_UP$RVIS_rank, y=lcl_not_sig_ranks$RVIS_rank)
+# wilcox.test(x=lcl_sig_ranks_down$RVIS_rank, y=lcl_not_sig_ranks$RVIS_rank)
+# wilcox.test(x=lcl_sig_ranks_UP$RVIS_rank, y=lcl_sig_ranks_down$RVIS_rank)
+# 
+# wilcox.test(x=lcl_sig_ranks_UP$Pct_rank, y=lcl_not_sig_ranks$Pct_rank)
+# wilcox.test(x=lcl_sig_ranks_down$Pct_rank, y=lcl_not_sig_ranks$Pct_rank)
+# wilcox.test(x=lcl_sig_ranks_UP$Pct_rank, y=lcl_sig_ranks_down$Pct_rank)
+# 
+# 
+# wilcox.test(x=lcl_sig_ranks_UP$avg_Rank, y=lcl_not_sig_ranks$avg_Rank)
+# wilcox.test(x=lcl_sig_ranks_down$avg_Rank, y=lcl_not_sig_ranks$avg_Rank)
+# wilcox.test(x=lcl_sig_ranks_UP$avg_Rank, y=lcl_sig_ranks_down$avg_Rank)
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# pdf(file="NPX_LCL_sig_ranks_gene_lab.pdf", width=3, height=2)
+# 
+# for(myGene in lcl_sig_ranks$Gene){
+# myPlot <- ggplot(data=NPX_plot, mapping = aes(x=cat, y=value)) +
+#   geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+#     geom_violin(fill="#00000000",color="#00000040", scale="width") + 
+#     stat_summary(fun.data=data_summary, size=0.25) +
+#         geom_jitter(data=NPX_plot_down[! NPX_plot_up$Gene %in% NPX_NPY_genes,], color="#0000ff50", position=position_jitter(0.2), size=1, stroke=0) +
+#   geom_jitter(data=NPX_plot_up[! NPX_plot_up$Gene %in% NPX_NPY_genes,], color="#ff000050", position=position_jitter(0.2), size=1, stroke=0) +
+#     geom_jitter(data=NPX_plot_down[NPX_plot_up$Gene %in% NPX_NPY_genes,], fill="#0000ff50",col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#     # geom_jitter(data=NPX_plot_up[NPX_plot_up$Gene %in% NPX_NPY_genes,], fill="#ff000050", col="black", position=position_jitter(0.2), size=1, stroke=0.5, pch=21) +
+#         geom_text_repel(data = NPX_plot[NPX_plot$Gene == myGene,], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+#   # geom_text_repel(data = par_plot[NPX_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_Rank", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+#   scale_x_discrete(limits=c("LOEUF","RVIS","pHI", "Pct","avg_Rank")) +
+#   theme_classic(base_size = 8) + 
+#   theme(
+#       axis.text = element_text(color = "black"), 
+#       # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+#       axis.ticks = element_line(color = "black", size = 0.25), 
+#       axis.line = element_line(size = 0.25),
+#       plot.title = element_text(hjust = 0.5),
+#       axis.title.x = element_blank(),
+#       legend.position="none"
+#       ) +
+#   labs(
+#     y = "Percentile ranking"
+#   )  + ylim(0,100)
+# 
+# print(myPlot)
+#   
+# }
+# dev.off()
+# 
+# pdf("NPX_NPY_ranks_plot.pdf",, width=3, height=2)
+# ggplot(data=NPX_NPY_plot, mapping = aes(x=cat, y=value)) + 
+#   geom_hline(yintercept = 50, lty=2, color = "#00000020") +
+#     geom_violin(fill="#00000000",color="#00000040", scale="width") + 
+#     stat_summary(fun.data=data_summary, size=0.25) +
+#   geom_jitter(color=myOrange, position=position_jitter(0.1), size=1, stroke=0) +
+#     # geom_jitter(data=NPX_plot_down, color="blue", position=position_jitter(0.1), size=1, stroke=0) +
+#     # geom_point(color="#00000090", size=1, stroke=0) +
+#   geom_text_repel(mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000090") +
+#   # geom_text_repel(data = par_plot[NPX_plot$Gene %in% c("ASMT","IL3RA","PLCXD1") & par_plot$cat == "avg_Rank", ], mapping = aes(x=cat, y=value, label=Gene), size=1, min.segment.length = 0, col="#00000040") +
+#   scale_x_discrete(limits=c("LOEUF","RVIS","pHI", "Pct","avg_Rank")) +
+#   theme_classic(base_size = 8) + 
+#   theme(
+#       axis.text = element_text(color = "black"), 
+#       # axis.text.x =  element_text(angle = 45, vjust = 1, hjust=1),
+#       axis.ticks = element_line(color = "black", size = 0.25), 
+#       axis.line = element_line(size = 0.25),
+#       plot.title = element_text(hjust = 0.5),
+#       axis.title.x = element_blank(),
+#       legend.position="none"
+#       ) +
+#   labs(
+#     y = "Percentile ranking"
+#   )  + ylim(0,100)
+# dev.off()
+```
+
+##DeltaEx scatterplots
+```{r}
+NPX_fullAnno_final_sig <- NPX_fullAnno_final[(! is.na(NPX_fullAnno_final$deltaEx_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05) | (! is.na(NPX_fullAnno_final$deltaEx_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05),] #148 significant NPX genes in LCLs or fibroblasts.
+
+NPX_fullAnno_final_sig_0.1 <- NPX_fullAnno_final_sig[(! is.na(NPX_fullAnno_final_sig$deltaEx_LCL) & abs(NPX_fullAnno_final_sig$deltaEx_LCL) >= 0.1) | (! is.na(NPX_fullAnno_final_sig$deltaEx_Fib) & abs(NPX_fullAnno_final_sig$deltaEx_Fib) >= 0.1),]
+
+top10_dEx_0.1 <- NPX_fullAnno_final_sig_0.1[order(NPX_fullAnno_final_sig_0.1$avg_Rank, decreasing = TRUE),"Gene"]
+top10_dEx_0.1_table <- NPX_fullAnno_final_sig_0.1[order(NPX_fullAnno_final_sig_0.1$avg_Rank, decreasing = TRUE),]
+top10_dEx_0.1_table$rank_order <- c(1:dim(top10_dEx_0.1_table)[1])
+
+q <- 5 #successes (white balls) = num NPX_NPY genes in top 10
+m <- 9 #white balls in urn = num NPX_NPY genes
+n <- 87 - m #black balls in urn (num non NPX-NPY genes)
+k <- 10 #number of balls drawn from urn (top 10)
+phyper(q=q-1, m=m, n=n, k=k, lower.tail = FALSE, log.p=FALSE)
+  
+
+
+NPX_fullAnno_final_rank <- merge(x=NPX_fullAnno_final, y=top10_dEx_0.1_table[,c("Gene","rank_order")], by = "Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim1 <- merge(x=NPX_fullAnno_final_rank, y=omim_anno_unique, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim2 <- merge(x=NPX_fullAnno_final_rank_omim1, y=omim_anno_unique2, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim3 <- merge(x=NPX_fullAnno_final_rank_omim2, y=omim_anno_unique3, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim4 <- merge(x=NPX_fullAnno_final_rank_omim3, y=omim_anno_unique4, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim5 <- merge(x=NPX_fullAnno_final_rank_omim4, y=omim_anno_unique5, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim6 <- merge(x=NPX_fullAnno_final_rank_omim5, y=omim_anno_unique6, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim7 <- merge(x=NPX_fullAnno_final_rank_omim6, y=omim_anno_unique7, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim8 <- merge(x=NPX_fullAnno_final_rank_omim7, y=omim_anno_unique8, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim9 <- merge(x=NPX_fullAnno_final_rank_omim8, y=omim_anno_unique9, by="Gene", all.x=TRUE)
+NPX_fullAnno_final_rank_omim10 <- merge(x=NPX_fullAnno_final_rank_omim9, y=omim_anno_unique10, by="Gene", all.x=TRUE)
+
+colnames(NPX_fullAnno_final_rank_omim10) <- c("Gene",              "gnomAD_transcript", "cds_length" ,       "exp_lof" ,
+                                             "oe_lof"      ,      "LOEUF"       ,      "homozygous_lof"   ,
+                                             "Huang_pHI" ,        "RVIS"    ,          "Gene_Avg_PCT" ,     "Category",
+                                             "deltaEx_LCL"  ,     "x_adj_pval_LCL"  ,  "deltaEx_Fib",
+                                             "x_adj_pval_Fib",    "region"  ,         "gene_name.84", "Human_NPY", "x_class" ,
+                                              "LOEUF_rank" ,
+                                             "RVIS_rank" ,       "pHI_rank"  ,        "Pct_rank"    ,      "avg_Rank",
+                                             "num.Metrics" ,      "rank_order"  ,      "Phenotype.1",
+                                             "Inheritance.1",     "MIM_num.1",     "Phenotype.2",       "Inheritance.2",
+                                             "MIM_num.2",         "Phenotype.3",    "Inheritance.3", "MIM_num.3" ,
+                                             "Phenotype.4",       "Inheritance.4",     "MIM_num.4",
+                                             "Phenotype.5",         "Inheritance.5" ,      "MIM_num.5",
+                                             "Phenotype.6",         "Inheritance.6" ,      "MIM_num.6",
+                                             "Phenotype.7",         "Inheritance.7" ,      "MIM_num.7",
+                                             "Phenotype.8",         "Inheritance.8" ,      "MIM_num.8",
+                                             "Phenotype.9",         "Inheritance.9" ,      "MIM_num.9",
+                                             "Phenotype.10",         "Inheritance.10" ,      "MIM_num.10")
+
+  NPX_fullAnno_final_rank_omim10$Phenotype <- NA
+  NPX_fullAnno_final_rank_omim10$Inheritance <- NA
+  NPX_fullAnno_final_rank_omim10$MIM_num <- NA
+
+phenotype_cols <- c(27,30,33,36,39,42,45,48,51,54)
+inheritance_cols <- phenotype_cols + 1
+MIM_cols <- phenotype_cols + 2
+#Merge together the phenotype, inheritance and MIM columns
+for(myRow in 1:dim(NPX_fullAnno_final_rank_omim10)[1]){
+  # myRow <- 2
+  allPhenotypes <- na.omit(t(NPX_fullAnno_final_rank_omim10[myRow,phenotype_cols]))[,1]
+  allInheritance <- na.omit(t(NPX_fullAnno_final_rank_omim10[myRow,inheritance_cols]))[,1]
+  allMIM <- na.omit(t(NPX_fullAnno_final_rank_omim10[myRow,MIM_cols]))[,1]
+  
+  allPhenotypes_unique <- unique(allPhenotypes)
+  allInheritance_unique <- unique(allInheritance)
+  allMIM_unique <- unique(as.character(allMIM))
+  
+  myPhenotype <- paste(allPhenotypes_unique, collapse = "; ")
+  myInheritance <- paste(allInheritance_unique, collapse="; ")
+  myMIM <- paste(allMIM_unique, collapse="; ")
+  
+  NPX_fullAnno_final_rank_omim10[myRow,"Phenotype"] <- myPhenotype
+  NPX_fullAnno_final_rank_omim10[myRow,"Inheritance"] <- myInheritance
+  NPX_fullAnno_final_rank_omim10[myRow,"MIM_num"] <- myMIM
+}
+  
+  
+NPX_fullAnno_final_rank_omim_edit <- NPX_fullAnno_final_rank_omim10[,c(1:26,57:59)]
+NPX_fullAnno_final_rank_omim_edit_order <- NPX_fullAnno_final_rank_omim_edit[,c(1,26,18,19,12:15,4,6,20,9,21,8,22,10,23,24,7,27:29)]
+write.table(x=NPX_fullAnno_final_rank_omim_edit_order, file="NPX_noAmpliconic_ranks_atLeast2metrics.txt", quote=FALSE, sep="\t", row.names = FALSE, col.names=TRUE)
+
+#Any dominant rows? #58 genes!
+XLD <- NPX_fullAnno_final_rank_omim5[NPX_fullAnno_final_rank_omim5$Inheritance.1 %in% c("X-linked dominant","X-linked dominant; X-linked recessive") | NPX_fullAnno_final_rank_omim5$Inheritance.1 %in% c("X-linked dominant","X-linked dominant; X-linked recessive") | NPX_fullAnno_final_rank_omim5$Inheritance.2 %in% c("X-linked dominant","X-linked dominant; X-linked recessive") | NPX_fullAnno_final_rank_omim5$Inheritance.3 %in% c("X-linked dominant","X-linked dominant; X-linked recessive") | NPX_fullAnno_final_rank_omim5$Inheritance.4 %in% c("X-linked dominant","X-linked dominant; X-linked recessive") | NPX_fullAnno_final_rank_omim5$Inheritance.5 %in% c("X-linked dominant","X-linked dominant; X-linked recessive"),]
+
+test <- NPX_fullAnno_final_sig_0.1[XLD$Gene %in% NPX_fullAnno_final_sig_0.1$Gene,]
+
+
+q <- 5 #successes (white balls) = num XLD genes in top 10
+m <- 12 #white balls in urn = num XLD genes in the group
+n <- 87 - m #black balls in urn (num non XLD genes)
+k <- 10 #number of balls drawn from urn (top 10)
+phyper(q=q-1, m=m, n=n, k=k, lower.tail = FALSE, log.p=FALSE)
+  
+
+#Scatterplots
+pdf(file="NPX_ranking_lcl.pdf", width=3.6, height=2.25)
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=avg_Rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="Average constraint percentile ranking")
+
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=LOEUF_rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=LOEUF_rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=LOEUF_rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=LOEUF_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="LOEUF percentile ranking")
+
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=RVIS_rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=RVIS_rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=RVIS_rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=RVIS_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="RVIS percentile ranking")
+
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=pHI_rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=pHI_rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=pHI_rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=pHI_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="pHI percentile ranking")
+
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=Pct_rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=Pct_rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=Pct_rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=Pct_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="Pct percentile ranking")
+dev.off()
+
+pdf(file="NPX_ranking_fib.pdf", width=3.6, height=2.25)
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=avg_Rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="Average constraint percentile ranking")
+
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=LOEUF_rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=LOEUF_rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=LOEUF_rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=LOEUF_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="LOEUF percentile ranking")
+
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=RVIS_rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=RVIS_rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=RVIS_rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=RVIS_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="RVIS percentile ranking")
+
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=pHI_rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=pHI_rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=pHI_rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=pHI_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="pHI percentile ranking")
+
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=Pct_rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=Pct_rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=Pct_rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=Pct_rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="Pct percentile ranking")
+dev.off()
+
+
+#Tables
+#get important genes:
+#has value in LCL or fibroblast
+#Has absolute deltaEX >= 0.1 and FDR<0.05 in either LCL or fibroblast
+
+impt_NPX_genes <- NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,c("Gene","deltaEx_LCL","deltaEx_Fib","avg_Rank")]
+
+write.table(x=impt_NPX_genes, file="Table2_data.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=FALSE)
+```
+
+##DeltaEx scatterplots with PAR
+
+```{r,eval=FALSE}
+#Scatterplots
+pdf(file="NPX_PAR_ranking_lcl.pdf", width=3.6, height=2.25)
+ggplot() +
+  geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL >= 0.05,], mapping= aes(x=deltaEx_LCL, y=avg_Rank), col="#00000080", stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col=myOrange, stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_LCL) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col="black", stroke=0.5,pch=21, fill="#00000000") +
+     geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_LCL) & par_fullAnno_ranks_dEx$x_adj_pval_LCL < 0.05,],mapping =aes(x=deltaEx_LCL, y=avg_Rank), col=myGreen,  stroke=0) +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_LCL, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+  geom_text_repel(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_LCL) & par_fullAnno_ranks_dEx$x_adj_pval_LCL < 0.05 & abs(par_fullAnno_ranks_dEx$deltaEx_LCL) >= 0.1 & par_fullAnno_ranks_dEx$avg_Rank >= 50,], mapping = aes(x=deltaEx_LCL, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="LCL deltaEx", y="Average constraint percentile ranking")
+dev.off()
+
+pdf(file="NPX_PAR_ranking_fib.pdf", width=3.6, height=2.25)
+ggplot() +
+    geom_vline(xintercept = 0.1, lty=2, col="#00000040", size=0.25) +
+  geom_vline(xintercept = -0.1, lty=2, col="#00000040", size=0.25) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib >= 0.05,], mapping= aes(x=deltaEx_Fib, y=avg_Rank), col="#00000080",  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col=myOrange,  stroke=0) +
+  geom_point(data=NPX_fullAnno_final[! is.na(NPX_fullAnno_final$x_adj_pval_Fib) & NPX_fullAnno_final$Human_NPY == "TRUE",],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col="black",  stroke=0.5, pch=21, fill="#00000000") +
+  geom_point(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_Fib) & par_fullAnno_ranks_dEx$x_adj_pval_Fib < 0.05,],mapping =aes(x=deltaEx_Fib, y=avg_Rank), col=myGreen, stroke=0) +
+  geom_text_repel(data=NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,], mapping = aes(x=deltaEx_Fib, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+  geom_text_repel(data=par_fullAnno_ranks_dEx[! is.na(par_fullAnno_ranks_dEx$x_adj_pval_Fib) & par_fullAnno_ranks_dEx$x_adj_pval_Fib < 0.05 & abs(par_fullAnno_ranks_dEx$deltaEx_Fib) >= 0.1 & par_fullAnno_ranks_dEx$avg_Rank >= 50,], mapping = aes(x=deltaEx_Fib, y=avg_Rank, label=Gene), size=2.5, min.segment.length = 0) +
+   theme_classic(base_size = 8) +
+  theme(
+      axis.text = element_text(color = "black"),
+      axis.ticks = element_line(color = "black", size = 0.25),
+      axis.line = element_line(size = 0.25),
+      plot.title = element_text(hjust = 0.5),
+      axis.title.x = element_blank(),
+      legend.position="none"
+      ) + xlim(-0.4,1.25) + ylim(0,100) +
+  labs(x="fib deltaEx", y="Average constraint percentile ranking")
+dev.off()
+
+
+#Tables
+#get important genes:
+#has value in LCL or fibroblast
+#Has absolute deltaEX >= 0.1 and FDR<0.05 in either LCL or fibroblast
+
+impt_NPX_genes <- NPX_fullAnno_final[NPX_fullAnno_final$Gene %in% top10_dEx_0.1,c("Gene","deltaEx_LCL","deltaEx_Fib","avg_Rank")]
+
+write.table(x=impt_NPX_genes, file="Table2_data.txt", quote=FALSE, sep="\t", col.names=TRUE, row.names=FALSE)
+```
+
