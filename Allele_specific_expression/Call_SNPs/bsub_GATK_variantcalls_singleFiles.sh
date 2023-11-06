@@ -32,7 +32,7 @@ dbsnp=YOUR_PATH/dbSNP/common_all_20180418_chr.vcf.gz #DOWNLOAD HERE: ftp://ftp.n
 #if [ -f $scratch_space/$file.split.bam ] && [ ! -f $scratch_space/$file.recal_data.table ];then
 	YOUR_PATH/gatk-4.1.2.0/gatk BaseRecalibrator -R $genomeFasta -I $scratch_space/$file.split.bam --known-sites $dbsnp -O $scratch_space/$file.recal_data.table
 #fi
-#their docs are THE WORST
+
 #https://gatkforums.broadinstitute.org/gatk/discussion/23296/second-pass-base-recalibration-gatk4
 
 #apply recalibration
